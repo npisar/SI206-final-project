@@ -1,6 +1,14 @@
 import requests
 import json
 
+'''
+This file will call the Unofficial Genshin API to get data for every character in the game.
+
+The first function gets a list of the character names to be iterated through, and the second function iterates through that list, grabs the data from each character's url, and adds all of that data to a master list.
+
+Then, the master list is iterated through and dumped into one large json file.
+'''
+
 def get_character_names(base_url):
     '''
     ARGUMENTS:
@@ -10,7 +18,7 @@ def get_character_names(base_url):
         all_character_names, a list of all of the character names taken from the API
     '''
     all_character_names = []
-    resp = requests.get(f"{base_url}/characters/")
+    resp = requests.get(f"{base_url}characters/")
     if resp.status_code != 200:
         print(f"Failed on get_character_names")
         print(f"Failed to get data: {resp.status_code}")
@@ -34,7 +42,7 @@ def get_character_info(base_url, character_names_list):
     '''
     all_character_data = []
     for character in character_names_list:
-        resp = requests.get(f"{base_url}/character/{character}/")
+        resp = requests.get(f"{base_url}character/{character}/")
         if resp.status_code != 200:
             print(f"Failed on get_character_info")
             print(f"Failed to get data: {resp.status_code}")
@@ -51,8 +59,8 @@ def get_character_info(base_url, character_names_list):
 
 
 def main():
-    character_list = get_character_names(base_url="https://genshin-impact.up.railway.app")
+    character_list = get_character_names(base_url="https://genshin-impact.up.railway.app/")
 
-    get_character_info(base_url="https://genshin-impact.up.railway.app", character_names_list=character_list)
+    get_character_info(base_url="https://genshin-impact.up.railway.app/", character_names_list=character_list)
 
 main()
