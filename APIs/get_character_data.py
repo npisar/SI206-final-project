@@ -12,7 +12,7 @@ Then, the master list is iterated through and dumped into one large json file.
 def get_character_names(base_url):
     '''
     ARGUMENTS:
-        base_url: str representing GSHIMPACT API base url
+        base_url: str representing Genshin API base url
     
     RETURNS:
         all_character_names, a list of all of the character names taken from the API
