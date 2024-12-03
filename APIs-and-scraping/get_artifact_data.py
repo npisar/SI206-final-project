@@ -72,8 +72,8 @@ def get_artifacts():
         bonuses_column = columns[3].text
         print(bonuses_column)
         bonuses_matches = re.findall(bonuses_pattern, bonuses_column)
-        bonuses_dict = {int(num): desc.strip() for num, desc, _ in bonuses_matches}
-        # print(f"bonus dict is {bonuses_dict}")
+        bonuses_list = [{"pieces": int(tup[0]), "bonus": tup[1].strip()} for tup in bonuses_matches]
+        # print(f"bonuses list is {bonuses_list}")
 
         # get the pieces column and get all pieces
         pieces_column = columns[2]
@@ -97,7 +97,7 @@ def get_artifacts():
                 "artifactURL": artifact_url,
                 "artifactSetName": artifact_set_name,
                 "maxSetQuality": max_set_quality,
-                "setBonuses": bonuses_dict,
+                "setBonuses": bonuses_list,
                 "setNumPieces": set_num_pieces,
             })
     
