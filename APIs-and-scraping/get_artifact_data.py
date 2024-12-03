@@ -58,8 +58,11 @@ def get_artifacts():
         artifact_set_name = columns[0].text.strip()
         print(f"artifact set name is {artifact_set_name}")
         set_quality = columns[1].text.strip()
-        set_bonuses = [bonus.strip() for bonus in columns[2].text.split("\n") if bonus.strip()]
-        pieces_column = columns[3]
+        print(f"set quality is {set_quality}")
+        # set_bonuses = [bonus.strip() for bonus in columns[3].text.split("1 Piece").split("2 Piece").split("4 Piece") if bonus.strip()]
+        # print(f"set bonuses are {set_bonuses}")
+        pieces_column = columns[2].text.strip()
+        print(f"pieces_column is {pieces_column}")
     
         # Find all individual artifact pieces
         pieces = pieces_column.find_all("span", class_="item")

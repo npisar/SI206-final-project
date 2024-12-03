@@ -2,65 +2,52 @@ import requests
 import json
 
 '''
-This file will call the Genshin.dev API to get data for every character in the game.
+This file will call the GSHIMPACT API to get data for every character in the game.
 
-# The first function gets a list of the character names to be iterated through, and the second function iterates through that list, grabs the data from each character's url, and adds all of that data to a master list.
+The only function gets the data for all of the set number of characters on a page. It then appends all of that data to a master list.
 
-# Then, the master list is iterated through and dumped into one large json file.
+Then, the master list is iterated through and dumped into one large json file.
 '''
 
-def get_character_names(base_url):
+def get_characters(base_url, limit=25, max_requests=2):
     '''
     ARGUMENTS:
-        base_url: str representing Genshin API base url
+        base_url: str representing GSHIMPACT API base url
+        limit=25: int. the limit of how many responses are received per request. 25 by default.
+        max_requests: int. the maximum number of requests to be made to the API
     
     RETURNS:
-        all_character_names, a list of all of the character names taken from the API
+        None
     '''
-    all_character_names = []
-    resp = requests.get(f"{base_url}characters/")
-    if resp.status_code != 200:
-        print(f"Failed on get_character_names")
-        print(f"Failed to get data: {resp.status_code}")
-        return []
-
-    # convert to json and add to all characters list
-    data = resp.json()
-    for character in data:    
-        all_character_names.append(character)
-    
-    return all_character_names
-
-
-def get_character_info(base_url, character_names_list):
-    '''
-    ARGUMENTS:
-        base_url: str. same base as used 
-        character_names_list: a list of strings representing characters names, gotten from get_characters
-    
-    RETURNS: None
-    '''
-    all_character_data = []
-    for character in character_names_list:
-        resp = requests.get(f"{base_url}characters/{character}/")
+    page = 1
+    all_characters = []
+    for i in range(max_requests):
+        resp = requests.get(f"{base_url}characters?limit={limit}&page={page}")
+        # print(f"now getting data on page {page}")
         if resp.status_code != 200:
-            print(f"Failed on get_character_info")
             print(f"Failed to get data: {resp.status_code}")
-    
-        character_data_json = resp.json()
-        all_character_data.append(character_data_json)
+            return None
 
+        # convert to json and add to all data
+        data = resp.json()
+        characters = data['results']
+        all_characters.append(characters)
+        # print(f"{'-'*20}\ndata on page {page} is {data}\n\n{'-'*20}")
+
+        # stop when the number of items is less than the limit
+        # print(f"len data results is {len(data['results'])"}
+        if len(data['results']) < limit:
+            break
+        page += 1
 
     # write to the file
     with open("character-data.json", "w") as file:
-        all_characters = [character for character in all_character_data]
+        all_characters = [character for page in all_characters for character in page]
         json.dump(all_characters, file, indent=4)
 
 
 
 def main():
-    character_list = get_character_names(base_url="https://genshin.jmp.blue/")
-
-    get_character_info(base_url="https://genshin.jmp.blue/", character_names_list=character_list)
+    get_characters(base_url="https://gsi.fly.dev/", limit=25, max_requests=2)
 
 main()
