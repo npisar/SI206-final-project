@@ -176,22 +176,25 @@ def insert_weapons_data(cur, conn, weapon_data):
     -----------------------
     None
     """
-    for weapon in weapon_data:
-        cur.execute(
-            """
-            INSERT OR REPLACE INTO Weapons (
-                id, name, type, rarity, base_attack, sub_stat, 
-                passive_name, passive_desc, location, ascension_material
+    batch_size = 25
+    for i in range(0, len(weapon_data), batch_size):
+        batch = weapon_data[i:i + batch_size]
+        for weapon in weapon_data:
+            cur.execute(
+                """
+                INSERT OR REPLACE INTO Weapons (
+                    id, name, type, rarity, base_attack, sub_stat, 
+                    passive_name, passive_desc, location, ascension_material
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    weapon["id"], weapon["name"], weapon["type"], weapon["rarity"], 
+                    weapon["baseAttack"], weapon.get("subStat"), weapon.get("passiveName"),
+                    weapon.get("passiveDesc"), weapon["location"], weapon["ascensionMaterial"]
+                )
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                weapon["id"], weapon["name"], weapon["type"], weapon["rarity"], 
-                weapon["baseAttack"], weapon.get("subStat"), weapon.get("passiveName"),
-                weapon.get("passiveDesc"), weapon["location"], weapon["ascensionMaterial"]
-            )
-        )
-    conn.commit()
+        conn.commit()
 
 def insert_characters_data(cur, conn, character_data):
     """
@@ -212,30 +215,33 @@ def insert_characters_data(cur, conn, character_data):
     -----------------------
     None
     """
-    for character in character_data:
-        # Extracting numeric part of the rarity (e.g., "4_star" becomes "4")
-        rarity = re.match(r"(\d+)", character["rarity"])
-        rarity = int(rarity.group(1)) if rarity else None  # Default to None if no number found
+    batch_size = 25
+    for i in range(0, len(character_data), batch_size):
+        batch = character_data[i:i + batch_size]
+        for character in character_data:
+            # Extracting numeric part of the rarity (e.g., "4_star" becomes "4")
+            rarity = re.match(r"(\d+)", character["rarity"])
+            rarity = int(rarity.group(1)) if rarity else None  # Default to None if no number found
 
-        # Insert character data into the database
-        cur.execute(
-            """
-            INSERT OR REPLACE INTO Characters (
-                id, name, rarity, weapon, vision
+            # Insert character data into the database
+            cur.execute(
+                """
+                INSERT OR REPLACE INTO Characters (
+                    id, name, rarity, weapon, vision
+                )
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    character["id"],
+                    character["name"],
+                    rarity,
+                    character["weapon"],
+                    character["vision"]
+                )
             )
-            VALUES (?, ?, ?, ?, ?)
-            """,
-            (
-                character["id"],
-                character["name"],
-                rarity,
-                character["weapon"],
-                character["vision"]
-            )
-        )
 
-    # Commit changes to the database
-    conn.commit()
+        # Commit changes to the database
+        conn.commit()
 
 
 def insert_banners_data(cur, conn, banner_data):
@@ -257,32 +263,35 @@ def insert_banners_data(cur, conn, banner_data):
     -----------------------
     None
     """
-    for banner in banner_data:
-        # Determine end_date based on type
-        end_date = None if banner.get('type') == "Permanent" else banner.get('end', 'Unknown End Date')
+    batch_size = 25
+    for i in range(0, len(banner_data), batch_size):
+        batch = banner_data[i:i + batch_size]
+        for banner in banner_data:
+            # Determine end_date based on type
+            end_date = None if banner.get('type') == "Permanent" else banner.get('end', 'Unknown End Date')
 
-        # Extract character categories
-        featured = banner.get('featured', [])
-        featured_character = featured[0]['name'] if len(featured) > 0 else None
-        first_three_star = featured[1]['name'] if len(featured) > 1 else None
-        second_three_star = featured[2]['name'] if len(featured) > 2 else None
-        third_three_star = featured[3]['name'] if len(featured) > 3 else None
+            # Extract character categories
+            featured = banner.get('featured', [])
+            featured_character = featured[0]['name'] if len(featured) > 0 else None
+            first_three_star = featured[1]['name'] if len(featured) > 1 else None
+            second_three_star = featured[2]['name'] if len(featured) > 2 else None
+            third_three_star = featured[3]['name'] if len(featured) > 3 else None
 
-        # Debugging print statements
-        #print("Inserting Banner:", banner['name'])
-        #print("Five Star:", featured_character)
-        #print("1st Three Star:", first_three_star)
-        #print("2nd Three Star:", second_three_star)
-        #print("3rd Three Star:", third_three_star)
+            # Debugging print statements
+            #print("Inserting Banner:", banner['name'])
+            #print("Five Star:", featured_character)
+            #print("1st Three Star:", first_three_star)
+            #print("2nd Three Star:", second_three_star)
+            #print("3rd Three Star:", third_three_star)
 
-        # Insert or update the banner
-        cur.execute('''
-        INSERT OR REPLACE INTO Banners (name, type, version, start_date, end_date, featured_character, first_three_star, second_three_star, third_three_star)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (banner['name'], banner['type'], banner['version'], banner['start'], end_date,
-              featured_character, first_three_star, second_three_star, third_three_star))
+            # Insert or update the banner
+            cur.execute('''
+            INSERT OR REPLACE INTO Banners (name, type, version, start_date, end_date, featured_character, first_three_star, second_three_star, third_three_star)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (banner['name'], banner['type'], banner['version'], banner['start'], end_date,
+                featured_character, first_three_star, second_three_star, third_three_star))
 
-    conn.commit()
+        conn.commit()
 
 
 
