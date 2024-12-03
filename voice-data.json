@@ -1,0 +1,420 @@
+[
+    {
+        "title": "Hello",
+        "details": [
+            "Outrider Amber reporting for duty! Just say the word if you ever need my help!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Chat: Hobbies",
+        "details": [
+            "I feel like running."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Chat: Longings",
+        "details": [
+            "Jean will be upset if she catches us lazing around like this."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Chat: New Discoveries",
+        "details": [
+            "Hey, there's something strange over there... C'mon, let's take a look!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It Rains: Worries",
+        "details": [
+            "Oh no, it's raining... now my uniform will get all wet..."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It Rains: Reminder",
+        "details": [
+            "It's raining again... This will hinder our vision, we must remain vigilant!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "After the Rain",
+        "details": [
+            "Wow~ This weather is awesome!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When the Sun Is Out",
+        "details": [
+            "If only the wind was a little stronger..."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It's Windy: Pleasant",
+        "details": [
+            "This breeze... so refreshing!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It's Windy: Relax",
+        "details": [
+            "I love this kind of weather, ahh... so relaxing~"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Morning",
+        "details": [
+            "Morning! Want to go on a jog?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Afternoon",
+        "details": [
+            "Can I get lunch with you?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Evening",
+        "details": [
+            "It's getting late, should I light a torch?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Night",
+        "details": [
+            "Agreed, getting rest is essential! Let's meet here tomorrow then. See ya!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Amber",
+        "details": [
+            "Mondstadt Gliding Champion, yep, that's me! Gliding Champion!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Us: Contests",
+        "details": [
+            "Remember that I don't go easy on anyone, even you!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Us: Gliding",
+        "requirement": "Friendship Lv. 6",
+        "details": [
+            "When I'm teaching you to glide, I feel like I can go even faster than usual... Huh? What are you laughing at? I'll prove it! We can race \u2014 right now!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About the Vision",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "My Vision... Is a sign that the Archons believe in me. Yes, I must become the best Outrider I can possibly be!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Something to Share",
+        "details": [
+            "The view from the Cathedral's clock tower is amazing! You should check it out."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Interesting Things",
+        "details": [
+            "Look, there's a pigeon over there! *giggle* I wish I could fly alongside them."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Jean: Help",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "After the Grand Master left on his expedition, all the affairs of the Knights of Favonius, both big and small, have been left up to Jean. If only there was more I could do to help her..."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Jean: Care",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "ean might still be working? We should invite her for coffee... Let's go."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Lisa: Listening to Stories",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "When you have time, we should go see Lisa! Last time I saw her, she was telling me about a story involving a treasure in the Dragonspine area. But, we got cut off before she could finish. I can't wait to hear the rest of her story!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Lisa: Admiration",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "If Lisa's not sleeping, she'll be reading! I don't know how she does it, I wouldn't be able to sit still for that long."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Kaeya: Concerns",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "...I'm feeling uneasy all of a sudden! Was that Kaeya with you earlier? Did he give you any trouble?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Kaeya: Culprit",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "There's something weird-looking about the dandelions in the garden... Hmm, I bet Kaeya had something to do with this!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Bennett",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "Hmm? Bennett... I feel like I've heard that name before... Oh! Yes, he's that hot-blooded guy from the Adventurers' Guild, right! I tend to come across him way out in the wild from time to time, he seems to really love treasure hunting."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Bennett",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "Hmm? Bennett... I feel like I've heard that name before... Oh! Yes, he's that hot-blooded guy from the Adventurers' Guild, right! I tend to come across him way out in the wild from time to time, he seems to really love treasure hunting."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Klee",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "Klee? She can be a bit cheeky sometimes, but everyone in the Knights of Favonius likes her. Although... I really ought to keep a closer eye on her if I wanna keep her from getting put in confinement by Jean again."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Albedo",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "Albedo spends most of his time in his workshop, tinkering away with all of his awesome stuff. But, when you see him in person, you never can quite tell what he's thinking... Who knows what goes on in that mind of his..."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Noelle",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "You wanna know about Noelle? She's super resilient. Still, since she's younger than us we should still look out for her."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Eula",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "Eula is a great friend of mine! You just need to get used to her sense of humor and you'll get along fine! The only reason she's misunderstood by so many people is her family name. How can I get them to see her for who she really is?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "More About Amber: I",
+        "details": [
+            "I'm a pro at hunting, you know! How about I show you some of my skills? Or even better... how about a little competition?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "More About Amber: II",
+        "requirement": "Friendship Lv. 3",
+        "details": [
+            "I'll share my ultimate Gliding Champion secret with you! The most important thing to remember, is to have courage!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "More About Amber: III",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "I'm really not that good with riddles. I always try to avoid the riddles stand during Ludi Harpastum... What about you?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "More About Amber: IV",
+        "requirement": "Friendship Lv. 5",
+        "details": [
+            "I joined the Knights because of my grandpa, I stayed because of Jean. ...And now, you're the one that showed me the world beyond Mondstadt. I couldn't be happier."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "More About Amber: V",
+        "requirement": "Friendship Lv. 6",
+        "details": [
+            "I would like to explore the other worlds beyond. I wanna see how deep the rabbit hole goes! You'll keep me company right, right?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Amber's Hobbies",
+        "details": [
+            "Baron Bunny, today is another squeaky clean day!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Amber's Troubles",
+        "details": [
+            "Oh... Do you have any idea how to make a decent Moon Pie?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Favorite Food",
+        "details": [
+            "Jean makes the most amazing cup of coffee! You'll have to try it sometime."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    }
+]

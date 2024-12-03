@@ -11,7 +11,7 @@ The only function gets the data for all of the voice lines by the characters. It
 Then, the master list is iterated through and dumped into one large json file.
 '''
 
-def get_voice(base_url, limit=25, max_requests=2):
+def get_voice(base_url, limit=25, max_requests=3):
     '''
     ARGUMENTS:
         base_url: str representing GSHIMPACT API base url
@@ -25,7 +25,7 @@ def get_voice(base_url, limit=25, max_requests=2):
     all_voices = []
     for i in range(max_requests):
         resp = requests.get(f"{base_url}voices?limit={limit}&page={page}")
-        # print(f"now getting data on page {page}")
+        print(f"now getting data on page {page}")
         if resp.status_code != 200:
             print(f"Failed to get data: {resp.status_code}")
             return None
@@ -34,16 +34,12 @@ def get_voice(base_url, limit=25, max_requests=2):
         data = resp.json()
         voices = data['results']
         all_voices.append(voices)
-        # print(f"{'-'*20}\ndata on page {page} is {data}\n\n{'-'*20}")
+        print(f"{'-'*20}\ndata on page {page} is {data}\n\n{'-'*20}")
 
-        # stop when the number of items is less than the limit
-        # print(f"len data results is {len(data['results'])"}
-        if len(data['results']) < limit:
-            break
         page += 1
 
     # write to the file
-    with open("voice.json", "w") as file:
+    with open("voice-data.json", "w") as file:
         all_voices = [voices for page in all_voices for voices in page]
         json.dump(all_voices, file, indent=4)
 
