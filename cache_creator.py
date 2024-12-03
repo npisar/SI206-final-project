@@ -144,14 +144,14 @@ def insert_characters_data(cur, conn, character_data):
         cur.execute(
             """
             INSERT OR REPLACE INTO Characters (
-                id, name, title, vision, weapon, nation, affiliation, 
+                name, title, vision, weapon, nation, affiliation, 
                 rarity, constellation, birthday, utility_passive, 
                 normal_talent_name, skill_talent_name, burst_talent_name
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
-                character["id"], character["name"], character.get("title"), 
+                character["name"], character.get("title"), 
                 character["vision"], character["weapon"], character.get("nation", "Unknown"), 
                 character.get("affiliation", "Unknown"), character["rarity"], 
                 character["constellation"], character.get("birthday", "Unknown"), 
@@ -165,29 +165,37 @@ def insert_banners_data(cur, conn, banner_data):
     Inserts banner data into the Banners and FeaturedCharacters tables.
     """
     for banner in banner_data:
-        cur.execute('''
-        INSERT INTO Banners (name, type, version, start_date, end_date)
-        VALUES (?, ?, ?, ?, ?)
-        ''', (banner['name'], banner['type'], banner['version'], banner['start'], banner['end']))
-        
-        banner_id = cur.lastrowid  # Get the last inserted banner id
+        # Determine end_date based on type
+        end_date = None if banner.get('type') == "Permanent" else banner.get('end', 'Unknown End Date')
 
-        featured = banner.get('featured', [])
+        # Insert or retrieve the banner
+        cur.execute('''
+        INSERT OR IGNORE INTO Banners (name, type, version, start_date, end_date)
+        VALUES (?, ?, ?, ?, ?)
+        ''', (banner['name'], banner['type'], banner['version'], banner['start'], end_date))
         
+        # Retrieve the banner_id
+        cur.execute('SELECT id FROM Banners WHERE name = ? AND start_date = ?', (banner['name'], banner['start']))
+        banner_id = cur.fetchone()[0]
+
+        # Insert featured characters
+        featured = banner.get('featured', [])
         for i, character in enumerate(featured):
             role = "Featured Character" if i == 0 else f"Three Star {i}"
             cur.execute('''
-            INSERT INTO FeaturedCharacters (banner_id, role, name, character_id, rarity)
+            INSERT OR REPLACE INTO FeaturedCharacters (banner_id, role, name, character_id, rarity)
             VALUES (?, ?, ?, ?, ?)
             ''', (banner_id, role, character['name'], character['id'], character.get('rarity', 4)))
-    
+
     conn.commit()
+
+
 
 def main():
     # Read the JSON data
-    weapon_data = read_data_from_file('weapons.json')
-    character_data = read_data_from_file('characters.json')
-    banner_data = read_data_from_file('banners.json')
+    weapon_data = read_data_from_file('weapon-data.json')
+    character_data = read_data_from_file('character-data.json')
+    banner_data = read_data_from_file('banner-data.json')
 
     # Set up the database
     cur, conn = set_up_database('genshin_impact.db')
