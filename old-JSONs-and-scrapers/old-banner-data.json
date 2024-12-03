@@ -1,0 +1,985 @@
+[
+    {
+        "id": 1,
+        "name": "Ballad in Goblets",
+        "type": "Character",
+        "version": "v1.0",
+        "featured": [
+            {
+                "id": 22,
+                "name": "Venti"
+            },
+            {
+                "id": 13,
+                "name": "Xiangling"
+            },
+            {
+                "id": 6,
+                "name": "Fischl"
+            },
+            {
+                "id": 2,
+                "name": "Barbara"
+            }
+        ],
+        "start": "2020-09-28T00:00:00.000Z",
+        "end": "2020-10-18T00:00:00.000Z"
+    },
+    {
+        "id": 2,
+        "name": "Beginners' Wish",
+        "type": "Permanent",
+        "version": "v1.0",
+        "featured": [
+            {
+                "id": 10,
+                "name": "Noelle"
+            }
+        ],
+        "start": "2020-09-28T00:00:00.000Z"
+    },
+    {
+        "id": 3,
+        "name": "Wanderlust Invocation",
+        "type": "Permanent",
+        "version": "v1.0",
+        "featured": [],
+        "start": "2020-09-28T00:00:00.000Z"
+    },
+    {
+        "id": 4,
+        "name": "Sparkling Steps",
+        "type": "Character",
+        "version": "v1.0",
+        "featured": [
+            {
+                "id": 23,
+                "name": "Klee"
+            },
+            {
+                "id": 14,
+                "name": "Xingqiu"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            },
+            {
+                "id": 12,
+                "name": "Sucrose"
+            }
+        ],
+        "start": "2020-10-20T00:00:00.000Z",
+        "end": "2020-11-10T00:00:00.000Z"
+    },
+    {
+        "id": 5,
+        "name": "Farewell of Snezhnaya",
+        "type": "Character",
+        "version": "v1.1",
+        "featured": [
+            {
+                "id": 27,
+                "name": "Tartaglia"
+            },
+            {
+                "id": 3,
+                "name": "Beidou"
+            },
+            {
+                "id": 9,
+                "name": "Ningguang"
+            },
+            {
+                "id": 26,
+                "name": "Diona"
+            }
+        ],
+        "start": "2020-11-11T00:00:00.000Z",
+        "end": "2020-11-30T23:00:00.000Z"
+    },
+    {
+        "id": 6,
+        "name": "Gentry of Hermitage",
+        "type": "Character",
+        "version": "v1.1",
+        "featured": [
+            {
+                "id": 25,
+                "name": "Zhongli"
+            },
+            {
+                "id": 24,
+                "name": "Xinyan"
+            },
+            {
+                "id": 5,
+                "name": "Chongyun"
+            },
+            {
+                "id": 11,
+                "name": "Razor"
+            }
+        ],
+        "start": "2020-12-01T00:00:00.000Z",
+        "end": "2020-12-22T00:00:00.000Z"
+    },
+    {
+        "id": 7,
+        "name": "Secretum Secretorum",
+        "type": "Character",
+        "version": "v1.2",
+        "featured": [
+            {
+                "id": 29,
+                "name": "Albedo"
+            },
+            {
+                "id": 6,
+                "name": "Fischl"
+            },
+            {
+                "id": 4,
+                "name": "Bennett"
+            },
+            {
+                "id": 12,
+                "name": "Sucrose"
+            }
+        ],
+        "start": "2020-12-23T00:00:00.000Z",
+        "end": "2021-01-11T23:00:00.000Z"
+    },
+    {
+        "id": 8,
+        "name": "Adrift in the Harbor",
+        "type": "Character",
+        "version": "v1.2",
+        "featured": [
+            {
+                "id": 28,
+                "name": "Ganyu"
+            },
+            {
+                "id": 13,
+                "name": "Xiangling"
+            },
+            {
+                "id": 14,
+                "name": "Xingqiu"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            }
+        ],
+        "start": "2021-01-12T00:00:00.000Z",
+        "end": "2021-02-01T23:00:00.000Z"
+    },
+    {
+        "id": 9,
+        "name": "Invitation to Mundane Life",
+        "type": "Character",
+        "version": "v1.3",
+        "featured": [
+            {
+                "id": 31,
+                "name": "Xiao"
+            },
+            {
+                "id": 24,
+                "name": "Xinyan"
+            },
+            {
+                "id": 3,
+                "name": "Beidou"
+            },
+            {
+                "id": 26,
+                "name": "Diona"
+            }
+        ],
+        "start": "2021-02-03T00:00:00.000Z",
+        "end": "2021-02-16T23:00:00.000Z"
+    },
+    {
+        "id": 10,
+        "name": "Dance of Lanterns",
+        "type": "Character",
+        "version": "v1.3",
+        "featured": [
+            {
+                "id": 18,
+                "name": "Keqing"
+            },
+            {
+                "id": 9,
+                "name": "Ningguang"
+            },
+            {
+                "id": 2,
+                "name": "Barbara"
+            },
+            {
+                "id": 4,
+                "name": "Bennett"
+            }
+        ],
+        "start": "2021-02-17T00:00:00.000Z",
+        "end": "2021-03-01T23:00:00.000Z"
+    },
+    {
+        "id": 11,
+        "name": "Moment of Bloom",
+        "type": "Character",
+        "version": "v1.3",
+        "featured": [
+            {
+                "id": 30,
+                "name": "Hu Tao"
+            },
+            {
+                "id": 14,
+                "name": "Xingqiu"
+            },
+            {
+                "id": 5,
+                "name": "Chongyun"
+            },
+            {
+                "id": 13,
+                "name": "Xiangling"
+            }
+        ],
+        "start": "2021-03-01T23:00:00.000Z",
+        "end": "2021-03-15T23:00:00.000Z"
+    },
+    {
+        "id": 12,
+        "name": "Ballad in Goblets",
+        "type": "Character",
+        "version": "v1.4",
+        "featured": [
+            {
+                "id": 22,
+                "name": "Venti"
+            },
+            {
+                "id": 11,
+                "name": "Razor"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            },
+            {
+                "id": 12,
+                "name": "Sucrose"
+            }
+        ],
+        "start": "2021-03-17T00:00:00.000Z",
+        "end": "2021-04-05T22:00:00.000Z"
+    },
+    {
+        "id": 13,
+        "name": "Farewell of Snezhnaya",
+        "type": "Character",
+        "version": "v1.4",
+        "featured": [
+            {
+                "id": 27,
+                "name": "Tartaglia"
+            },
+            {
+                "id": 32,
+                "name": "Rosaria"
+            },
+            {
+                "id": 6,
+                "name": "Fischl"
+            },
+            {
+                "id": 2,
+                "name": "Barbara"
+            }
+        ],
+        "start": "2021-04-06T00:00:00.000Z",
+        "end": "2021-04-26T22:00:00.000Z"
+    },
+    {
+        "id": 14,
+        "name": "Gentry of Hermitage",
+        "type": "Character",
+        "version": "v1.5",
+        "featured": [
+            {
+                "id": 25,
+                "name": "Zhongli"
+            },
+            {
+                "id": 34,
+                "name": "Yanfei"
+            },
+            {
+                "id": 26,
+                "name": "Diona"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            }
+        ],
+        "start": "2021-04-28T00:00:00.000Z",
+        "end": "2021-05-17T22:00:00.000Z"
+    },
+    {
+        "id": 15,
+        "name": "Born of Ocean Swell",
+        "type": "Character",
+        "version": "v1.5",
+        "featured": [
+            {
+                "id": 33,
+                "name": "Eula"
+            },
+            {
+                "id": 14,
+                "name": "Xingqiu"
+            },
+            {
+                "id": 3,
+                "name": "Beidou"
+            },
+            {
+                "id": 24,
+                "name": "Xinyan"
+            }
+        ],
+        "start": "2021-05-18T00:00:00.000Z",
+        "end": "2021-06-07T22:00:00.000Z"
+    },
+    {
+        "id": 16,
+        "name": "Sparkling Steps",
+        "type": "Character",
+        "version": "v1.6",
+        "featured": [
+            {
+                "id": 23,
+                "name": "Klee"
+            },
+            {
+                "id": 6,
+                "name": "Fischl"
+            },
+            {
+                "id": 2,
+                "name": "Barbara"
+            },
+            {
+                "id": 12,
+                "name": "Sucrose"
+            }
+        ],
+        "start": "2021-06-09T00:00:00.000Z",
+        "end": "2021-06-28T22:00:00.000Z"
+    },
+    {
+        "id": 17,
+        "name": "Leaves in the Wind",
+        "type": "Character",
+        "version": "v1.6",
+        "featured": [
+            {
+                "id": 35,
+                "name": "Kazuha"
+            },
+            {
+                "id": 32,
+                "name": "Rosaria"
+            },
+            {
+                "id": 11,
+                "name": "Razor"
+            },
+            {
+                "id": 4,
+                "name": "Bennett"
+            }
+        ],
+        "start": "2021-06-29T00:00:00.000Z",
+        "end": "2021-07-19T22:00:00.000Z"
+    },
+    {
+        "id": 18,
+        "name": "The Heron's Court",
+        "type": "Character",
+        "version": "v2.0",
+        "featured": [
+            {
+                "id": 36,
+                "name": "Ayaka"
+            },
+            {
+                "id": 34,
+                "name": "Yanfei"
+            },
+            {
+                "id": 9,
+                "name": "Ningguang"
+            },
+            {
+                "id": 5,
+                "name": "Chongyun"
+            }
+        ],
+        "start": "2021-07-21T00:00:00.000Z",
+        "end": "2021-08-09T22:00:00.000Z"
+    },
+    {
+        "id": 19,
+        "name": "Tapestry of Golden Flames",
+        "type": "Character",
+        "version": "v2.0",
+        "featured": [
+            {
+                "id": 38,
+                "name": "Yoimiya"
+            },
+            {
+                "id": 26,
+                "name": "Diona"
+            },
+            {
+                "id": 24,
+                "name": "Xinyan"
+            },
+            {
+                "id": 37,
+                "name": "Sayu"
+            }
+        ],
+        "start": "2021-08-10T00:00:00.000Z",
+        "end": "2021-08-30T22:00:00.000Z"
+    },
+    {
+        "id": 20,
+        "name": "Reign of Serenity",
+        "type": "Character",
+        "version": "v2.1",
+        "featured": [
+            {
+                "id": 40,
+                "name": "Raiden Shogun"
+            },
+            {
+                "id": 39,
+                "name": "Sara"
+            },
+            {
+                "id": 12,
+                "name": "Sucrose"
+            },
+            {
+                "id": 13,
+                "name": "Xiangling"
+            }
+        ],
+        "start": "2021-09-01T00:00:00.000Z",
+        "end": "2021-09-20T22:00:00.000Z"
+    },
+    {
+        "id": 21,
+        "name": "Drifting Luminescence",
+        "type": "Character",
+        "version": "v2.1",
+        "featured": [
+            {
+                "id": 41,
+                "name": "Kokomi"
+            },
+            {
+                "id": 32,
+                "name": "Rosaria"
+            },
+            {
+                "id": 14,
+                "name": "Xingqiu"
+            },
+            {
+                "id": 3,
+                "name": "Beidou"
+            }
+        ],
+        "start": "2021-09-21T00:00:00.000Z",
+        "end": "2021-10-12T00:00:00.000Z"
+    },
+    {
+        "id": 22,
+        "name": "Farewell of Snezhnaya",
+        "type": "Character",
+        "version": "v2.2",
+        "featured": [
+            {
+                "id": 27,
+                "name": "Tartaglia"
+            },
+            {
+                "id": 9,
+                "name": "Ningguang"
+            },
+            {
+                "id": 34,
+                "name": "Yanfei"
+            },
+            {
+                "id": 5,
+                "name": "Chongyun"
+            }
+        ],
+        "start": "2021-10-13T00:00:00.000Z",
+        "end": "2021-11-01T23:00:00.000Z"
+    },
+    {
+        "id": 23,
+        "name": "Moment of Bloom",
+        "type": "Character",
+        "version": "v2.2",
+        "featured": [
+            {
+                "id": 30,
+                "name": "Hu Tao"
+            },
+            {
+                "id": 26,
+                "name": "Diona"
+            },
+            {
+                "id": 37,
+                "name": "Sayu"
+            },
+            {
+                "id": 42,
+                "name": "Thoma"
+            }
+        ],
+        "start": "2021-11-02T00:00:00.000Z",
+        "end": "2021-11-23T00:00:00.000Z"
+    },
+    {
+        "id": 24,
+        "name": "Secretum Secretorum",
+        "type": "Character",
+        "version": "v2.3",
+        "featured": [
+            {
+                "id": 29,
+                "name": "Albedo"
+            },
+            {
+                "id": 4,
+                "name": "Bennett"
+            },
+            {
+                "id": 32,
+                "name": "Rosaria"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            }
+        ],
+        "start": "2021-11-24T00:00:00.000Z",
+        "end": "2021-12-14T00:00:00.000Z"
+    },
+    {
+        "id": 25,
+        "name": "Born of Ocean Swell",
+        "type": "Character",
+        "version": "v2.3",
+        "featured": [
+            {
+                "id": 33,
+                "name": "Eula"
+            },
+            {
+                "id": 4,
+                "name": "Bennett"
+            },
+            {
+                "id": 32,
+                "name": "Rosaria"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            }
+        ],
+        "start": "2021-11-24T00:00:00.000Z",
+        "end": "2021-12-14T00:00:00.000Z"
+    },
+    {
+        "id": 26,
+        "name": "Oni's Royale",
+        "type": "Character",
+        "version": "v2.3",
+        "featured": [
+            {
+                "id": 44,
+                "name": "Itto"
+            },
+            {
+                "id": 43,
+                "name": "Gorou"
+            },
+            {
+                "id": 2,
+                "name": "Barbara"
+            },
+            {
+                "id": 13,
+                "name": "Xiangling"
+            }
+        ],
+        "start": "2021-12-14T00:00:00.000Z",
+        "end": "2022-01-03T23:00:00.000Z"
+    },
+    {
+        "id": 27,
+        "name": "The Transcendent One Returns",
+        "type": "Character",
+        "version": "v2.4",
+        "featured": [
+            {
+                "id": 46,
+                "name": "Shenhe"
+            },
+            {
+                "id": 45,
+                "name": "Yun Jin"
+            },
+            {
+                "id": 9,
+                "name": "Ningguang"
+            },
+            {
+                "id": 5,
+                "name": "Chongyun"
+            }
+        ],
+        "start": "2022-01-05T00:00:00.000Z",
+        "end": "2022-01-24T23:00:00.000Z"
+    },
+    {
+        "id": 28,
+        "name": "Invitation to Mundane Life",
+        "type": "Character",
+        "version": "v2.4",
+        "featured": [
+            {
+                "id": 31,
+                "name": "Xiao"
+            },
+            {
+                "id": 45,
+                "name": "Yun Jin"
+            },
+            {
+                "id": 9,
+                "name": "Ningguang"
+            },
+            {
+                "id": 5,
+                "name": "Chongyun"
+            }
+        ],
+        "start": "2022-01-05T00:00:00.000Z",
+        "end": "2022-01-24T23:00:00.000Z"
+    },
+    {
+        "id": 29,
+        "name": "Gentry of Hermitage",
+        "type": "Character",
+        "version": "v2.4",
+        "featured": [
+            {
+                "id": 25,
+                "name": "Zhongli"
+            },
+            {
+                "id": 14,
+                "name": "Xingqiu"
+            },
+            {
+                "id": 3,
+                "name": "Beidou"
+            },
+            {
+                "id": 34,
+                "name": "Yanfei"
+            }
+        ],
+        "start": "2022-01-25T00:00:00.000Z",
+        "end": "2022-02-14T23:00:00.000Z"
+    },
+    {
+        "id": 30,
+        "name": "Adrift in the Harbor",
+        "type": "Character",
+        "version": "v2.4",
+        "featured": [
+            {
+                "id": 28,
+                "name": "Ganyu"
+            },
+            {
+                "id": 14,
+                "name": "Xingqiu"
+            },
+            {
+                "id": 3,
+                "name": "Beidou"
+            },
+            {
+                "id": 34,
+                "name": "Yanfei"
+            }
+        ],
+        "start": "2022-01-25T00:00:00.000Z",
+        "end": "2022-02-14T23:00:00.000Z"
+    },
+    {
+        "id": 31,
+        "name": "Everbloom Violet",
+        "type": "Character",
+        "version": "v2.5",
+        "featured": [
+            {
+                "id": 47,
+                "name": "Yae"
+            },
+            {
+                "id": 6,
+                "name": "Fischl"
+            },
+            {
+                "id": 26,
+                "name": "Diona"
+            },
+            {
+                "id": 42,
+                "name": "Thoma"
+            }
+        ],
+        "start": "2022-02-16T00:00:00.000Z",
+        "end": "2022-03-07T23:00:00.000Z"
+    },
+    {
+        "id": 32,
+        "name": "Reign of Serenity",
+        "type": "Character",
+        "version": "v2.5",
+        "featured": [
+            {
+                "id": 40,
+                "name": "Raiden Shogun"
+            },
+            {
+                "id": 4,
+                "name": "Bennett"
+            },
+            {
+                "id": 39,
+                "name": "Sara"
+            },
+            {
+                "id": 24,
+                "name": "Xinyan"
+            }
+        ],
+        "start": "2022-03-07T23:00:00.000Z",
+        "end": "2022-03-28T22:00:00.000Z"
+    },
+    {
+        "id": 33,
+        "name": "Drifting Luminescence",
+        "type": "Character",
+        "version": "v2.5",
+        "featured": [
+            {
+                "id": 41,
+                "name": "Kokomi"
+            },
+            {
+                "id": 4,
+                "name": "Bennett"
+            },
+            {
+                "id": 39,
+                "name": "Sara"
+            },
+            {
+                "id": 24,
+                "name": "Xinyan"
+            }
+        ],
+        "start": "2022-03-07T23:00:00.000Z",
+        "end": "2022-03-28T22:00:00.000Z"
+    },
+    {
+        "id": 34,
+        "name": "Azure Excursion",
+        "type": "Character",
+        "version": "v2.6",
+        "featured": [
+            {
+                "id": 48,
+                "name": "Ayato"
+            },
+            {
+                "id": 12,
+                "name": "Sucrose"
+            },
+            {
+                "id": 13,
+                "name": "Xiangling"
+            },
+            {
+                "id": 45,
+                "name": "Yun Jin"
+            }
+        ],
+        "start": "2022-03-30T00:00:00.000Z",
+        "end": "2022-04-18T22:00:00.000Z"
+    },
+    {
+        "id": 35,
+        "name": "Ballad in Goblets",
+        "type": "Character",
+        "version": "v2.6",
+        "featured": [
+            {
+                "id": 22,
+                "name": "Venti"
+            },
+            {
+                "id": 12,
+                "name": "Sucrose"
+            },
+            {
+                "id": 13,
+                "name": "Xiangling"
+            },
+            {
+                "id": 45,
+                "name": "Yun Jin"
+            }
+        ],
+        "start": "2022-03-30T00:00:00.000Z",
+        "end": "2022-04-18T22:00:00.000Z"
+    },
+    {
+        "id": 36,
+        "name": "The Heron's Court",
+        "type": "Character",
+        "version": "v2.6",
+        "featured": [
+            {
+                "id": 36,
+                "name": "Ayaka"
+            },
+            {
+                "id": 11,
+                "name": "Razor"
+            },
+            {
+                "id": 32,
+                "name": "Rosaria"
+            },
+            {
+                "id": 37,
+                "name": "Sayu"
+            }
+        ],
+        "start": "2022-04-19T00:00:00.000Z",
+        "end": "2022-05-30T22:00:00.000Z"
+    },
+    {
+        "id": 37,
+        "name": "Discerner of Enigmas",
+        "type": "Character",
+        "version": "v2.7",
+        "featured": [
+            {
+                "id": 49,
+                "name": "Yelan"
+            },
+            {
+                "id": 2,
+                "name": "Barbara"
+            },
+            {
+                "id": 34,
+                "name": "Yanfei"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            }
+        ],
+        "start": "2022-05-31T00:00:00.000Z",
+        "end": "2022-06-20T22:00:00.000Z"
+    },
+    {
+        "id": 38,
+        "name": "Invitation to Mundane Life",
+        "type": "Character",
+        "version": "v2.7",
+        "featured": [
+            {
+                "id": 31,
+                "name": "Xiao"
+            },
+            {
+                "id": 2,
+                "name": "Barbara"
+            },
+            {
+                "id": 34,
+                "name": "Yanfei"
+            },
+            {
+                "id": 10,
+                "name": "Noelle"
+            }
+        ],
+        "start": "2022-05-31T00:00:00.000Z",
+        "end": "2022-06-20T22:00:00.000Z"
+    },
+    {
+        "id": 39,
+        "name": "Oni's Royale",
+        "type": "Character",
+        "version": "v2.7",
+        "featured": [
+            {
+                "id": 44,
+                "name": "Itto"
+            },
+            {
+                "id": 43,
+                "name": "Gorou"
+            },
+            {
+                "id": 5,
+                "name": "Chongyun"
+            },
+            {
+                "id": 51,
+                "name": "Kuki"
+            }
+        ],
+        "start": "2022-06-21T00:00:00.000Z",
+        "end": "2022-07-11T22:00:00.000Z"
+    }
+]
