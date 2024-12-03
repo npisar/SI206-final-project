@@ -95,7 +95,7 @@ def get_artifacts():
             artifact_data.append({
                 "name": artifact_name,
                 "artifactURL": artifact_url,
-                "artifactSet": artifact_set_name,
+                "artifactSetName": artifact_set_name,
                 "maxSetQuality": max_set_quality,
                 "setBonuses": bonuses_dict,
                 "setNumPieces": set_num_pieces,
