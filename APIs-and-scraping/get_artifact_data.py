@@ -1,5 +1,6 @@
 import json
 from bs4 import BeautifulSoup
+import re
 
 '''
 This file will use BS4 to scrape through the Genshin Impact Fandom Wiki Page for artifact sets. It will look at the table, and grab each one of the Pieces listed in the table. It will grab data about each artifact, then export every artifact into JSON.
@@ -49,24 +50,35 @@ def get_artifacts():
     rows = artifact_table.find_all("tr")
     artifact_data = []
     
+    set_quality_pattern = r"\d"
+    bonus_pattern = r"(\d+)\sPiece:\s([^2|4|6|8|10Piece]+)"
     for row in rows:
         # print(f"row is {row}")
         columns = row.find_all("td")
         if len(columns) < 4:  # Ensure the row has the expected number of columns
             continue
     
+        # get set name
         artifact_set_name = columns[0].text.strip()
         print(f"artifact set name is {artifact_set_name}")
+        
+        # get max set quality
         set_quality = columns[1].text.strip()
-        print(f"set quality is {set_quality}")
-        # set_bonuses = [bonus.strip() for bonus in columns[3].text.split("1 Piece").split("2 Piece").split("4 Piece") if bonus.strip()]
-        # print(f"set bonuses are {set_bonuses}")
-        pieces_column = columns[2].text.strip()
-        print(f"pieces_column is {pieces_column}")
-    
-        # Find all individual artifact pieces
+        set_quality_matches = re.findall(set_quality_pattern, set_quality)
+        int_set_quality_matches = [int(match) for match in set_quality_matches]
+        max_set_quality = max(int_set_quality_matches)
+        print(f"max set quality is {max_set_quality}")
+        
+        # get bonuses
+        bonuses_column = columns[3].text
+        print(bonuses_column)
+        bonus_matches = re.findall(bonus_pattern, bonuses_column)
+        bonuses_dict = {int(num): desc.strip() for num, desc in bonus_matches}
+
+        # get the pieces column and get all pieces
+        pieces_column = columns[2]
         pieces = pieces_column.find_all("span", class_="item")
-        set_piece_num = len(pieces)
+        set_num_pieces = len(pieces)
     
         for piece in pieces:
             link = piece.find("a")
@@ -80,9 +92,9 @@ def get_artifacts():
                 "name": artifact_name,
                 "artifactURL": artifact_url,
                 "artifactSet": artifact_set_name,
-                "setQuality": set_quality,
-                "setBonuses": set_bonuses,
-                "setPieceNum": set_piece_num,
+                "maxSetQuality": max_set_quality,
+                "setBonuses": bonus_matches,
+                "setNumPieces": set_num_pieces,
             })
     
     # Export to JSON
