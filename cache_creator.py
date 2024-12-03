@@ -9,6 +9,16 @@ import re
 def read_data_from_file(filename):
     """
     Reads data from a file with the given filename.
+
+    Parameters
+    -----------------------
+    filename: str
+        The name of the file to read.
+
+    Returns
+    -----------------------
+    dict:
+        Parsed JSON data from the file.
     """
     full_path = os.path.join(os.path.dirname(__file__), filename)
     with open(full_path, "r") as f:
@@ -18,6 +28,16 @@ def read_data_from_file(filename):
 def set_up_database(db_name):
     """
     Sets up a SQLite database connection and cursor.
+
+    Parameters
+    -----------------------
+    db_name: str
+        The name of the SQLite database.
+
+    Returns
+    -----------------------
+    Tuple (Cursor, Connection):
+        A tuple containing the database cursor and connection objects.
     """
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path + "/" + db_name)
@@ -26,7 +46,23 @@ def set_up_database(db_name):
 
 def set_up_weapons_table(cur, conn):
     """
-    Creates the Weapons table.
+    Sets up the Weapons table in the database using the provided Weapon data.
+
+    Parameters
+    -----------------------
+    data: list
+        List of Weapon data in JSON format.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+
+    Returns
+    -----------------------
+    None
+
     """
     cur.execute(
         """
@@ -48,8 +84,23 @@ def set_up_weapons_table(cur, conn):
 
 def set_up_characters_table(cur, conn):
     """
-    Creates the Characters table with 'name' as the primary key,
-    matching the new JSON structure.
+    Sets up the Characters table in the database using the provided Character data.
+
+    Parameters
+    -----------------------
+    data: list
+        List of Character data in JSON format.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+
+    Returns
+    -----------------------
+    None
+
     """
     cur.execute(
         """
@@ -67,8 +118,26 @@ def set_up_characters_table(cur, conn):
 
 def set_up_banners_table(cur, conn):
     """
-    Creates the Banners table, including columns for the featured characters,
-    but without using AUTOINCREMENT to avoid the `sqlite_sequence` table.
+    Sets up the Banners table in the database using the provided Banner data.
+
+    Parameters
+    -----------------------
+    data: list
+        List of Banner data in JSON format.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+
+    Returns
+    -----------------------
+    None
+
+    Notes
+    -----------------------
+    Only allowed the number value for rarity to be put into the table for simiplifcation reasons
     """
     cur.execute(
         """
@@ -90,7 +159,22 @@ def set_up_banners_table(cur, conn):
 
 def insert_weapons_data(cur, conn, weapon_data):
     """
-    Inserts weapon data into the Weapons table.
+    Inserts the weapons data into the sqlite file 
+    
+    Parameters
+    -----------------------
+    weapon_data: list
+        List of weapon data in JSON format.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+
+    Returns
+    -----------------------
+    None
     """
     for weapon in weapon_data:
         cur.execute(
@@ -111,7 +195,22 @@ def insert_weapons_data(cur, conn, weapon_data):
 
 def insert_characters_data(cur, conn, character_data):
     """
-    Inserts character data into the Characters table, aligning with the simplified schema.
+    Inserts the character data into the sqlite file 
+    
+    Parameters
+    -----------------------
+    character_data: list
+        List of character data in JSON format.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+
+    Returns
+    -----------------------
+    None
     """
     for character in character_data:
         # Extracting numeric part of the rarity (e.g., "4_star" becomes "4")
@@ -141,7 +240,22 @@ def insert_characters_data(cur, conn, character_data):
 
 def insert_banners_data(cur, conn, banner_data):
     """
-    Inserts banner data into the single Banners table, categorizing featured characters.
+    Inserts the banner data into the sqlite file 
+    
+    Parameters
+    -----------------------
+    banner_data: list
+        List of banner data in JSON format.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+
+    Returns
+    -----------------------
+    None
     """
     for banner in banner_data:
         # Determine end_date based on type
@@ -173,6 +287,22 @@ def insert_banners_data(cur, conn, banner_data):
 
 
 def main():
+    """
+    Main function
+    -----------------------
+    Reads JSON Data
+
+    Sets up the data base called genshin_impact.db
+
+    Sets up the tables (weapons,characters,banners)
+
+    Inserts the data into the tables
+
+    Closes connection
+    -----------------------
+
+    """
+    
     # Read the JSON data
     weapon_data = read_data_from_file('weapon-data.json')
     character_data = read_data_from_file('character-data.json')
