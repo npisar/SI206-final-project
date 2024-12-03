@@ -1,0 +1,204 @@
+[
+    {
+        "title": "Hello",
+        "details": [
+            "Outrider Amber reporting for duty! Just say the word if you ever need my help!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Chat: Hobbies",
+        "details": [
+            "I feel like running."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Chat: Longings",
+        "details": [
+            "Jean will be upset if she catches us lazing around like this."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Chat: New Discoveries",
+        "details": [
+            "Hey, there's something strange over there... C'mon, let's take a look!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It Rains: Worries",
+        "details": [
+            "Oh no, it's raining... now my uniform will get all wet..."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It Rains: Reminder",
+        "details": [
+            "It's raining again... This will hinder our vision, we must remain vigilant!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "After the Rain",
+        "details": [
+            "Wow~ This weather is awesome!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When the Sun Is Out",
+        "details": [
+            "If only the wind was a little stronger..."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It's Windy: Pleasant",
+        "details": [
+            "This breeze... so refreshing!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "When It's Windy: Relax",
+        "details": [
+            "I love this kind of weather, ahh... so relaxing~"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Morning",
+        "details": [
+            "Morning! Want to go on a jog?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Afternoon",
+        "details": [
+            "Can I get lunch with you?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Evening",
+        "details": [
+            "It's getting late, should I light a torch?"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Good Night",
+        "details": [
+            "Agreed, getting rest is essential! Let's meet here tomorrow then. See ya!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Amber",
+        "details": [
+            "Mondstadt Gliding Champion, yep, that's me! Gliding Champion!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Us: Contests",
+        "details": [
+            "Remember that I don't go easy on anyone, even you!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About Us: Gliding",
+        "requirement": "Friendship Lv. 6",
+        "details": [
+            "When I'm teaching you to glide, I feel like I can go even faster than usual... Huh? What are you laughing at? I'll prove it! We can race \u2014 right now!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "About the Vision",
+        "requirement": "Friendship Lv. 4",
+        "details": [
+            "My Vision... Is a sign that the Archons believe in me. Yes, I must become the best Outrider I can possibly be!"
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Something to Share",
+        "details": [
+            "The view from the Cathedral's clock tower is amazing! You should check it out."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    },
+    {
+        "title": "Interesting Things",
+        "details": [
+            "Look, there's a pigeon over there! *giggle* I wish I could fly alongside them."
+        ],
+        "spoken_by": {
+            "id": 1,
+            "name": "Amber"
+        }
+    }
+]

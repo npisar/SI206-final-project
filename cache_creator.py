@@ -1,7 +1,6 @@
 
 # eva was here
 
-
 import sqlite3
 import json
 import os
@@ -48,13 +47,12 @@ def set_up_weapons_table(cur, conn):
 
 def set_up_characters_table(cur, conn):
     """
-    Creates the Characters table.
+    Creates the Characters table with 'name' as the primary key.
     """
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS Characters (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
+            name TEXT PRIMARY KEY,
             title TEXT,
             vision TEXT NOT NULL,
             weapon TEXT NOT NULL,
@@ -71,6 +69,7 @@ def set_up_characters_table(cur, conn):
         """
     )
     conn.commit()
+
 
 def set_up_banners_table(cur, conn):
     """
@@ -160,35 +159,30 @@ def insert_characters_data(cur, conn, character_data):
         )
     conn.commit()
 
+
 def insert_banners_data(cur, conn, banner_data):
     """
-    Inserts banner data into the Banners and FeaturedCharacters tables.
+    Inserts banner data into the single Banners table, categorizing featured characters.
     """
     for banner in banner_data:
         # Determine end_date based on type
         end_date = None if banner.get('type') == "Permanent" else banner.get('end', 'Unknown End Date')
 
-        # Insert or retrieve the banner
-        cur.execute('''
-        INSERT OR IGNORE INTO Banners (name, type, version, start_date, end_date)
-        VALUES (?, ?, ?, ?, ?)
-        ''', (banner['name'], banner['type'], banner['version'], banner['start'], end_date))
-        
-        # Retrieve the banner_id
-        cur.execute('SELECT id FROM Banners WHERE name = ? AND start_date = ?', (banner['name'], banner['start']))
-        banner_id = cur.fetchone()[0]
-
-        # Insert featured characters
+        # Extract character categories
         featured = banner.get('featured', [])
-        for i, character in enumerate(featured):
-            role = "Featured Character" if i == 0 else f"Three Star {i}"
-            cur.execute('''
-            INSERT OR REPLACE INTO FeaturedCharacters (banner_id, role, name, character_id, rarity)
-            VALUES (?, ?, ?, ?, ?)
-            ''', (banner_id, role, character['name'], character['id'], character.get('rarity', 4)))
+        five_star = featured[0]['name'] if len(featured) > 0 else None
+        first_three_star = featured[1]['name'] if len(featured) > 1 else None
+        second_three_star = featured[2]['name'] if len(featured) > 2 else None
+        third_three_star = featured[3]['name'] if len(featured) > 3 else None
+
+        # Insert or update the banner
+        cur.execute('''
+        INSERT OR REPLACE INTO Banners (name, type, version, start_date, end_date, five_star, first_three_star, second_three_star, third_three_star)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (banner['name'], banner['type'], banner['version'], banner['start'], end_date,
+              five_star, first_three_star, second_three_star, third_three_star))
 
     conn.commit()
-
 
 
 def main():
