@@ -4,6 +4,7 @@
 import sqlite3
 import json
 import os
+import re
 
 def read_data_from_file(filename):
     """
@@ -47,24 +48,17 @@ def set_up_weapons_table(cur, conn):
 
 def set_up_characters_table(cur, conn):
     """
-    Creates the Characters table with 'name' as the primary key.
+    Creates the Characters table with 'name' as the primary key,
+    matching the new JSON structure.
     """
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS Characters (
-            name TEXT PRIMARY KEY,
-            title TEXT,
-            vision TEXT NOT NULL,
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL UNIQUE,
+            rarity TEXT NOT NULL,
             weapon TEXT NOT NULL,
-            nation TEXT,
-            affiliation TEXT,
-            rarity INTEGER NOT NULL,
-            constellation TEXT,
-            birthday TEXT,
-            utility_passive TEXT,
-            normal_talent_name TEXT,
-            skill_talent_name TEXT,
-            burst_talent_name TEXT
+            vision TEXT NOT NULL
         )
         """
     )
@@ -73,31 +67,25 @@ def set_up_characters_table(cur, conn):
 
 def set_up_banners_table(cur, conn):
     """
-    Creates the Banners and FeaturedCharacters tables.
+    Creates the Banners table, including columns for the featured characters,
+    but without using AUTOINCREMENT to avoid the `sqlite_sequence` table.
     """
-    cur.execute('''
-    CREATE TABLE IF NOT EXISTS Banners (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        type TEXT,
-        version TEXT,
-        start_date TEXT,
-        end_date TEXT
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Banners (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            type TEXT NOT NULL,
+            version TEXT,
+            start_date TEXT NOT NULL,
+            end_date TEXT,
+            featured_character TEXT,
+            first_three_star TEXT,
+            second_three_star TEXT,
+            third_three_star TEXT
+        )
+        """
     )
-    ''')
-
-    cur.execute('''
-    CREATE TABLE IF NOT EXISTS FeaturedCharacters (
-        id INTEGER PRIMARY KEY,
-        banner_id INTEGER,
-        role TEXT,
-        name TEXT NOT NULL,
-        character_id TEXT NOT NULL,
-        rarity INTEGER,
-        FOREIGN KEY (banner_id) REFERENCES Banners(id)
-    )
-    ''')
-
     conn.commit()
 
 def insert_weapons_data(cur, conn, weapon_data):
@@ -123,40 +111,31 @@ def insert_weapons_data(cur, conn, weapon_data):
 
 def insert_characters_data(cur, conn, character_data):
     """
-    Inserts character data into the Characters table.
+    Inserts character data into the Characters table, aligning with the simplified schema.
     """
     for character in character_data:
-        normal_talent = next(
-            (talent["name"] for talent in character["skillTalents"] if talent["unlock"] == "Normal Attack"), None
-        )
-        skill_talent = next(
-            (talent["name"] for talent in character["skillTalents"] if talent["unlock"] == "Elemental Skill"), None
-        )
-        burst_talent = next(
-            (talent["name"] for talent in character["skillTalents"] if talent["unlock"] == "Elemental Burst"), None
-        )
+        # Extracting numeric part of the rarity (e.g., "4_star" becomes "4")
+        rarity = re.match(r"(\d+)", character["rarity"])
+        rarity = int(rarity.group(1)) if rarity else None  # Default to None if no number found
 
-        utility_passive = next(
-            (passive["name"] for passive in character["passiveTalents"] if passive["unlock"] == "Unlocked Automatically"), None
-        )
-
+        # Insert character data into the database
         cur.execute(
             """
             INSERT OR REPLACE INTO Characters (
-                name, title, vision, weapon, nation, affiliation, 
-                rarity, constellation, birthday, utility_passive, 
-                normal_talent_name, skill_talent_name, burst_talent_name
+                id, name, rarity, weapon, vision
             )
-            VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
             """,
             (
-                character["name"], character.get("title"), 
-                character["vision"], character["weapon"], character.get("nation", "Unknown"), 
-                character.get("affiliation", "Unknown"), character["rarity"], 
-                character["constellation"], character.get("birthday", "Unknown"), 
-                utility_passive, normal_talent, skill_talent, burst_talent
+                character["id"],
+                character["name"],
+                rarity,
+                character["weapon"],
+                character["vision"]
             )
         )
+
+    # Commit changes to the database
     conn.commit()
 
 
@@ -170,19 +149,27 @@ def insert_banners_data(cur, conn, banner_data):
 
         # Extract character categories
         featured = banner.get('featured', [])
-        five_star = featured[0]['name'] if len(featured) > 0 else None
+        featured_character = featured[0]['name'] if len(featured) > 0 else None
         first_three_star = featured[1]['name'] if len(featured) > 1 else None
         second_three_star = featured[2]['name'] if len(featured) > 2 else None
         third_three_star = featured[3]['name'] if len(featured) > 3 else None
 
+        # Debugging print statements
+        #print("Inserting Banner:", banner['name'])
+        #print("Five Star:", featured_character)
+        #print("1st Three Star:", first_three_star)
+        #print("2nd Three Star:", second_three_star)
+        #print("3rd Three Star:", third_three_star)
+
         # Insert or update the banner
         cur.execute('''
-        INSERT OR REPLACE INTO Banners (name, type, version, start_date, end_date, five_star, first_three_star, second_three_star, third_three_star)
+        INSERT OR REPLACE INTO Banners (name, type, version, start_date, end_date, featured_character, first_three_star, second_three_star, third_three_star)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (banner['name'], banner['type'], banner['version'], banner['start'], end_date,
-              five_star, first_three_star, second_three_star, third_three_star))
+              featured_character, first_three_star, second_three_star, third_three_star))
 
     conn.commit()
+
 
 
 def main():
