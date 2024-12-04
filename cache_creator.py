@@ -157,6 +157,40 @@ def set_up_banners_table(cur, conn):
     )
     conn.commit()
 
+def set_up_artifacts_table(cur, conn):
+    """
+    Sets up the Artifacts table in the database.
+
+    Parameters
+    -----------------------
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+
+    Returns
+    -----------------------
+    None
+    """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Artifacts (
+            id INTEGER PRIMARY KEY,
+            set_name TEXT NOT NULL,
+            piece_1 TEXT,
+            piece_2 TEXT,
+            piece_3 TEXT,
+            piece_4 TEXT,
+            piece_5 TEXT,
+            set_bonus_2 TEXT,
+            set_bonus_4 TEXT
+        )
+        """
+    )
+    conn.commit()
+
+
 def insert_weapons_data(cur, conn, weapon_data):
     """
     Inserts the weapons data into the sqlite file 
@@ -175,26 +209,31 @@ def insert_weapons_data(cur, conn, weapon_data):
     Returns
     -----------------------
     None
+
+    Notes 
+    -----------------------
+    Limiting: The logic here is that it is able to count the existing rows and continues to add to it (applies to rest of the functions too)
+
     """
-    batch_size = 25
-    for i in range(0, len(weapon_data), batch_size):
-        batch = weapon_data[i:i + batch_size]
-        for weapon in weapon_data:
-            cur.execute(
-                """
-                INSERT OR REPLACE INTO Weapons (
-                    id, name, type, rarity, base_attack, sub_stat, 
-                    passive_name, passive_desc, location, ascension_material
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    weapon["id"], weapon["name"], weapon["type"], weapon["rarity"], 
-                    weapon["baseAttack"], weapon.get("subStat"), weapon.get("passiveName"),
-                    weapon.get("passiveDesc"), weapon["location"], weapon["ascensionMaterial"]
-                )
+    cur.execute("SELECT COUNT(*) FROM Weapons")
+    start_index = cur.fetchone()[0]
+
+    for weapon in weapon_data[start_index:start_index + 25]:
+        cur.execute(
+            """
+            INSERT OR REPLACE INTO Weapons (
+                id, name, type, rarity, base_attack, sub_stat, 
+                passive_name, passive_desc, location, ascension_material
             )
-        conn.commit()
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                weapon["id"], weapon["name"], weapon["type"], weapon["rarity"], 
+                weapon["baseAttack"], weapon.get("subStat"), weapon.get("passiveName"),
+                weapon.get("passiveDesc"), weapon["location"], weapon["ascensionMaterial"]
+            )
+        )
+    conn.commit()
 
 def insert_characters_data(cur, conn, character_data):
     """
@@ -215,33 +254,31 @@ def insert_characters_data(cur, conn, character_data):
     -----------------------
     None
     """
-    batch_size = 25
-    for i in range(0, len(character_data), batch_size):
-        batch = character_data[i:i + batch_size]
-        for character in character_data:
-            # Extracting numeric part of the rarity (e.g., "4_star" becomes "4")
-            rarity = re.match(r"(\d+)", character["rarity"])
-            rarity = int(rarity.group(1)) if rarity else None  # Default to None if no number found
 
-            # Insert character data into the database
-            cur.execute(
-                """
-                INSERT OR REPLACE INTO Characters (
-                    id, name, rarity, weapon, vision
-                )
-                VALUES (?, ?, ?, ?, ?)
-                """,
-                (
-                    character["id"],
-                    character["name"],
-                    rarity,
-                    character["weapon"],
-                    character["vision"]
-                )
+    cur.execute("SELECT COUNT(*) FROM Characters")
+    start_index = cur.fetchone()[0]
+
+
+    for character in character_data[start_index:start_index + 25]:
+        rarity = re.match(r"(\d+)", character["rarity"])
+        rarity = int(rarity.group(1)) if rarity else None
+
+        cur.execute(
+            """
+            INSERT OR REPLACE INTO Characters (
+                id, name, rarity, weapon, vision
             )
-
-        # Commit changes to the database
-        conn.commit()
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                character["id"],
+                character["name"],
+                rarity,
+                character["weapon"],
+                character["vision"]
+            )
+        )
+    conn.commit()
 
 
 def insert_banners_data(cur, conn, banner_data):
@@ -263,37 +300,92 @@ def insert_banners_data(cur, conn, banner_data):
     -----------------------
     None
     """
-    batch_size = 25
-    for i in range(0, len(banner_data), batch_size):
-        batch = banner_data[i:i + batch_size]
-        for banner in banner_data:
-            # Determine end_date based on type
-            end_date = None if banner.get('type') == "Permanent" else banner.get('end', 'Unknown End Date')
+    cur.execute("SELECT COUNT(*) FROM Banners")
+    start_index = cur.fetchone()[0]
 
-            # Extract character categories
-            featured = banner.get('featured', [])
-            featured_character = featured[0]['name'] if len(featured) > 0 else None
-            first_three_star = featured[1]['name'] if len(featured) > 1 else None
-            second_three_star = featured[2]['name'] if len(featured) > 2 else None
-            third_three_star = featured[3]['name'] if len(featured) > 3 else None
+    
+    for banner in banner_data[start_index:start_index + 25]:
+        end_date = None if banner.get('type') == "Permanent" else banner.get('end', 'Unknown End Date')
+        featured = banner.get('featured', [])
+        featured_character = featured[0]['name'] if len(featured) > 0 else None
+        first_three_star = featured[1]['name'] if len(featured) > 1 else None
+        second_three_star = featured[2]['name'] if len(featured) > 2 else None
+        third_three_star = featured[3]['name'] if len(featured) > 3 else None
 
-            # Debugging print statements
-            #print("Inserting Banner:", banner['name'])
-            #print("Five Star:", featured_character)
-            #print("1st Three Star:", first_three_star)
-            #print("2nd Three Star:", second_three_star)
-            #print("3rd Three Star:", third_three_star)
-
-            # Insert or update the banner
-            cur.execute('''
-            INSERT OR REPLACE INTO Banners (name, type, version, start_date, end_date, featured_character, first_three_star, second_three_star, third_three_star)
+        cur.execute(
+            '''
+            INSERT OR REPLACE INTO Banners (
+                name, type, version, start_date, end_date, 
+                featured_character, first_three_star, second_three_star, third_three_star
+            )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (banner['name'], banner['type'], banner['version'], banner['start'], end_date,
-                featured_character, first_three_star, second_three_star, third_three_star))
+            ''', (
+                banner['name'], banner['type'], banner['version'], banner['start'], end_date,
+                featured_character, first_three_star, second_three_star, third_three_star
+            )
+        )
+    conn.commit()
 
-        conn.commit()
+def insert_artifacts_data(cur, conn, data):
+    """
+    Inserts artifact data into the Artifacts table.
 
+    Parameters
+    -----------------------
+    cur: Cursor
+        The database cursor object.
 
+    conn: Connection
+        The database connection object.
+
+    data: list
+        List of artifact data in JSON format.
+
+    Returns
+    -----------------------
+    None
+    """
+    # Organize artifacts by set name
+    sets = {}
+    for artifact in data:
+        set_name = artifact["artifactSetName"]
+        if set_name not in sets:
+            sets[set_name] = {
+                "pieces": [],
+                "set_bonus_2": None,
+                "set_bonus_4": None
+            }
+        
+        # Add artifact piece
+        sets[set_name]["pieces"].append(artifact["name"])
+        
+        # Add set bonuses if available
+        for bonus in artifact.get("setBonuses", []):
+            if bonus["pieces"] == 2:
+                sets[set_name]["set_bonus_2"] = bonus["bonus"]
+            elif bonus["pieces"] == 4:
+                sets[set_name]["set_bonus_4"] = bonus["bonus"]
+
+    # Insert data into the database
+    for set_name, info in sets.items():
+        pieces = info["pieces"]
+        cur.execute(
+            """
+            INSERT INTO Artifacts (set_name, piece_1, piece_2, piece_3, piece_4, piece_5, set_bonus_2, set_bonus_4)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                set_name,
+                pieces[0] if len(pieces) > 0 else None,
+                pieces[1] if len(pieces) > 1 else None,
+                pieces[2] if len(pieces) > 2 else None,
+                pieces[3] if len(pieces) > 3 else None,
+                pieces[4] if len(pieces) > 4 else None,
+                info["set_bonus_2"],
+                info["set_bonus_4"]
+            )
+        )
+    conn.commit()
 
 def main():
     """
@@ -316,6 +408,7 @@ def main():
     weapon_data = read_data_from_file('weapon-data.json')
     character_data = read_data_from_file('character-data.json')
     banner_data = read_data_from_file('banner-data.json')
+    artifact_data = read_data_from_file('artifact-data.json')
 
     # Set up the database
     cur, conn = set_up_database('genshin_impact.db')
@@ -324,11 +417,13 @@ def main():
     set_up_weapons_table(cur, conn)
     set_up_characters_table(cur, conn)
     set_up_banners_table(cur, conn)
+    set_up_artifacts_table (cur,conn)
 
     # Insert the data
     insert_weapons_data(cur, conn, weapon_data)
     insert_characters_data(cur, conn, character_data)
     insert_banners_data(cur, conn, banner_data)
+    insert_artifacts_data(cur,conn,artifact_data)
 
     # Close the database connection
     conn.close()
