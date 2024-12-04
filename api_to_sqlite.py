@@ -258,12 +258,18 @@ def main():
     and inserts data into the tables.
     """
     # Example API URLs for your data (replace with actual API URLs)
-    weapon_data = fetch_data_from_api('https://genshin.jmp.blue/weapons/')
+    weapon_data = fetch_data_from_api('https://genshin.jmp.blue/weapons')
     character_data = fetch_data_from_api('https://gsi.fly.dev/characters')
     banner_data = fetch_data_from_api('https://gsi.fly.dev/banners')
     
+    
     # Scrape artifact data
     artifact_data = get_artifacts()
+
+    print(weapon_data)
+    #print(character_data)
+    #print(banner_data)
+    #print(artifact_data)
 
     # Set up the database and tables
     cur, conn = set_up_database('genshin_impact.db')
