@@ -2,6 +2,8 @@
 
 import sqlite3
 import requests
+from bs4 import BeautifulSoup
+import re
 
 
 def set_up_database(db_name):
@@ -133,6 +135,37 @@ def get_banner_ids(banner_url, limit=25):
         page += 1
 
     return all_banners
+
+def create_artifacts_table(conn, cur):
+    """
+    Creates the Artifacts table in the SQLite database if it doesn't already exist.
+
+    Parameters:
+    -----------------------
+    conn: sqlite3.Connection
+        The database connection object.
+    cur: sqlite3.Cursor
+        The database cursor object.
+
+    Returns:
+    -----------------------
+    None
+    """
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS Artifacts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            artifactURL TEXT NOT NULL,
+            artifactSetName TEXT NOT NULL,
+            maxSetQuality INTEGER NOT NULL,
+            setBonuses TEXT NOT NULL,
+            setNumPieces INTEGER NOT NULL
+        )
+    """)
+    conn.commit()
+    print("Artifacts table created (if not already present).")
+
+
 
 
 def weapon_list(weapon_url, weapon_names, cur, conn):
@@ -296,6 +329,77 @@ def set_up_banner_table(cur, conn):
     except sqlite3.Error as e:
         print(f"Error creating Banners table: {e}")
 
+def scrape_and_insert_artifacts(cur, conn):
+    """
+    Scrapes artifact data from the HTML file and inserts it into the Artifacts table.
+
+    Parameters:
+    -----------------------
+    cur: sqlite3.Cursor
+        The database cursor object.
+    conn: sqlite3.Connection
+        The database connection object.
+
+    Returns:
+    -----------------------
+    None
+    """
+    # Load the HTML file
+    html_file = "APIs-and-scraping/view-source_https___genshin-impact.fandom.com_wiki_Artifact_Sets.html"
+    with open(html_file, 'r', encoding='utf-8') as file:
+        soup = BeautifulSoup(file, 'html.parser')
+    
+    # Find artifact table
+    artifact_table = soup.find("table", class_="wikitable")
+    if not artifact_table:
+        raise ValueError("Could not find the artifact table.")
+    
+    rows = artifact_table.find_all("tr")
+    set_quality_pattern = r"\d"
+    bonuses_pattern = r"(\d+)\sPiece:\s(.*?)(?=(\d+\sPiece:|$))"
+
+    for row in rows:
+        columns = row.find_all("td")
+        if len(columns) < 4:  # Ensure the row has the expected number of columns
+            continue
+
+        # Extract artifact set details
+        artifact_set_name = columns[0].text.strip()
+        set_quality = columns[1].text.strip()
+        set_quality_matches = re.findall(set_quality_pattern, set_quality)
+        max_set_quality = max(map(int, set_quality_matches))
+        bonuses_column = columns[3].text
+        bonuses_matches = re.findall(bonuses_pattern, bonuses_column)
+        bonuses_list = [{"pieces": int(tup[0]), "bonus": tup[1].strip()} for tup in bonuses_matches]
+        pieces_column = columns[2]
+        pieces = pieces_column.find_all("span", class_="item")
+        set_num_pieces = len(pieces)
+
+        for piece in pieces:
+            link = piece.find("a")
+            if not link:
+                continue
+
+            # Extract individual artifact details
+            artifact_name = link.get("title")
+            base_url = "https://genshin-impact.fandom.com"
+            artifact_url = f"{base_url}{link.get('href')}"
+
+            # Insert data into the database
+            cur.execute("""
+                INSERT OR REPLACE INTO Artifacts 
+                (name, artifactURL, artifactSetName, maxSetQuality, setBonuses, setNumPieces)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                artifact_name,
+                artifact_url,
+                artifact_set_name,
+                max_set_quality,
+                str(bonuses_list),  # Convert bonuses to a string to store in SQLite
+                set_num_pieces
+            ))
+    conn.commit()
+    print("Data successfully scraped and inserted into the database.")
 
     
 
@@ -472,7 +576,7 @@ def main():
     character_url = "https://gsi.fly.dev/"
     banner_url = "https://gsi.fly.dev/"
 
-    # Fetch weapon names and store their data
+    
     weapon_names = get_weapon_names(weapon_url)
     if weapon_names:
         weapon_list(weapon_url, weapon_names, cur, conn)
@@ -484,7 +588,10 @@ def main():
     set_up_banner_table(cur, conn)
     fetch_and_insert_banner_data(banner_url, cur, conn)
 
-    # Close the database connection
+    create_artifacts_table(conn, cur)
+    scrape_and_insert_artifacts(cur, conn)
+
+    #to close connection
     conn.close()
 
 if __name__ == "__main__":
