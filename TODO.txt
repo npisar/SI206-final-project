@@ -10,7 +10,7 @@
 
 4. Plots -- not clear what numbers are about -- make sure numbers have labels
 
-5. Calculations need to be clear and have labels too
+5. Calculations need to be clear and have labels too. Calculations need to be from database, not JSON
 
 6. Don't need to store how many items in database -- select count or select max to get the number of items
 
