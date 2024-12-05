@@ -87,10 +87,6 @@ def calculate_difference_awdpr(awdpr):
 
 
 
-
-
-
-
 def calculate_average_weapon_damage_per_type(filepath):
     '''
     ARGUMENTS:
@@ -168,11 +164,6 @@ def calculate_difference_awdpt(awdpt):
     return difference_awdpt
 
 
-
-
-
-
-
 def calculate_num_artifacts_per_quality(filepath):
     '''
     ARGUMENTS:
@@ -209,11 +200,6 @@ def calculate_num_artifacts_per_quality(filepath):
         print(f"{'-'*30}\n")
     print(f"\n\n\n")
     return quality_and_count
-
-
-
-
-
 
 
 
