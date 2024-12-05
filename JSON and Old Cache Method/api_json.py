@@ -67,7 +67,7 @@ def get_character_ids(character_url, limit=25):
     all_characters = []
 
     while True:
-        # Fetch data for the current page
+        # Data for current page
         resp = requests.get(f"{character_url}characters?limit={limit}&page={page}")
         print(f"Fetching data on page {page}...")
 
@@ -75,18 +75,18 @@ def get_character_ids(character_url, limit=25):
             print(f"Failed to fetch data: {resp.status_code}")
             break
 
-        # Parse the response
+        # Break open response for wanted data
         data = resp.json()
         characters = data['results']
 
-        # Extract IDs and add to the master list
+        # Take ID's and add to the larger list
         all_characters.extend([character['id'] for character in characters])
 
-        # Stop pagination if there are fewer results than the limit
+        # Stop if there are fewer results than the limit
         if len(characters) < limit:
             break
 
-        # Increment the page number for the next iteration
+        # Page iteration so we continue looping through pages
         page += 1
 
     return all_characters
@@ -112,7 +112,7 @@ def get_banner_ids(banner_url, limit=25):
     all_banners = []
 
     while True:
-        # Fetch data for the current page
+        # Data for current page
         resp = requests.get(f"{banner_url}banners?limit={limit}&page={page}")
         print(f"Fetching data on page {page}...")
 
@@ -120,18 +120,18 @@ def get_banner_ids(banner_url, limit=25):
             print(f"Failed to fetch data: {resp.status_code}")
             break
 
-        # Parse the response
+        # Break open response for wanted data
         data = resp.json()
         characters = data['results']
 
-        # Extract IDs and add to the master list
+        # Take ID's and add to the larger list
         all_banners.extend([character['id'] for character in characters])
 
-        # Stop pagination if there are fewer results than the limit
+        # Stop if there are results fewer than the limit
         if len(characters) < limit:
             break
 
-        # Increment the page number for the next iteration
+        # Page iteration so we continue looping through them 
         page += 1
 
     return all_banners
@@ -166,8 +166,6 @@ def create_artifacts_table(conn, cur):
     print("Artifacts table created (if not already present).")
 
 
-
-
 def weapon_list(weapon_url, weapon_names, cur, conn):
     """
     Fetches detailed data for each weapon and stores it in the SQLite database.
@@ -186,6 +184,7 @@ def weapon_list(weapon_url, weapon_names, cur, conn):
     conn: sqlite3.Connection
         The SQLite database connection.
     """
+    #get the weapon names and put them through the api to get all weapon information
     for weapon_name in weapon_names:
         response = requests.get(f"{weapon_url}weapons/{weapon_name}/")
         if response.status_code != 200:
@@ -206,7 +205,7 @@ def banner_list(banner_url, banner_ids, cur, conn):
         The base URL for the API.
 
     banner_ids: list[int]
-        A list of character IDs to fetch details for.
+        A list of banner IDs to get details for.
 
     cur: sqlite3.Cursor
         The SQLite database cursor.
@@ -214,6 +213,7 @@ def banner_list(banner_url, banner_ids, cur, conn):
     conn: sqlite3.Connection
         The SQLite database connection.
     """
+    #get the banner id's and put them through the api to get all banner information
     for banner_id in banner_ids:
         response = requests.get(f"{banner_url}characters/{banner_ids}/")
         if response.status_code != 200:
@@ -221,7 +221,7 @@ def banner_list(banner_url, banner_ids, cur, conn):
             continue
 
         character_data = response.json()
-        fetch_and_insert_character(cur, conn, [character_data]) 
+        fetch_and_insert_character(cur, conn, character_data) 
 
  
 def character_list(character_url, character_ids, cur, conn):
@@ -242,6 +242,7 @@ def character_list(character_url, character_ids, cur, conn):
     conn: sqlite3.Connection
         The SQLite database connection.
     """
+    #get the character id's and put them through the api to get all character information
     for character_id in character_ids:
         response = requests.get(f"{character_url}characters/{character_id}/")
         if response.status_code != 200:
@@ -250,7 +251,6 @@ def character_list(character_url, character_ids, cur, conn):
 
         character_data = response.json()
         fetch_and_insert_character(cur, conn, [character_data]) 
-
 
 
 def set_up_weapons_table(cur, conn):

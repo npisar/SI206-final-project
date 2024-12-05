@@ -12,7 +12,6 @@ ARTIFACTS:
 
 '''
 
-
 def calculate_average_weapon_damage_per_rarity(filepath):
     '''
     ARGUMENTS:
