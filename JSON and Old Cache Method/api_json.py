@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-
+#data base created
 def set_up_database(db_name):
     """
     Sets up a SQLite database connection and cursor.
@@ -24,7 +24,7 @@ def set_up_database(db_name):
     cur = conn.cursor()
     return cur, conn
 
-
+#weapons from API
 def get_weapon_names(weapon_url):
     """
     Fetches all weapon names from the API.
@@ -47,7 +47,7 @@ def get_weapon_names(weapon_url):
     weapon_names = response.json()
     return weapon_names
 
-
+#characters from API
 def get_character_ids(character_url, limit=25):
     """
     Fetches all character IDs from the API by handling pagination.
@@ -93,7 +93,7 @@ def get_character_ids(character_url, limit=25):
 
     return all_characters
 
-
+#banners from API
 def get_banner_ids(banner_url, limit=25):
     """
     Fetches all character banners from the API by handling pagination.
@@ -139,7 +139,166 @@ def get_banner_ids(banner_url, limit=25):
 
     return all_banners
 
+#create weapons and adds it to sqlite
+def weapon_list(weapon_url, weapon_names, cur, conn):
+    """
+    Fetches detailed data for each weapon and stores it in the SQLite database.
 
+    Parameters:
+    --------------------
+    weapon_url: str
+        The base URL for the API.
+
+    weapon_names: list[str]
+        A list of weapon names to fetch details for.
+
+    cur: sqlite3.Cursor
+        The SQLite database cursor.
+
+    conn: sqlite3.Connection
+        The SQLite database connection.
+    """
+    #get the weapon names and put them through the api to get all weapon information
+    for weapon_name in weapon_names:
+        response = requests.get(f"{weapon_url}weapons/{weapon_name}/")
+        if response.status_code != 200:
+            print(f"Failed to fetch data for weapon: {weapon_name}, Status: {response.status_code}")
+            continue
+
+        weapon_data = response.json()
+        insert_weapon_data(cur, conn, weapon_data)
+
+#create banner and adds it to sqlite
+def banner_list(banner_url, banner_ids, cur, conn):
+    """
+    Fetches detailed data for each character and stores it in the SQLite database.
+
+    Parameters:
+    --------------------
+    banner_url: str
+        The base URL for the API.
+
+    banner_ids: list[int]
+        A list of banner IDs to get details for.
+
+    cur: sqlite3.Cursor
+        The SQLite database cursor.
+
+    conn: sqlite3.Connection
+        The SQLite database connection.
+    """
+    #get the banner id's and put them through the api to get all banner information
+    for banner_id in banner_ids:
+        response = requests.get(f"{banner_url}characters/{banner_ids}/")
+        if response.status_code != 200:
+            print(f"Failed to fetch data for character ID {banner_ids}, Status: {response.status_code}")
+            continue
+
+        character_data = response.json()
+        fetch_and_insert_character(cur, conn, character_data) 
+
+#create characters and adds it to sqlite
+def character_list(character_url, character_ids, cur, conn):
+    """
+    Fetches detailed data for each character and stores it in the SQLite database.
+
+    Parameters:
+    --------------------
+    character_url: str
+        The base URL for the API.
+
+    character_ids: list[int]
+        A list of character IDs to fetch details for.
+
+    cur: sqlite3.Cursor
+        The SQLite database cursor.
+
+    conn: sqlite3.Connection
+        The SQLite database connection.
+    """
+    #get the character id's and put them through the api to get all character information
+    for character_id in character_ids:
+        response = requests.get(f"{character_url}characters/{character_id}/")
+        if response.status_code != 200:
+            print(f"Failed to fetch data for character ID {character_id}, Status: {response.status_code}")
+            continue
+
+        character_data = response.json()
+        fetch_and_insert_character(cur, conn, [character_data]) 
+
+#create the tables we will use for weapon data
+def set_up_weapons_table(cur, conn):
+    """
+    Sets up the Weapons table in the database with only type, rarity, and base attack.
+
+    cur: sqlite3.Cursor
+        The database cursor object.
+
+    conn: sqlite3.Connection
+        The database connection object.
+    """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Weapons (
+            id TEXT PRIMARY KEY,
+            type TEXT NOT NULL,
+            rarity INTEGER NOT NULL,
+            base_attack INTEGER NOT NULL
+        )
+        """
+    )
+    conn.commit()
+
+#create the tables we will use use for character data
+def set_up_character_table(cur, conn):
+    """
+    Sets up the Characters table in the SQLite database.
+    """
+    try:
+        cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS Characters (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                rarity INTEGER NOT NULL,
+                weapon TEXT NOT NULL,
+                vision TEXT NOT NULL
+            )
+            """
+        )
+        conn.commit()
+        #print("Characters table created successfully!")
+    except sqlite3.Error as e:
+        print(f"Error creating Characters table: {e}")
+
+#create the table we will use for banenr data
+def set_up_banner_table(cur, conn):
+    """
+    Sets up the Banners table in the SQLite database.
+    """
+    try:
+        cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS Banners (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                type TEXT NOT NULL,
+                version TEXT NOT NULL,
+                start_date TEXT NOT NULL,  -- Column to store start date
+                end_date TEXT,            -- Column to store end date
+                featured_character TEXT,
+                first_three_star TEXT,
+                second_three_star TEXT,
+                third_three_star TEXT
+            )
+            """
+        )
+        conn.commit()
+        print("Banners table created successfully!")
+    except sqlite3.Error as e:
+        print(f"Error creating Banners table: {e}")
+
+#create the table we will use for artifact data
 def create_artifacts_table(conn, cur):
     """
     Creates the Artifacts table in the SQLite database if it doesn't already exist.
@@ -170,167 +329,7 @@ def create_artifacts_table(conn, cur):
     print("Artifacts table created (if not already present).")
 
 
-def weapon_list(weapon_url, weapon_names, cur, conn):
-    """
-    Fetches detailed data for each weapon and stores it in the SQLite database.
-
-    Parameters:
-    --------------------
-    weapon_url: str
-        The base URL for the API.
-
-    weapon_names: list[str]
-        A list of weapon names to fetch details for.
-
-    cur: sqlite3.Cursor
-        The SQLite database cursor.
-
-    conn: sqlite3.Connection
-        The SQLite database connection.
-    """
-    #get the weapon names and put them through the api to get all weapon information
-    for weapon_name in weapon_names:
-        response = requests.get(f"{weapon_url}weapons/{weapon_name}/")
-        if response.status_code != 200:
-            print(f"Failed to fetch data for weapon: {weapon_name}, Status: {response.status_code}")
-            continue
-
-        weapon_data = response.json()
-        insert_weapon_data(cur, conn, weapon_data)
-
-
-def banner_list(banner_url, banner_ids, cur, conn):
-    """
-    Fetches detailed data for each character and stores it in the SQLite database.
-
-    Parameters:
-    --------------------
-    banner_url: str
-        The base URL for the API.
-
-    banner_ids: list[int]
-        A list of banner IDs to get details for.
-
-    cur: sqlite3.Cursor
-        The SQLite database cursor.
-
-    conn: sqlite3.Connection
-        The SQLite database connection.
-    """
-    #get the banner id's and put them through the api to get all banner information
-    for banner_id in banner_ids:
-        response = requests.get(f"{banner_url}characters/{banner_ids}/")
-        if response.status_code != 200:
-            print(f"Failed to fetch data for character ID {banner_ids}, Status: {response.status_code}")
-            continue
-
-        character_data = response.json()
-        fetch_and_insert_character(cur, conn, character_data) 
-
- 
-def character_list(character_url, character_ids, cur, conn):
-    """
-    Fetches detailed data for each character and stores it in the SQLite database.
-
-    Parameters:
-    --------------------
-    character_url: str
-        The base URL for the API.
-
-    character_ids: list[int]
-        A list of character IDs to fetch details for.
-
-    cur: sqlite3.Cursor
-        The SQLite database cursor.
-
-    conn: sqlite3.Connection
-        The SQLite database connection.
-    """
-    #get the character id's and put them through the api to get all character information
-    for character_id in character_ids:
-        response = requests.get(f"{character_url}characters/{character_id}/")
-        if response.status_code != 200:
-            print(f"Failed to fetch data for character ID {character_id}, Status: {response.status_code}")
-            continue
-
-        character_data = response.json()
-        fetch_and_insert_character(cur, conn, [character_data]) 
-
-
-def set_up_weapons_table(cur, conn):
-    """
-    Sets up the Weapons table in the database with only type, rarity, and base attack.
-
-    cur: sqlite3.Cursor
-        The database cursor object.
-
-    conn: sqlite3.Connection
-        The database connection object.
-    """
-    cur.execute(
-        """
-        CREATE TABLE IF NOT EXISTS Weapons (
-            id TEXT PRIMARY KEY,
-            type TEXT NOT NULL,
-            rarity INTEGER NOT NULL,
-            base_attack INTEGER NOT NULL
-        )
-        """
-    )
-    conn.commit()
-
-
-
-def set_up_character_table(cur, conn):
-    """
-    Sets up the Characters table in the SQLite database.
-    """
-    try:
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS Characters (
-                id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                rarity INTEGER NOT NULL,
-                weapon TEXT NOT NULL,
-                vision TEXT NOT NULL
-            )
-            """
-        )
-        conn.commit()
-        #print("Characters table created successfully!")
-    except sqlite3.Error as e:
-        print(f"Error creating Characters table: {e}")
-
-
-def set_up_banner_table(cur, conn):
-    """
-    Sets up the Banners table in the SQLite database.
-    """
-    try:
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS Banners (
-                id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                type TEXT NOT NULL,
-                version TEXT NOT NULL,
-                start_date TEXT NOT NULL,  -- Column to store start date
-                end_date TEXT,            -- Column to store end date
-                featured_character TEXT,
-                first_three_star TEXT,
-                second_three_star TEXT,
-                third_three_star TEXT
-            )
-            """
-        )
-        conn.commit()
-        print("Banners table created successfully!")
-    except sqlite3.Error as e:
-        print(f"Error creating Banners table: {e}")
-
-
-def scrape_and_insert_artifacts(cur, conn):
+def insert_artifact_data(cur, conn):
     """
     Scrapes artifact data from the HTML file and inserts it into the Artifacts table.
 
@@ -585,7 +584,7 @@ def main():
     fetch_and_insert_banner_data(banner_url, cur, conn)
 
     create_artifacts_table(conn, cur)
-    scrape_and_insert_artifacts(cur, conn)
+    insert_artifact_data(cur, conn)
 
     #to close connection
     conn.close()
