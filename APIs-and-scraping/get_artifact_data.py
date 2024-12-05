@@ -1,6 +1,8 @@
 import json
 from bs4 import BeautifulSoup
 import re
+import sqlite3
+
 
 '''
 This file will use BS4 to scrape through the Genshin Impact Fandom Wiki Page for artifact sets. It will look at the table, and grab each one of the Pieces listed in the table. It will grab data about each artifact, then export every artifact into JSON.

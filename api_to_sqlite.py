@@ -245,6 +245,7 @@ def main():
     weapon_data = fetch_data_from_api('https://genshin.jmp.blue/weapons')
     character_data = fetch_data_from_api('https://gsi.fly.dev/characters')
     banner_data = fetch_data_from_api('https://gsi.fly.dev/banners')
+    artifact_data = 
     
     
     # Scrape artifact data
