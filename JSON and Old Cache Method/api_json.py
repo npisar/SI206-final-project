@@ -272,7 +272,7 @@ def set_up_character_table(cur, conn):
 
 def set_up_banner_table(cur, conn):
     """
-    Sets up the banner table in the SQLite database.
+    Sets up the Banners table in the SQLite database.
     """
     try:
         cur.execute(
@@ -280,9 +280,14 @@ def set_up_banner_table(cur, conn):
             CREATE TABLE IF NOT EXISTS Banners (
                 id INTEGER PRIMARY KEY,
                 name TEXT NOT NULL,
-                type INTEGER NOT NULL,
+                type TEXT NOT NULL,
                 version TEXT NOT NULL,
-                featured TEXT NOT NULL
+                start_date TEXT NOT NULL,  -- Column to store start date
+                end_date TEXT,            -- Column to store end date
+                featured_character TEXT,
+                first_three_star TEXT,
+                second_three_star TEXT,
+                third_three_star TEXT
             )
             """
         )
@@ -291,7 +296,8 @@ def set_up_banner_table(cur, conn):
     except sqlite3.Error as e:
         print(f"Error creating Banners table: {e}")
 
-        
+
+    
 
 def insert_weapon_data(cur, conn, weapon_data):
     """
@@ -331,35 +337,45 @@ def insert_weapon_data(cur, conn, weapon_data):
 
 def insert_banner_data(cur, conn, banner_data):
     """
-    Inserts the detailed weapon data into the database.
-
+    Inserts detailed banner data into the database.
+    
     Parameters:
     --------------------
     cur: sqlite3.Cursor
         The SQLite database cursor.
-
+    
     conn: sqlite3.Connection
         The SQLite database connection.
-
-    weapon_data: dict
-        The detailed banner data to insert into the database.
+    
+    banner_data: list[dict]
+        A list of banner data to insert into the database.
     """
-    cur.execute(
-        """
-        INSERT OR IGNORE INTO Banners 
-        (id, name, type, version, featured)
-        VALUES (?, ?, ?, ?, ?)
-        """,
-        (
-            banner_data['id'],
-            banner_data['name'],
-            banner_data['type'],
-            banner_data['version'],
-            banner_data['featured'],
-            
+    for banner in banner_data:
+        # Extract end date, set to NULL if absent or 'Permanent'
+        end_date = None if banner.get('type') == "Permanent" else banner.get('end')
+
+        # Extract featured characters, ensure missing characters are set to NULL
+        featured = banner.get('featured', [])
+        featured_character = featured[0]['name'] if len(featured) > 0 else None
+        first_three_star = featured[1]['name'] if len(featured) > 1 else None
+        second_three_star = featured[2]['name'] if len(featured) > 2 else None
+        third_three_star = featured[3]['name'] if len(featured) > 3 else None
+
+        # Insert the banner data into the database
+        cur.execute(
+            '''
+            INSERT OR REPLACE INTO Banners (
+                id, name, type, version, start_date, end_date, 
+                featured_character, first_three_star, second_three_star, third_three_star
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                banner['id'], banner['name'], banner['type'], banner['version'], banner['start'], end_date,
+                featured_character, first_three_star, second_three_star, third_three_star
+            )
         )
-    )
     conn.commit()
+
 
 def fetch_and_insert_character(character_url, char_id, cur, conn):
     """
@@ -401,13 +417,57 @@ def fetch_and_insert_character(character_url, char_id, cur, conn):
     except Exception as e:
         print(f"Unexpected error while fetching character ID {char_id}: {e}")
 
+def fetch_and_insert_banner_data(banner_url, cur, conn):
+    """
+    Fetches banner data and inserts it into the SQLite database.
+    
+    Parameters:
+    --------------------
+    banner_url: str
+        The base URL for the API.
+    
+    cur: sqlite3.Cursor
+        The SQLite database cursor.
+    
+    conn: sqlite3.Connection
+        The SQLite database connection.
+    """
+    page = 1
+    all_banners = []
+
+    while True:
+        # Fetch data for the current page
+        resp = requests.get(f"{banner_url}banners?limit=25&page={page}")
+        print(f"Fetching banner data on page {page}...")
+
+        if resp.status_code != 200:
+            print(f"Failed to fetch banner data: {resp.status_code}")
+            break
+
+        # Parse the response
+        data = resp.json()
+        banners = data['results']
+
+        # Add fetched banner data to the list
+        all_banners.extend(banners)
+
+        # Stop pagination if there are fewer results than the limit
+        if len(banners) < 25:
+            break
+
+        # Increment the page number for the next iteration
+        page += 1
+
+    # Insert banner data into the database
+    insert_banner_data(cur, conn, all_banners)
+
 
 def main():
     # Database setup
     cur, conn = set_up_database("genshin_impact_data.db")
     set_up_weapons_table(cur, conn)
 
-    # API base URL
+    # API base URLs
     weapon_url = "https://genshin.jmp.blue/"
     character_url = "https://gsi.fly.dev/"
     banner_url = "https://gsi.fly.dev/"
@@ -422,8 +482,7 @@ def main():
             fetch_and_insert_character(character_url, char_id, cur, conn)
 
     set_up_banner_table(cur, conn)
-    for banner_id in range(1, 40):
-            insert_banner_data(cur,conn,banner_id)
+    fetch_and_insert_banner_data(banner_url, cur, conn)
 
     # Close the database connection
     conn.close()
