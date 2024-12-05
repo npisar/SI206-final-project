@@ -19,6 +19,7 @@ def fetch_data_from_api(url):
     """
     response = requests.get(url)
     response.raise_for_status()  # Ensure we raise an error for bad responses
+    print (response.json())
     return response.json()
 
 def set_up_database(db_name):
@@ -145,24 +146,7 @@ def set_up_artifacts_table(cur, conn):
     )
     conn.commit()
 
-def insert_data_to_table(cur, conn, table, data, columns):
-    """
-    Generalized insert function for inserting data into tables.
-    """
-    cur.execute(f"SELECT COUNT(*) FROM {table}")
-    start_index = cur.fetchone()[0]
-    
-    # Limit to 25 items per run
-    for item in data[start_index:start_index + 25]:
-        print(item)  # Debug: Check what 'item' looks like
-        cur.execute(
-            f"""
-            INSERT OR REPLACE INTO {table} ({', '.join(columns)})
-            VALUES ({', '.join(['?'] * len(columns))})
-            """,
-            tuple(item[col] for col in columns)
-        )
-    conn.commit()
+
 
 def get_artifacts():
     '''
@@ -266,7 +250,7 @@ def main():
     # Scrape artifact data
     artifact_data = get_artifacts()
 
-    print(weapon_data)
+    #print(weapon_data)
     #print(character_data)
     #print(banner_data)
     #print(artifact_data)
