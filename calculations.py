@@ -206,13 +206,13 @@ def calculate_num_artifacts_per_quality(filepath):
 def main():
     print(f"\n\n{'#'*30} Weapon Damage per Rarity {'#'*30}")
     average_weapon_damage_per_rarity = calculate_average_weapon_damage_per_rarity("JSON-and-old-cache-method/weapon-data.json")
-    difference = calculate_difference_awdpr(average_weapon_damage_per_rarity)
+    calculate_difference_awdpr(average_weapon_damage_per_rarity)
 
     print(f"{'#'*91}\n{'#'*91}\n{'#'*91}\n")
 
     print(f"{'#'*30} Weapon Damage per Weapon Type {'#'*30}")
     average_weapon_damage_per_type = calculate_average_weapon_damage_per_type("JSON-and-old-cache-method/weapon-data.json")
-    difference = calculate_difference_awdpt(average_weapon_damage_per_type)
+    calculate_difference_awdpt(average_weapon_damage_per_type)
 
     print(f"{'#'*91}\n{'#'*91}\n{'#'*91}\n")
 
@@ -220,6 +220,18 @@ def main():
 
     print(f"{'#'*30} Num Artifacts per Max Quality {'#'*30}")
 
-    num_artifacts_per_rarity = calculate_num_artifacts_per_quality("JSON-and-old-cache-method/artifact-data.json")
+    calculate_num_artifacts_per_quality("JSON-and-old-cache-method/artifact-data.json")
+
+    function_calls = [
+        (calculate_average_weapon_damage_per_rarity, ("JSON-and-old-cache-method/weapon-data.json",)),
+        (calculate_difference_awdpr, (average_weapon_damage_per_rarity,)),
+        (calculate_average_weapon_damage_per_type, ("JSON-and-old-cache-method/weapon-data.json",)),
+        (calculate_difference_awdpt, (average_weapon_damage_per_type,)),
+        (calculate_num_artifacts_per_quality, ("JSON-and-old-cache-method/artifact-data.json",))
+    ]
+    with open("calculations.txt", "w") as file:
+        for func, args in function_calls:
+            result = func(*args)  # Call the function with the arguments
+            file.write(f"{func.__name__}\n{'-'*20}\n({', '.join(map(str, args))}) = {result}\n\n\n")
 
 main()
