@@ -60,7 +60,7 @@ def box_rarity_versus_dmg(weapons_d):
     fig = plt.figure(1, figsize=(12,6))
     bx1 = fig.add_subplot(121)
     bars = fig.add_subplot(122)
-    colors = ['#1A281F','#635255','#CE7B91','#C0E8F9','#B8D3D1']
+    colors = ['#ac92eb','#4fc1e8','#a0d568','#ffce54','#ed5564']
 
     # format and populate the boxplot
     nested_lst = [one_star, two_star, three_star, four_star, five_star]
@@ -215,7 +215,7 @@ def chars_by_vision(chars_d):
         counts_d[vision] = counts_d.get(vision, 0) + 1
 
      # Create and populate the graph: a pie chart
-    colors = ['#656d4a','#a4ac86','#c2c5aa','#b6ad90','#a68a64', '#936639', '#7f4f24']
+    colors = ['#A31A82','#B2ADE6','#446FC1','#03458C','#1D8E59', '#9ACB44', '#FFFFFF']
     plt.pie(counts_d.values(), labels=counts_d.keys(), autopct='%1.1f%%', colors=colors)
     plt.title('Character Vision Distribution')
 

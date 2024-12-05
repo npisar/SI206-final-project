@@ -207,7 +207,7 @@ def set_up_character_table(cur, conn):
 
 def main():
     # Database setup
-    cur, conn = set_up_database("genshin_impact_data_test.db")
+    cur, conn = set_up_database("genshin_impact_data_live_test.db")
     set_up_progress_table(cur, conn)
 
     # API base URLs

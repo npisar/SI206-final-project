@@ -1,0 +1,21 @@
+1. Need to get rid duplicate string data
+    a. Weapon names, version names should be integers instead of v1.0
+    b. Character names shouldn't be in there, it should be a character name instead
+        i. character table with IDs, etc. Same thing for all duplicate string data
+        ii. any time there is text repeated inside a table or across the database, duplicate string data
+
+2. Need to use join with banner table to bring database together
+
+3. Rename database, run, and see if there are 25 entries
+
+4. Plots -- not clear what numbers are about -- make sure numbers have labels
+
+5. Calculations need to be clear and have labels too. Calculations need to be from database, not JSON
+
+6. Don't need to store how many items in database -- select count or select max to get the number of items
+
+7. Write 25 limit for banner data and weapon data
+
+8. need instructions for running the code
+
+9. Gotta get voice data!! Need to hit 100 for GSHImpact.

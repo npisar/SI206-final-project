@@ -24,6 +24,7 @@ def set_up_database(db_name):
     cur = conn.cursor()
     return cur, conn
 
+
 def get_weapon_names(weapon_url):
     """
     Fetches all weapon names from the API.
@@ -45,6 +46,7 @@ def get_weapon_names(weapon_url):
     
     weapon_names = response.json()
     return weapon_names
+
 
 def get_character_ids(character_url, limit=25):
     """
@@ -91,6 +93,7 @@ def get_character_ids(character_url, limit=25):
 
     return all_characters
 
+
 def get_banner_ids(banner_url, limit=25):
     """
     Fetches all character banners from the API by handling pagination.
@@ -135,6 +138,7 @@ def get_banner_ids(banner_url, limit=25):
         page += 1
 
     return all_banners
+
 
 def create_artifacts_table(conn, cur):
     """
@@ -255,7 +259,7 @@ def character_list(character_url, character_ids, cur, conn):
 
 def set_up_weapons_table(cur, conn):
     """
-    Sets up the Weapons table in the database.
+    Sets up the Weapons table in the database with only type, rarity, and base attack.
 
     cur: sqlite3.Cursor
         The database cursor object.
@@ -267,19 +271,14 @@ def set_up_weapons_table(cur, conn):
         """
         CREATE TABLE IF NOT EXISTS Weapons (
             id TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
             type TEXT NOT NULL,
             rarity INTEGER NOT NULL,
-            base_attack INTEGER NOT NULL,
-            sub_stat TEXT,
-            passive_name TEXT,
-            passive_desc TEXT,
-            location TEXT,
-            ascension_material TEXT
+            base_attack INTEGER NOT NULL
         )
         """
     )
     conn.commit()
+
 
 
 def set_up_character_table(cur, conn):
@@ -302,6 +301,7 @@ def set_up_character_table(cur, conn):
         #print("Characters table created successfully!")
     except sqlite3.Error as e:
         print(f"Error creating Characters table: {e}")
+
 
 def set_up_banner_table(cur, conn):
     """
@@ -328,6 +328,7 @@ def set_up_banner_table(cur, conn):
         print("Banners table created successfully!")
     except sqlite3.Error as e:
         print(f"Error creating Banners table: {e}")
+
 
 def scrape_and_insert_artifacts(cur, conn):
     """
@@ -400,12 +401,11 @@ def scrape_and_insert_artifacts(cur, conn):
             ))
     conn.commit()
     print("Data successfully scraped and inserted into the database.")
-
-    
+ 
 
 def insert_weapon_data(cur, conn, weapon_data):
     """
-    Inserts the detailed weapon data into the database.
+    Inserts the detailed weapon data into the database with only type, rarity, and base attack.
 
     Parameters:
     --------------------
@@ -421,23 +421,18 @@ def insert_weapon_data(cur, conn, weapon_data):
     cur.execute(
         """
         INSERT OR IGNORE INTO Weapons 
-        (id, name, type, rarity, base_attack, sub_stat, passive_name, passive_desc, location, ascension_material)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (id, type, rarity, base_attack)
+        VALUES (?, ?, ?, ?)
         """,
         (
             weapon_data['id'],
-            weapon_data['name'],
             weapon_data['type'],
             weapon_data['rarity'],
-            weapon_data['baseAttack'],
-            weapon_data['subStat'],
-            weapon_data['passiveName'],
-            weapon_data['passiveDesc'],
-            weapon_data['location'],
-            weapon_data['ascensionMaterial']
+            weapon_data['baseAttack']
         )
     )
     conn.commit()
+
 
 def insert_banner_data(cur, conn, banner_data):
     """
@@ -520,6 +515,7 @@ def fetch_and_insert_character(character_url, char_id, cur, conn):
         print(f"Database error while inserting character ID {char_id}: {e}")
     except Exception as e:
         print(f"Unexpected error while fetching character ID {char_id}: {e}")
+
 
 def fetch_and_insert_banner_data(banner_url, cur, conn):
     """

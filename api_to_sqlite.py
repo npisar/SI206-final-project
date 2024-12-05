@@ -40,6 +40,37 @@ def set_up_database(db_name):
     cur = conn.cursor()
     return cur, conn
 
+
+
+
+
+
+
+
+
+##############################
+# def set_up_weapon_type_table(cur, conn):
+    """
+    Sets up the Weapon Type table in the database to avoid duplicate string data.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+    """
+    
+    # cur.execute(
+    #     """
+    #     CREATE TABLE IF NOT EXISTS Weapon_Types (
+    #         id INTEGER PRIMARY KEY,
+    #         type TEXT NOT NULL,
+    #     )
+    #     """
+    # )
+    # conn.commit()
+##############################
+
 def set_up_weapons_table(cur, conn):
     """
     Sets up the Weapons table in the database.
@@ -50,6 +81,19 @@ def set_up_weapons_table(cur, conn):
     conn: Connection
         The database connection object.
     """
+    ##########################################################################################
+    ##########################################################################################
+    # I think ID should be an int, not the id from the database. INTEGER PRIMARY KEY? #
+    # type should be an int representing the weapon type ID and join with the weapons type table #
+        # cur.execute('''SELECT price FROM price JOIN cars ON prices.car_id = cars.id''') was the example #
+    # DON'T NEED PASSIVE NAME --> duplicate #
+    # LOCATION is duplicate string data --> I think we an skip it since we don't use this #
+    # same with ASCENSION MATERIAL #
+
+    # do we need PASSIVE DESC?? or SUB STAT??
+    ##########################################################################################
+    ##########################################################################################
+
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS Weapons (
@@ -68,6 +112,43 @@ def set_up_weapons_table(cur, conn):
     )
     conn.commit()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##############################
+# def set_up_visions_table(cur, conn):
+    """
+    Sets up the Visions table in the database to avoid duplicate string data.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+    """
+    
+    # cur.execute(
+    #     """
+    #     CREATE TABLE IF NOT EXISTS Visions (
+    #         id INTEGER PRIMARY KEY,
+    #         vision TEXT NOT NULL,
+    #     )
+    #     """
+    # )
+    # conn.commit()
+##############################
+
 def set_up_characters_table(cur, conn):
     """
     Sets up the Characters table in the database.
@@ -78,6 +159,12 @@ def set_up_characters_table(cur, conn):
     conn: Connection
         The database connection object.
     """
+    ##########################################################################################
+    ##########################################################################################
+    # character weapon should be all IDs. It should be pulling from the weapon type table with join
+    # character vision should be all IDS. It should be pulling from the visions table with join
+    ##########################################################################################
+    ##########################################################################################
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS Characters (
@@ -91,6 +178,18 @@ def set_up_characters_table(cur, conn):
     )
     conn.commit()
 
+
+
+
+
+
+
+
+
+
+
+
+
 def set_up_banners_table(cur, conn):
     """
     Sets up the Banners table in the database.
@@ -101,6 +200,14 @@ def set_up_banners_table(cur, conn):
     conn: Connection
         The database connection object.
     """
+    ##########################################################################################
+    ##########################################################################################
+    # we can get rid of start and end date I think? Duplicate string data
+    # featured character and the rest of the characters should all be IDs. It should be pulling from the character table with join
+    # version should be omitted or converted to an int
+    # type should be omitted or we need to make a new table for it -- would be a very small table with 1: character 2: permanent
+    ##########################################################################################
+    ##########################################################################################
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS Banners (
@@ -119,6 +226,65 @@ def set_up_banners_table(cur, conn):
     )
     conn.commit()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+##############################
+# def set_up_artifact_set_names_table(cur, conn):
+    """
+    Sets up the Artifact Set Name table in the database to avoid duplicate string data.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+    """
+    
+    # cur.execute(
+    #     """
+    #     CREATE TABLE IF NOT EXISTS Artifact_Set_Names (
+    #         id INTEGER PRIMARY KEY,
+    #         set_name TEXT NOT NULL,
+    #     )
+    #     """
+    # )
+    # conn.commit()
+##############################
+
+##############################
+# def set_up_artifact_set_bonuses_table(cur, conn):
+    """
+    Sets up the Artifact Set Bonuses table in the database to avoid duplicate string data.
+
+    cur: Cursor
+        The database cursor object.
+
+    conn: Connection
+        The database connection object.
+    """
+    
+    # cur.execute(
+    #     """
+    #     CREATE TABLE IF NOT EXISTS Artifact_Set_Bonuses (
+    #         id INTEGER PRIMARY KEY,
+    #         ___ TEXT NOT NULL,
+    #     )
+    #     """
+    # )
+    # conn.commit()
+##############################
+
 def set_up_artifacts_table(cur, conn):
     """
     Sets up the Artifacts table in the database.
@@ -129,6 +295,15 @@ def set_up_artifacts_table(cur, conn):
     conn: Connection
         The database connection object.
     """
+    ##########################################################################################
+    ##########################################################################################
+    # do we need artifact URL?
+    # artifact set name needs to be IDs. Join with artifact_set_name table
+    # same with set bonuses and its corresponding table
+        # office hours: is it okay that we have a list of dicts as this data? NVM I see you're handling this later
+        # we might not need it. thinking we get rid of it since we don't calc with it
+    ##########################################################################################
+    ##########################################################################################
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS Artifacts (
