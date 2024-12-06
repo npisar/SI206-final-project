@@ -132,6 +132,44 @@ def insert_weapon_data(cur, conn, weapon_data):
     )
     conn.commit()
 
+def create_weapon_types_table(cur, conn):
+    """
+    Creates a table for weapon types with unique numeric IDs.
+    """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS WeaponTypes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            type TEXT UNIQUE NOT NULL
+        )
+        """
+    )
+    conn.commit()
+
+def get_weapon_type_id(cur, conn, weapon_type):
+    """
+    Inserts a weapon type if it doesn't exist and returns its ID.
+    """
+    cur.execute(
+        """
+        INSERT OR IGNORE INTO WeaponTypes (type)
+        VALUES (?)
+        """,
+        (weapon_type,)
+    )
+    conn.commit()
+
+    # Retrieve the ID of the weapon type
+    cur.execute(
+        """
+        SELECT id FROM WeaponTypes
+        WHERE type = ?
+        """,
+        (weapon_type,)
+    )
+    return cur.fetchone()[0]
+
+
 ##########################--CHARACTERS--#################################
 
 # API call to establish connection to the character database
@@ -164,48 +202,40 @@ def get_character_ids(character_url):
     all_characters = [{'id': char['id'], 'name': char['name']} for char in characters]
     return all_characters
 
-#creates the tables used for the character data
+# Table for storing character IDs and names
 def set_up_character_table(cur, conn):
     """
     Creates the Characters table with fields for id and name.
-
-    Parameters:
-    --------------------
-    cur: sqlite3.Cursor
-        The SQLite database cursor.
-
-    conn: sqlite3.Connection
-        The SQLite database connection.
     """
-    try:
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS Characters (
-                id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL
-            )
-            """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Characters (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL
         )
-        conn.commit()
-        #print("Characters table created successfully!")
-    except sqlite3.Error as e:
-        print(f"Error creating Characters table: {e}")
+        """
+    )
+    conn.commit()
+
+# Table for storing character IDs and their associated weapons
+def set_up_character_weapon_table(cur, conn):
+    """
+    Creates a CharactersWeapons table to store character IDs and weapon types.
+    """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS CharactersWeapons (
+            id INTEGER PRIMARY KEY,  -- Character ID
+            weapon TEXT NOT NULL     -- Weapon type used by the character
+        )
+        """
+    )
+    conn.commit()
 
 # Insert characters into SQLite database
 def character_list(character_url, cur, conn):
     """
-    Fetches and inserts detailed character data (id, name) for each character ID into the database.
-
-    Parameters:
-    --------------------
-    character_url: str
-        The base URL for the API.
-
-    cur: sqlite3.Cursor
-        The SQLite database cursor.
-
-    conn: sqlite3.Connection
-        The SQLite database connection.
+    Fetches and inserts detailed character data (id, name) for each character ID into the Characters table.
     """
     for char_id in range(1, 52):  # Loop through character IDs 1 to 51
         response = requests.get(f"{character_url}characters/{char_id}/")
@@ -222,16 +252,84 @@ def character_list(character_url, cur, conn):
             print(f"Invalid data for character ID {char_id}: {character_data}")
             continue
 
-        # Insert the data into the database
+        # Insert the data into the Characters table
         try:
             cur.execute("""
                 INSERT OR IGNORE INTO Characters (id, name)
                 VALUES (?, ?)
             """, (char_id, char_name))
             conn.commit()
-            #print(f"Inserted character into database: ID={char_id}, Name={char_name}")
         except sqlite3.Error as e:
             print(f"Database error for character ID {char_id}: {e}")
+
+def character_weapon_list_weapons(character_url, cur, conn):
+    """
+    Fetches and inserts character weapon data (id, weapon) for each character ID into the CharactersWeapons table.
+    """
+    for char_id in range(1, 52):  # Loop through character IDs 1 to 51
+        response = requests.get(f"{character_url}characters/{char_id}/")
+        if response.status_code != 200:
+            print(f"Failed to fetch data for character ID {char_id}, Status: {response.status_code}")
+            continue
+
+        character_data = response.json().get('result', {})  # Extract the 'result' field
+
+        char_id = character_data.get('id')
+        char_weapon = character_data.get('weapon')
+
+        if not char_id or not char_weapon:
+            print(f"Invalid data for character ID {char_id}: {character_data}")
+            continue
+
+        # Insert the data into the CharactersWeapons table
+        try:
+            cur.execute("""
+                INSERT OR IGNORE INTO CharactersWeapons (id, weapon)
+                VALUES (?, ?)
+            """, (char_id, char_weapon))
+            conn.commit()
+        except sqlite3.Error as e:
+            print(f"Database error for character ID {char_id}: {e}")
+
+def create_characters_table(cur, conn):
+    """
+    Creates the Characters table with a reference to WeaponTypes.
+    """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Characters (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            rarity INTEGER NOT NULL,
+            vision TEXT NOT NULL,
+            weapon_type_id INTEGER NOT NULL,
+            FOREIGN KEY (weapon_type_id) REFERENCES WeaponTypes (id)
+        )
+        """
+    )
+    conn.commit()
+
+def insert_character_data(cur, conn, character_data):
+    """
+    Inserts character data into the Characters table with a reference to WeaponTypes.
+    """
+    weapon_type_id = get_weapon_type_id(cur, conn, character_data['weapon'])
+
+    cur.execute(
+        """
+        INSERT OR IGNORE INTO Characters 
+        (id, rarity, vision, weapon_type_id)
+        VALUES (?, ?, ?, ?)
+        """,
+        (
+            character_data['id'],
+            character_data['rarity'],
+            character_data['vision'],
+            weapon_type_id
+        )
+    )
+    conn.commit()
+
 
 ##########################--BANNERS--#################################
 
@@ -323,8 +421,9 @@ def main():
     cur, conn = set_up_database("genshin_impact_data.db")
     
     # Set up tables
-    set_up_weapons_table(cur, conn)   # Weapons table
-    set_up_character_table(cur, conn)  # Characters table
+    set_up_weapons_table(cur, conn)         # Weapons table
+    set_up_character_table(cur, conn)      # Characters table
+    set_up_character_weapon_table(cur, conn)  # CharactersWeapons table
     
     # API base URLs
     weapon_url = "https://genshin.jmp.blue/"
@@ -339,9 +438,8 @@ def main():
     # Fetch and insert character data
     character_list(character_url, cur, conn)
 
-    # Fetch and insert banner data
-    # set_up_banner_table(cur, conn)
-    # fetch_and_insert_banner_data(banner_url, cur, conn)
+    # Fetch and insert character weapon data
+    character_weapon_list_weapons(character_url, cur, conn)
 
     # Close connection
     conn.close()
