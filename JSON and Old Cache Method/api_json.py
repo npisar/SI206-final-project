@@ -48,7 +48,7 @@ def get_weapon_names(weapon_url):
     return weapon_names
 
 #characters from API
-def get_character_ids(character_url, limit=25):
+def get_character_ids(character_url,):
     """
     Fetches all character IDs from the API by handling pagination.
 
@@ -91,6 +91,7 @@ def get_character_ids(character_url, limit=25):
         # Page iteration so we continue looping through pages
         page += 1
 
+    print(all_characters)
     return all_characters
 
 #banners from API
@@ -171,7 +172,7 @@ def weapon_list(weapon_url, weapon_names, cur, conn):
 #create banner and adds it to sqlite
 def banner_list(banner_url, banner_ids, cur, conn):
     """
-    Fetches detailed data for each character and stores it in the SQLite database.
+    Fetches detailed data for each banner and stores it in the SQLite database.
 
     Parameters:
     --------------------
@@ -188,14 +189,14 @@ def banner_list(banner_url, banner_ids, cur, conn):
         The SQLite database connection.
     """
     #get the banner id's and put them through the api to get all banner information
-    for banner_id in banner_ids:
-        response = requests.get(f"{banner_url}characters/{banner_ids}/")
+    for banner_ids in banner_ids:
+        response = requests.get(f"{banner_url}/{banner_ids}/")
         if response.status_code != 200:
-            print(f"Failed to fetch data for character ID {banner_ids}, Status: {response.status_code}")
+            print(f"Failed to fetch data for banner ID {banner_ids}, Status: {response.status_code}")
             continue
 
-        character_data = response.json()
-        fetch_and_insert_character(cur, conn, character_data) 
+        banner_data = response.json()
+        get_banner_ids(cur, conn, banner_data) 
 
 #create characters and adds it to sqlite
 def character_list(character_url, character_ids, cur, conn):
@@ -248,6 +249,7 @@ def set_up_weapons_table(cur, conn):
         """
     )
     conn.commit()
+
 
 #create the tables we will use use for character data
 def set_up_character_table(cur, conn):
@@ -433,6 +435,37 @@ def insert_weapon_data(cur, conn, weapon_data):
     conn.commit()
 
 
+def insert_weapon_data(cur, conn, weapon_data):
+    """
+    Inserts the detailed weapon data into the database with only type, rarity, and base attack.
+
+    Parameters:
+    --------------------
+    cur: sqlite3.Cursor
+        The SQLite database cursor.
+
+    conn: sqlite3.Connection
+        The SQLite database connection.
+
+    weapon_data: dict
+        The detailed weapon data to insert into the database.
+    """
+    cur.execute(
+        """
+        INSERT OR IGNORE INTO Weapons 
+        (id, type, rarity, base_attack)
+        VALUES (?, ?, ?, ?)
+        """,
+        (
+            weapon_data['id'],
+            weapon_data['type'],
+            weapon_data['rarity'],
+            weapon_data['baseAttack']
+        )
+    )
+    conn.commit()
+    
+    
 def insert_banner_data(cur, conn, banner_data):
     """
     Inserts detailed banner data into the database.
