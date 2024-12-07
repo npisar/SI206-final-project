@@ -280,6 +280,7 @@ def character_list(character_url, cur, conn):
             print(f"Database error for character ID {char_id}: {e}")
 
 ##########################--BANNERS--#################################
+#Create list of banners
 def get_banner_list(banner_url, cur, conn):
     """
     Fetches all banners from the API by handling pagination.
@@ -310,6 +311,7 @@ def get_banner_list(banner_url, cur, conn):
 
     return all_banners
 
+#Create the table of the banners
 def create_banners_table(cur, conn):
     """
     Creates the Banners table in the SQLite database with character references.
@@ -331,6 +333,7 @@ def create_banners_table(cur, conn):
     )
     conn.commit()
 
+#Insert the data into the banners table
 def insert_banners(cur, conn, banner):
     """
     Inserts the banner data into the Banners table, linking it to featured characters.
@@ -365,8 +368,8 @@ def insert_banners(cur, conn, banner):
     except sqlite3.Error as e:
         print(f"Error inserting banner {banner_id}: {e}")
 
-
 ##########################--MEDIA--#################################
+#Gather media data
 def get_media_data(character_id, character_url):
     """
     Fetches media data for a specific character from the API.
@@ -391,6 +394,7 @@ def get_media_data(character_id, character_url):
         print(f"Failed to fetch media data for character ID {character_id}, Status: {response.status_code}")
         return {}
 
+#Create the media table 
 def create_media_table(cur, conn):
     """
     Creates a Media table in the SQLite database with character ID as primary key
@@ -413,6 +417,7 @@ def create_media_table(cur, conn):
     conn.commit()
     print("Media table created successfully!")
 
+#Insert the data into the media table
 def insert_media_data(cur, conn, character_id, media_data):
     """
     Inserts or updates the media data for a character into the Media table.
@@ -440,7 +445,7 @@ def insert_media_data(cur, conn, character_id, media_data):
         print(f"Error inserting media data for character ID {character_id}: {e}")
 
 ##########################--ARTIFACTS--#################################
-#create the table we will use for artifact data
+#Create the table we will use for artifact data
 def create_artifacts_table(conn, cur):
     cur.execute("""
     CREATE TABLE IF NOT EXISTS Artifacts (
@@ -451,7 +456,7 @@ def create_artifacts_table(conn, cur):
     """)
     conn.commit()
 
-
+#Scrape and insert the artifact data into the table
 def insert_artifact_data(cur, conn):
     """
     Scrapes artifact data from the HTML file and inserts it into the Artifacts table.
