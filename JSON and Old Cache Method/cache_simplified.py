@@ -1,5 +1,7 @@
 import sqlite3
 import requests
+from bs4 import BeautifulSoup
+import re
 
 # Database Setup
 def set_up_database(db_name):
@@ -278,89 +280,245 @@ def character_list(character_url, cur, conn):
             print(f"Database error for character ID {char_id}: {e}")
 
 ##########################--BANNERS--#################################
-
-def get_banner_ids(banner_url):
+def get_banner_list(banner_url, cur, conn):
     """
-    Fetches all character banners from the API by handling pagination.
+    Fetches all banners from the API by handling pagination.
 
     Parameters:
     --------------------
-    character_url: str
-        The base URL for the API.
-
-    limit: int
-        Number of characters to fetch per request. Default is 10.
+    banner_url: str
+        The base URL for the banner API.
 
     Returns:
     --------------------
-    list[int]:
-        A list of character IDs retrieved from the API.
+    list[dict]:
+        A list of banners retrieved from the API.
     """
     all_banners = []
+    for banner_id in range(1, 40):  # Loop through banner IDs
+        response = requests.get(f"{banner_url}banners/{banner_id}/")
+        if response.status_code != 200:
+            print(f"Failed to fetch data for banner ID {banner_id}, Status: {response.status_code}")
+            continue
 
-    # Fetch all characters from the API (pagination can be added if needed)
-    resp = requests.get(f"{banner_url}banners/")
-    if resp.status_code != 200:
-        print(f"Failed to fetch data: {resp.status_code}")
-        return []
-
-    data = resp.json()
-    characters = data['results']
-
-    # Take ID's and add to the larger list
-    all_banners.extend([character['id'] for character in characters])
+        banner_data = response.json().get('result', {})  # Extract the 'result' field
+        if not banner_data:
+            print(f"No data found for banner ID {banner_id}")
+            continue
+        
+        all_banners.append(banner_data)  # Collect banner data into the list
 
     return all_banners
 
-def set_up_banner_table(cur, conn):
+def create_banners_table(cur, conn):
     """
-    Sets up the Banners table in the SQLite database.
+    Creates the Banners table in the SQLite database with character references.
     """
     cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS Banners (
-                id INTEGER PRIMARY KEY,      -- Banner ID
-                name TEXT NOT NULL,          -- Banner Name
-                type TEXT NOT NULL,          -- Banner Type (e.g., Character, Weapon)
-                version TEXT NOT NULL,       -- Version of the banner
-                start_date TEXT NOT NULL,    -- Start date of the banner
-                end_date TEXT,               -- End date of the banner
-                five_star TEXT,              -- Five-star featured character name
-                first_three_star TEXT,       -- First three-star featured character name
-                second_three_star TEXT,      -- Second three-star featured character name
-                third_three_star TEXT        -- Third three-star featured character name
-            )
-            """
+        """
+        CREATE TABLE IF NOT EXISTS Banners (
+            id INTEGER PRIMARY KEY,                -- Banner ID
+            five_star_id INTEGER,                  -- ID of the five-star featured character
+            first_three_star_id INTEGER,           -- ID of the first three-star featured character
+            second_three_star_id INTEGER,          -- ID of the second three-star featured character
+            third_three_star_id INTEGER,           -- ID of the third three-star featured character
+            FOREIGN KEY (five_star_id) REFERENCES Characters(id),
+            FOREIGN KEY (first_three_star_id) REFERENCES Characters(id),
+            FOREIGN KEY (second_three_star_id) REFERENCES Characters(id),
+            FOREIGN KEY (third_three_star_id) REFERENCES Characters(id)
         )
+        """
+    )
     conn.commit()
-    print("Banners table created successfully!")
 
-def insert_banner_characters(cur, conn, banner):
+def insert_banners(cur, conn, banner):
     """
-    Inserts banner and character data into the Characters table.
+    Inserts the banner data into the Banners table, linking it to featured characters.
     """
     banner_id = banner["id"]
-    banner_name = banner["name"]
-    banner_type = banner["type"]
+    
+    # Default IDs to None (or NULL) for missing characters
+    five_star_id = None
+    first_three_star_id = None
+    second_three_star_id = None
+    third_three_star_id = None
+    
+    if len(banner["featured"]) >= 1:
+        five_star_id = banner["featured"][0]["id"]
+    if len(banner["featured"]) >= 2:
+        first_three_star_id = banner["featured"][1]["id"]
+    if len(banner["featured"]) >= 3:
+        second_three_star_id = banner["featured"][2]["id"]
+    if len(banner["featured"]) >= 4:
+        third_three_star_id = banner["featured"][3]["id"]
+        
+    try:
+        cur.execute(
+            """
+            INSERT OR IGNORE INTO Banners (
+                 id, five_star_id, first_three_star_id, second_three_star_id, third_three_star_id
+            ) VALUES (?, ?, ?, ?, ?)
+            """,
+            (banner_id, five_star_id, first_three_star_id, second_three_star_id, third_three_star_id)
+        )
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"Error inserting banner {banner_id}: {e}")
 
-    # Loop through featured characters and insert them into the table
-    for char in banner["featured"]:
-        character_id = char["id"]
-        character_name = char["name"]
-        try:
-            cur.execute(
-                """
-                INSERT OR IGNORE INTO Characters (banner_id, banner_name, banner_type, character_id, character_name)
-                VALUES (?, ?, ?, ?, ?)
-                """,
-                (banner_id, banner_name, banner_type, character_id, character_name),
-            )
-        except sqlite3.Error as e:
-            print(f"Error inserting character {character_name}: {e}")
 
+##########################--MEDIA--#################################
+def get_media_data(character_id, character_url):
+    """
+    Fetches media data for a specific character from the API.
+
+    Parameters:
+    --------------------
+    character_id: int
+        The character's unique ID.
+    character_url: str
+        The base URL for the character API.
+
+    Returns:
+    --------------------
+    dict: A dictionary containing media data, including videos, cameos, artwork, etc.
+    """
+    media_url = f"{character_url}characters/{character_id}/media"
+    response = requests.get(media_url)
+    
+    if response.status_code == 200:
+        return response.json().get("result", {})
+    else:
+        print(f"Failed to fetch media data for character ID {character_id}, Status: {response.status_code}")
+        return {}
+
+def create_media_table(cur, conn):
+    """
+    Creates a Media table in the SQLite database with character ID as primary key
+    and columns for different media types (promotion, holiday, birthday, videos, cameos, artwork).
+    Each column will store the number of items in that media type.
+    """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Media (
+            id INTEGER PRIMARY KEY,                -- Character ID
+            promotion INTEGER DEFAULT 0,            -- Number of promotion items
+            holiday INTEGER DEFAULT 0,              -- Number of holiday items
+            birthday INTEGER DEFAULT 0,             -- Number of birthday items
+            videos INTEGER DEFAULT 0,               -- Number of video items
+            cameos INTEGER DEFAULT 0,               -- Number of cameo items
+            artwork INTEGER DEFAULT 0               -- Number of artwork items
+        )
+        """
+    )
+    conn.commit()
+    print("Media table created successfully!")
+
+def insert_media_data(cur, conn, character_id, media_data):
+    """
+    Inserts or updates the media data for a character into the Media table.
+    """
+    try:
+        # Get the count of items in each media type
+        promotion_count = len(media_data.get("promotion", []))
+        holiday_count = len(media_data.get("holiday", []))
+        birthday_count = len(media_data.get("birthday", []))
+        videos_count = len(media_data.get("videos", []))
+        cameos_count = len(media_data.get("cameos", []))
+        artwork_count = len(media_data.get("artwork", []))
+
+        # Insert or update the data in the Media table
+        cur.execute(
+            """
+            INSERT OR REPLACE INTO Media (
+                id, promotion, holiday, birthday, videos, cameos, artwork
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (character_id, promotion_count, holiday_count, birthday_count, videos_count, cameos_count, artwork_count)
+        )
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"Error inserting media data for character ID {character_id}: {e}")
+
+##########################--ARTIFACTS--#################################
+#create the table we will use for artifact data
+def create_artifacts_table(conn, cur):
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS Artifacts (
+        artifact_id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        maxSetQuality INTEGER NOT NULL
+    );
+    """)
     conn.commit()
 
-##########################--MAIN--#################################
+
+def insert_artifact_data(cur, conn):
+    """
+    Scrapes artifact data from the HTML file and inserts it into the Artifacts table.
+
+    Parameters:
+    -----------------------
+    cur: sqlite3.Cursor
+        The database cursor object.
+    conn: sqlite3.Connection
+        The database connection object.
+
+    Returns:
+    -----------------------
+    None
+    """
+    # Load the HTML file
+    html_file = "APIs-and-scraping/view-source_https___genshin-impact.fandom.com_wiki_Artifact_Sets.html"
+    with open(html_file, 'r', encoding='utf-8') as file:
+        soup = BeautifulSoup(file, 'html.parser')
+    
+    # Find artifact table
+    artifact_table = soup.find("table", class_="wikitable")
+    if not artifact_table:
+        raise ValueError("Could not find the artifact table.")
+    
+    rows = artifact_table.find_all("tr")
+    set_quality_pattern = r"\d"
+    bonuses_pattern = r"(\d+)\sPiece:\s(.*?)(?=(\d+\sPiece:|$))"
+
+    for row in rows:
+        columns = row.find_all("td")
+        if len(columns) < 4:  # Ensure the row has the expected number of columns
+            continue
+
+        # Extract artifact set details
+        artifact_set_name = columns[0].text.strip()
+        set_quality = columns[1].text.strip()
+        set_quality_matches = re.findall(set_quality_pattern, set_quality)
+        max_set_quality = max(map(int, set_quality_matches))
+        bonuses_column = columns[3].text
+        bonuses_matches = re.findall(bonuses_pattern, bonuses_column)
+        bonuses_list = [{"pieces": int(tup[0]), "bonus": tup[1].strip()} for tup in bonuses_matches]
+        pieces_column = columns[2]
+        pieces = pieces_column.find_all("span", class_="item")
+        set_num_pieces = len(pieces)
+
+        for piece in pieces:
+            link = piece.find("a")
+            if not link:
+                continue
+
+            # Extract individual artifact details
+            artifact_name = link.get("title")
+            base_url = "https://genshin-impact.fandom.com"
+            artifact_url = f"{base_url}{link.get('href')}"
+
+            # Insert data into the database
+            cur.execute("""
+                INSERT OR REPLACE INTO Artifacts 
+                (name, maxSetQuality)
+                VALUES (?, ?)
+            """, (
+                artifact_name,
+                max_set_quality,
+            ))
+    conn.commit()
+    print("Data successfully scraped and inserted into the database.")
 
 ##########################--MAIN--#################################
 
@@ -373,10 +531,13 @@ def main():
     set_up_weapons_table(cur, conn)      # Weapons table
     create_character_visions_table(cur, conn)  # CharacterVisions table
     set_up_character_table(cur, conn)   # Characters table
+    create_banners_table(cur, conn)      # Banners table
+    create_media_table(cur, conn)        # Media table
 
     # API base URLs
     weapon_url = "https://genshin.jmp.blue/"
     character_url = "https://gsi.fly.dev/"
+    banner_url = "https://gsi.fly.dev/"  # Adjust according to your actual banner API URL
 
     # Fetch and insert weapon data
     weapon_names = get_weapon_names(weapon_url)
@@ -385,7 +546,21 @@ def main():
     
     # Fetch and insert character data
     character_list(character_url, cur, conn)  # Populates CharacterVisions and Characters
+    
+    # Fetch and insert banner data
+    banners = get_banner_list(banner_url, cur, conn)
+    for banner in banners:
+        insert_banners(cur, conn, banner)
 
+    # Fetch and insert media data for each character
+    for character_id in range(1, 40):  # Loop through character IDs (or use a different range if necessary)
+        media_data = get_media_data(character_id, character_url)
+        if media_data:
+            insert_media_data(cur, conn, character_id, media_data)
+
+    create_artifacts_table(conn, cur)
+    insert_artifact_data(cur, conn)
+    
     # Close connection
     conn.close()
 
