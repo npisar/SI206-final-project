@@ -96,7 +96,23 @@ def set_up_weapons_table(cur, conn):
 # Insert weapon data into the Weapons table
 def insert_weapon_data(cur, conn, weapon_data):
     """
-    Inserts the detailed weapon data into the Weapons table with a reference to WeaponTypes.
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    weapon_data: dict
+    A dictionary containing weapon details. The keys are:
+
+    id (int): The unique ID of the weapon.
+    type (str): The type of the weapon (e.g., "Sword," "Bow").
+    rarity (int): The rarity level of the weapon (e.g., 3, 4, 5 stars).
+    baseAttack (int): The base attack value of the weapon.
+    
+    Returns:
+    None
     """
     # Look up the weapon type ID
     weapon_type_id = get_weapon_type_id(cur, conn, weapon_data['type'])
@@ -120,7 +136,16 @@ def insert_weapon_data(cur, conn, weapon_data):
 # Create the WeaponTypes table
 def create_weapon_types_table(cur, conn):
     """
-    Creates a table for weapon types with unique numeric IDs.
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    Returns:
+    None
+
     """
     cur.execute(
         """
@@ -135,7 +160,21 @@ def create_weapon_types_table(cur, conn):
 # Get the ID of a weapon type, inserting it if necessary
 def get_weapon_type_id(cur, conn, weapon_type):
     """
-    Inserts a weapon type if it doesn't exist and returns its ID.
+    Inserts a weapon type into the WeaponTypes table if it doesn't exist and returns its unique numeric ID.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    weapon_type: str
+    The type of the weapon (e.g., "Sword," "Bow").
+
+    Returns:
+    int:
+    The unique numeric ID of the weapon type, either newly inserted or pre-existing.
     """
     cur.execute(
         """
@@ -162,6 +201,16 @@ def get_weapon_type_id(cur, conn, weapon_type):
 def create_character_visions_table(cur, conn):
     """
     Creates the CharacterVisions table with unique numeric IDs for each vision type.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    Returns:
+    None
     """
     cur.execute(
         """
@@ -176,7 +225,21 @@ def create_character_visions_table(cur, conn):
 # Get or insert a vision type and return its ID
 def get_character_vision_id(cur, conn, vision):
     """
-    Inserts a vision type into the CharacterVisions table if it doesn't exist and returns its ID.
+    Inserts a vision type into the CharacterVisions table if it doesn't exist and returns its unique ID.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    vision: str
+    The vision type of the character (e.g., "Pyro," "Hydro").
+
+    Returns:
+    int:
+    The unique numeric ID of the vision type, either newly inserted or pre-existing.
     """
     cur.execute(
         """
@@ -200,7 +263,17 @@ def get_character_vision_id(cur, conn, vision):
 # Create the Characters table with vision_id
 def set_up_character_table(cur, conn):
     """
-    Creates the Characters table with vision_id referencing CharacterVisions.
+    Creates the Characters table with a vision_id referencing CharacterVisions and a weapon_type_id referencing WeaponTypes.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    Returns:
+    None
     """
     cur.execute(
         """
@@ -220,7 +293,25 @@ def set_up_character_table(cur, conn):
 # Insert character data into Characters table
 def insert_character_data(cur, conn, character_data):
     """
-    Inserts character data into the Characters table, linking vision to its ID in CharacterVisions.
+    Inserts character data into the Characters table, linking the character's vision to its ID in the CharacterVisions table and weapon type to its ID in WeaponTypes.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    character_data: dict
+    A dictionary containing the character details. The keys are:
+
+    id (str): The unique ID of the character.
+    name (str): The name of the character.
+    rarity (int): The rarity level of the character (e.g., 4, 5 stars).
+    vision (str): The vision type (e.g., "Pyro," "Hydro").
+    weapon (str): The weapon type (e.g., "Sword," "Bow").
+    Returns:
+    None
     """
     weapon_type_id = get_weapon_type_id(cur, conn, character_data['weapon'])
     vision_id = get_character_vision_id(cur, conn, character_data['vision'])
@@ -244,7 +335,20 @@ def insert_character_data(cur, conn, character_data):
 # Populate the Characters table and CharacterVisions table
 def character_list(character_url, cur, conn):
     """
-    Fetches and inserts detailed character data (id, name, rarity, vision, and weapon type) into the Characters table.
+    Fetches detailed character data (ID, name, rarity, vision, and weapon type) from an API and inserts it into the Characters and CharacterVisions tables.
+
+    Parameters:
+    character_url: str
+    The base URL of the API for fetching character data.
+
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    Returns:
+    None
     """
     for char_id in range(1, 52):  # Loop through character IDs 1 to 51
         response = requests.get(f"{character_url}characters/{char_id}/")
@@ -286,14 +390,22 @@ def get_banner_list(banner_url, cur, conn):
     Fetches all banners from the API by handling pagination.
 
     Parameters:
-    --------------------
     banner_url: str
-        The base URL for the banner API.
+    The base URL for the banner API.
+
+    cur: sqlite3.Cursor
+    The SQLite database cursor (not used in this function but kept for consistency).
+
+    conn: sqlite3.Connection
+    The SQLite database connection (not used in this function but kept for consistency).
 
     Returns:
-    --------------------
     list[dict]:
-        A list of banners retrieved from the API.
+    A list of dictionaries representing banners retrieved from the API.
+    Additional Notes:
+
+    Handles API responses and skips banners if the response status code is not 200 or the data is missing.
+    Logs errors when fetching data fails.
     """
     all_banners = []
     for banner_id in range(1, 40):  # Loop through banner IDs
@@ -314,7 +426,17 @@ def get_banner_list(banner_url, cur, conn):
 #Create the table of the banners
 def create_banners_table(cur, conn):
     """
-    Creates the Banners table in the SQLite database with character references.
+    Creates the Banners table in the SQLite database with references to the featured characters.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    Returns:
+    None
     """
     cur.execute(
         """
@@ -336,7 +458,24 @@ def create_banners_table(cur, conn):
 #Insert the data into the banners table
 def insert_banners(cur, conn, banner):
     """
-    Inserts the banner data into the Banners table, linking it to featured characters.
+   Inserts the banner data into the Banners table, linking it to the featured characters.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    banner: dict
+    A dictionary containing banner details, including:
+
+    id (int): The unique ID of the banner.
+    featured (list[dict]): A list of dictionaries representing featured characters. Each character dictionary contains:
+    id (int): The unique ID of the featured character.
+    
+    Returns:
+    None
     """
     banner_id = banner["id"]
     
@@ -375,15 +514,17 @@ def get_media_data(character_id, character_url):
     Fetches media data for a specific character from the API.
 
     Parameters:
-    --------------------
     character_id: int
-        The character's unique ID.
+    The character's unique ID.
+
     character_url: str
-        The base URL for the character API.
+    The base URL for the character API.
 
     Returns:
-    --------------------
-    dict: A dictionary containing media data, including videos, cameos, artwork, etc.
+    dict:
+    A dictionary containing media data (e.g., promotion, holiday, birthday, videos, cameos, artwork).
+    If the request fails, an empty dictionary is returned.
+    
     """
     media_url = f"{character_url}characters/{character_id}/media"
     response = requests.get(media_url)
@@ -397,14 +538,22 @@ def get_media_data(character_id, character_url):
 #Create the media table 
 def create_media_table(cur, conn):
     """
-    Creates a Media table in the SQLite database with character ID as primary key
-    and columns for different media types (promotion, holiday, birthday, videos, cameos, artwork).
-    Each column will store the number of items in that media type.
+    Creates the Media table in the SQLite database.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    Returns:
+    None
     """
     cur.execute(
         """
         CREATE TABLE IF NOT EXISTS Media (
-            id INTEGER PRIMARY KEY,                -- Character ID
+            character_id INTEGER PRIMARY KEY,                -- Character ID
             promotion INTEGER DEFAULT 0,            -- Number of promotion items
             holiday INTEGER DEFAULT 0,              -- Number of holiday items
             birthday INTEGER DEFAULT 0,             -- Number of birthday items
@@ -418,9 +567,25 @@ def create_media_table(cur, conn):
     print("Media table created successfully!")
 
 #Insert the data into the media table
-def insert_media_data(cur, conn, character_id, media_data):
+def insert_media_data(cur, conn, character_id, mediam_data):
     """
-    Inserts or updates the media data for a character into the Media table.
+    Inserts or updates media data for a specific character in the Media table.
+
+    Parameters:
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    character_id: int
+    The unique ID of the character.
+
+    media_data: dict
+    A dictionary containing media data with keys like promotion, holiday, birthday, videos, cameos, and artwork.
+
+    Returns:
+    None
     """
     try:
         # Get the count of items in each media type
@@ -435,18 +600,31 @@ def insert_media_data(cur, conn, character_id, media_data):
         cur.execute(
             """
             INSERT OR REPLACE INTO Media (
-                id, promotion, holiday, birthday, videos, cameos, artwork
+                character_id, promotion, holiday, birthday, videos, cameos, artwork
             ) VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
             (character_id, promotion_count, holiday_count, birthday_count, videos_count, cameos_count, artwork_count)
         )
         conn.commit()
     except sqlite3.Error as e:
-        print(f"Error inserting media data for character ID {character_id}: {e}")
+        print(f"Error inserting media data for character {character_id}: {e}")
 
 ##########################--ARTIFACTS--#################################
 #Create the table we will use for artifact data
-def create_artifacts_table(conn, cur):
+def create_artifacts_table(cur, conn):
+    """
+    Creates the Artifacts table in the SQLite database.
+
+    Parameters:c
+    cur: sqlite3.Cursor
+    The SQLite database cursor.
+
+    conn: sqlite3.Connection
+    The SQLite database connection.
+
+    Returns:
+    None
+    """
     cur.execute("""
     CREATE TABLE IF NOT EXISTS Artifacts (
         artifact_id INTEGER PRIMARY KEY,
@@ -459,17 +637,16 @@ def create_artifacts_table(conn, cur):
 #Scrape and insert the artifact data into the table
 def insert_artifact_data(cur, conn):
     """
-    Scrapes artifact data from the HTML file and inserts it into the Artifacts table.
+    Scrapes artifact data from an HTML file and inserts it into the Artifacts table.
 
     Parameters:
-    -----------------------
     cur: sqlite3.Cursor
-        The database cursor object.
+    The SQLite database cursor.
+
     conn: sqlite3.Connection
-        The database connection object.
+    The SQLite database connection.
 
     Returns:
-    -----------------------
     None
     """
     # Load the HTML file
@@ -532,17 +709,16 @@ def main():
     cur, conn = set_up_database("genshin_impact_data.db")
     
     # Set up tables
-    create_weapon_types_table(cur, conn)  # WeaponTypes table
-    set_up_weapons_table(cur, conn)      # Weapons table
-    create_character_visions_table(cur, conn)  # CharacterVisions table
-    set_up_character_table(cur, conn)   # Characters table
-    create_banners_table(cur, conn)      # Banners table
-    create_media_table(cur, conn)        # Media table
+    create_weapon_types_table(cur, conn)  
+    set_up_weapons_table(cur, conn)     
+    create_character_visions_table(cur, conn)  
+    create_banners_table(cur, conn)     
+    create_media_table(cur, conn)       
 
     # API base URLs
     weapon_url = "https://genshin.jmp.blue/"
     character_url = "https://gsi.fly.dev/"
-    banner_url = "https://gsi.fly.dev/"  # Adjust according to your actual banner API URL
+    banner_url = "https://gsi.fly.dev/"  
 
     # Fetch and insert weapon data
     weapon_names = get_weapon_names(weapon_url)
@@ -550,7 +726,7 @@ def main():
         weapon_list(weapon_url, weapon_names, cur, conn)
     
     # Fetch and insert character data
-    character_list(character_url, cur, conn)  # Populates CharacterVisions and Characters
+    character_list(character_url, cur, conn)  
     
     # Fetch and insert banner data
     banners = get_banner_list(banner_url, cur, conn)
@@ -558,12 +734,13 @@ def main():
         insert_banners(cur, conn, banner)
 
     # Fetch and insert media data for each character
-    for character_id in range(1, 40):  # Loop through character IDs (or use a different range if necessary)
+    for character_id in range(1, 40):  
         media_data = get_media_data(character_id, character_url)
         if media_data:
             insert_media_data(cur, conn, character_id, media_data)
 
-    create_artifacts_table(conn, cur)
+    #Creates artifact data
+    create_artifacts_table(cur, conn)
     insert_artifact_data(cur, conn)
     
     # Close connection
