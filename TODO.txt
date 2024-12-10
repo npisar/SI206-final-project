@@ -6,15 +6,9 @@
 
 2. Need to use join with banner table to bring database together
 
-3. Rename database, run, and see if there are 25 entries
-
 4. Plots -- not clear what numbers are about -- make sure numbers have labels
 
 5. Calculations need to be clear and have labels too. Calculations need to be from database, not JSON
-
-6. Don't need to store how many items in database -- select count or select max to get the number of items
-
-7. Write 25 limit for banner data and weapon data
 
 8. need instructions for running the code
 

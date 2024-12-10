@@ -1,8 +1,5 @@
 import sqlite3
 import requests
-import json
-from bs4 import BeautifulSoup
-import re
 
 # Database Setup
 def set_up_database(db_name):
