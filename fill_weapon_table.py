@@ -206,7 +206,7 @@ def main():
         end = 187
     if start >= 95:
         insert_weapon_data(weapon_data=weapon_data, start=start, end=end, limit=200, cur=cur, conn=conn)
-        print(f"All weaspon data added to database!")
+        print(f"All weapon data added to database!")
         quit()
 
     insert_weapon_data(weapon_data=weapon_data, start=start, end=end, limit=25, cur=cur, conn=conn)
