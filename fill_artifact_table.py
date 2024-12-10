@@ -30,41 +30,23 @@ def set_up_database(db_name):
 
 
 
-##########################--ARTIFACTS--#################################
-#Create the table we will use for artifact data
-def setup_artifacts_table(cur, conn):
-    cur.execute(
-        """
-        CREATE TABLE IF NOT EXISTS Artifacts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            maxSetQuality INTEGER NOT NULL
-        )
-        """
-    )
-    conn.commit()
 
+##########################--ARTIFACTS--#################################
 #Scrape and insert the artifact data into the table
 def get_artifact_data(url):
     """
-    Scrapes artifact data from the HTML file and inserts it into the Artifacts table.
-
+    Scrapes artifact data from the Genshin Impact Wiki Artifacts/Sets page and inserts it into the Artifacts table.
+    
     Parameters:
-    -----------------------
-    cur: sqlite3.Cursor
-        The database cursor object.
-    conn: sqlite3.Connection
-        The database connection object.
+    --------------------
+    url: str
+        The URL of the Genshin Impact Wiki Artifacts/Sets page
 
     Returns:
-    -----------------------
-    None
+    --------------------
+    all_media_data: list
+        List of data for each artifact on the Genshin Impact Wiki Artifacts/Sets page
     """
-    # # Load the HTML file
-    # html_file = "APIs-and-scraping/view-source_https___genshin-impact.fandom.com_wiki_Artifact_Sets.html"
-    # with open(html_file, 'r', encoding='utf-8') as file:
-    #     soup = BeautifulSoup(file, 'html.parser')
-    
     # Scrape the site
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -102,11 +84,55 @@ def get_artifact_data(url):
     
     return all_artifact_data
 
+# Setup the Artifacts table
+def setup_artifacts_table(cur, conn):
+    """
+    Sets up the Artifacts table
 
+    Parameters:
+    --------------------
+    cur:
+        SQLite cursor object
+    conn:
+        SQLite connection object
+
+    Returns:
+    --------------------
+    None
+    """
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Artifacts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            maxSetQuality INTEGER NOT NULL
+        )
+        """
+    )
+    conn.commit()
 
 def insert_artifact_data(artifact_data, start, end, limit, cur, conn):
     """
-    ---
+    Inserts the media data for each character into the Media table.
+
+    Parameters:
+    --------------------
+    artifact_data: list
+        List of data for all artifacts, returned from get_artifact_data
+    start: int
+        starting point which to iterate through (remembers where it left off)
+    end: int
+        upper bound of where to iterate through (maximum number of items the API supplies)
+    limit: int
+        limit of how many items can be returned
+    cur:
+        SQLite cursor
+    conn:
+        SQLite connection
+    
+    Returns:
+    --------------------
+    None
     """
     count = 0
     for i in range(start, end):
@@ -144,8 +170,15 @@ def insert_artifact_data(artifact_data, start, end, limit, cur, conn):
 
 
 
-##########################--MAIN--#################################
 
+
+
+
+
+
+
+
+##########################--MAIN--#################################
 def main():
     # Database setup
     cur, conn = set_up_database("genshin_impact_data.db")

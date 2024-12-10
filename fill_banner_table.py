@@ -1,8 +1,5 @@
 import sqlite3
 import requests
-import json
-from bs4 import BeautifulSoup
-import re
 
 # Database Setup
 def set_up_database(db_name):
@@ -33,20 +30,20 @@ def set_up_database(db_name):
 
 
 ##########################--BANNERS--#################################
-# Get the banenr data
+# Get the banner data
 def get_banner_data(banner_url):
     """
-    Fetches all banner data from the API
+    Gets banner data from the GSHIMPACT API.
 
     Parameters:
     --------------------
     banner_url: str
-        The base URL for the banner API.
+        The base URL for the GSHImpact API
 
     Returns:
     --------------------
-    list[dict]:
-        A list of banners retrieved from the API.
+    all_media_data: list
+        List of GSHIMPACT json responses for each banner ID
     """
     all_banner_data = []
     for banner_id in range(1, 40):  # Loop through banner IDs
@@ -55,19 +52,30 @@ def get_banner_data(banner_url):
             print(f"Failed to fetch data for banner ID {banner_id}, Status: {response.status_code}")
             continue
 
-        banner_data = response.json().get('result', {})  # Extract the 'result' field
+        banner_data = response.json().get('result', {})
         if not banner_data:
             print(f"No data found for banner ID {banner_id}")
             continue
         
-        all_banner_data.append(banner_data)  # Collect banner data into the list
+        all_banner_data.append(banner_data)
 
     return all_banner_data
 
-#Create the table of the banners
+# Setup Banner table
 def setup_banners_table(cur, conn):
     """
-    ---
+    Sets up the banner table
+
+    Parameters:
+    --------------------
+    cur:
+        SQLite cursor object
+    conn:
+        SQLite connection object
+
+    Returns:
+    --------------------
+    None
     """
     cur.execute(
         """
@@ -86,12 +94,30 @@ def setup_banners_table(cur, conn):
     )
     conn.commit()
 
-#Insert the data into the banners table
+# Insert the data into the Banners table
 def insert_banner_data(banner_data, start, end, limit, cur, conn):
     """
-    ---
-    """
+    Inserts the media data for each character into the Media table.
+
+    Parameters:
+    --------------------
+    banner_data: list
+        List of data for all banners, returned from get_banner_data
+    start: int
+        starting point which to iterate through (remembers where it left off)
+    end: int
+        upper bound of where to iterate through (maximum number of items the API supplies)
+    limit: int
+        limit of how many items can be returned
+    cur:
+        SQLite cursor
+    conn:
+        SQLite connection
     
+    Returns:
+    --------------------
+    None
+    """
     # Default IDs to None (or NULL) for missing characters
     five_star_name = None
     first_three_star_name = None
@@ -157,7 +183,6 @@ def insert_banner_data(banner_data, start, end, limit, cur, conn):
 
 
 ##########################--MAIN--#################################
-
 def main():
     # Database setup
     cur, conn = set_up_database("genshin_impact_data.db")
@@ -165,22 +190,16 @@ def main():
     # Set up tables
     setup_banners_table(cur, conn)
 
-    # API base URLs
+    # GSHIMPACT API base URL
     banner_url = "https://gsi.fly.dev/"
     
 
 
 
-    ##### banners #####
-    # banner_data = get_banner_data(banner_url)
+    ##### Banners #####
+    banner_data = get_banner_data(banner_url)
 
-    banner_data = []
-    with open('JSON-and-old-cache-method/banner-data.json', 'r') as file:
-        data = json.load(file)
-        for item in data:
-            banner_data.append(item)
-
-    # insert into 
+    # Insert into database
     cur.execute("SELECT max(id) FROM Banners")
     row = cur.fetchone()
     if row is None or row[0] is None:

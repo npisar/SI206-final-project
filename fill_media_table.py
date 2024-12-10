@@ -1,6 +1,5 @@
 import sqlite3
 import requests
-import json
 
 # Database Setup
 def set_up_database(db_name):
@@ -31,27 +30,40 @@ def set_up_database(db_name):
 
 
 ##########################--MEDIA--#################################
-#Create the media table 
-# Get character ids
+# Get the character ids
 def get_character_ids(cur):
+    """
+    Gets all of the character ID's from the Characters table.
+
+    Parameters:
+    -----------------------
+    cur:
+        SQLite cursor.
+
+    Returns:
+    -----------------------
+    character_ids: list
+        A list containing the integer character ID's from the Characters table.
+    """
     character_ids = [char_id[0] for char_id in cur.execute("SELECT id FROM Characters")]
     return character_ids
 
-#Gather media data
+# Get the media
 def get_media_data(character_ids, url):
     """
-    Fetches media data for a specific character from the API.
+    Fetches media data from the GSHIMPACT API for all character ids in the database.
 
     Parameters:
     --------------------
-    character_id: int
-        The character's unique ID.
+    character_ids: list
+        Every character ID from the dataset, returned from get_character_ids
     character_url: str
-        The base URL for the character API.
+        The base URL for the GSHImpact API
 
     Returns:
     --------------------
-    ---
+    all_media_data: list
+        List of GSHIMPACT json responses for each character ID
     """
     all_media_data = []
     for id in character_ids:
@@ -65,11 +77,21 @@ def get_media_data(character_ids, url):
     
     return all_media_data
 
+# Setup Media table
 def setup_media_table(cur, conn):
     """
-    Creates a Media table in the SQLite database with character ID as primary key
-    and columns for different media types (promotion, holiday, birthday, videos, cameos, artwork).
-    Each column will store the number of items in that media type.
+    Sets up the media table
+
+    Parameters:
+    --------------------
+    cur:
+        SQLite cursor object
+    conn:
+        SQLite connection object
+
+    Returns:
+    --------------------
+    None
     """
     cur.execute(
         """
@@ -88,10 +110,29 @@ def setup_media_table(cur, conn):
     )
     conn.commit()
 
-#Insert the data into the media table
+# Insert the data into the Media table
 def insert_media_data(media_data, start, end, limit, cur, conn):
     """
-    Inserts or updates the media data for a character into the Media table.
+    Inserts the media data for each character into the Media table.
+
+    Parameters:
+    --------------------
+    media_data: list
+        List of media data for all characters, returned from get_media_data
+    start: int
+        starting point which to iterate through (remembers where it left off)
+    end: int
+        upper bound of where to iterate through (maximum number of items the API supplies)
+    limit: int
+        limit of how many items can be returned
+    cur:
+        SQLite cursor
+    conn:
+        SQLite connection
+    
+    Returns:
+    --------------------
+    None
     """
     
     count = 0
@@ -157,16 +198,20 @@ def insert_media_data(media_data, start, end, limit, cur, conn):
 
 
 
-##########################--MAIN--#################################
 
+
+
+
+
+##########################--MAIN--#################################
 def main():
-    # Database setup
+    # Set up database
     cur, conn = set_up_database("genshin_impact_data.db")
     
-    # Set up tables
+    # Set up table
     setup_media_table(cur, conn)
 
-    # API base URLs
+    # GSHImpact API base URL
     url = "https://gsi.fly.dev/"
     
 
@@ -176,7 +221,7 @@ def main():
     character_ids = get_character_ids(cur)
     media_data = get_media_data(character_ids, url)
 
-    # insert into 
+    # Insert into database
     cur.execute("SELECT max(character_id) FROM Media")
     row = cur.fetchone()
     if row is None or row[0] is None:

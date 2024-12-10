@@ -1,8 +1,6 @@
 import sqlite3
 import requests
-import json
 from bs4 import BeautifulSoup
-import re
 
 # Database Setup
 def set_up_database(db_name):
@@ -32,23 +30,21 @@ def set_up_database(db_name):
 
 
 
-
-
-
-
 ###################--WEAPONS--#################################
 # Get the weapon data
 def get_weapon_data(weapon_url):
     """
-    Fetches all weapon names from the API.
+    Gets weapon data from the Genshin.dev for all character ids in the database.
 
     Parameters:
     --------------------
-    ---
-    
+    weapon_url: str
+        The base URL for the Genshin.dev API
+
     Returns:
     --------------------
-    ---
+    all_media_data: list
+        List of Genshin.dev json responses for each weapon
     """
     response = requests.get(f"{weapon_url}weapons/")
     if response.status_code != 200:
@@ -75,7 +71,18 @@ def get_weapon_data(weapon_url):
 # Create the Weapons table
 def setup_weapons_tables(cur, conn):
     """
-    ---
+    Sets up the Weapons and WeaponTypes table
+
+    Parameters:
+    --------------------
+    cur:
+        SQLite cursor object
+    conn:
+        SQLite connection object
+
+    Returns:
+    --------------------
+    None
     """
     cur.execute(
         """
@@ -100,10 +107,23 @@ def setup_weapons_tables(cur, conn):
     )
     conn.commit()
 
-# Insert data into weapon tables
+# Insert the weapon type data into the WeaponTypes table
 def insert_weapon_type_data(weapon_data, cur, conn):
     """
-    ---
+    Inserts the weapon type data into the WeaponTypes table.
+
+    Parameters:
+    --------------------
+    weapon_data: list
+        List of data for all weapons, returned from get_weapon_data
+    cur:
+        SQLite cursor
+    conn:
+        SQLite connection
+    
+    Returns:
+    --------------------
+    None
     """
 
     weapon_types = []
@@ -125,15 +145,33 @@ def insert_weapon_type_data(weapon_data, cur, conn):
         )
         conn.commit()
 
-# Insert the data into the weapons table
+# Insert the data into the Weapons table
 def insert_weapon_data(weapon_data, start, end, limit, cur, conn):
     """
-    ---
+    Inserts the weapon data into the Weapons table.
+
+    Parameters:
+    --------------------
+    weapon_data: list
+        List of data for all weapons, returned from get_weapon_data
+    start: int
+        starting point which to iterate through (remembers where it left off)
+    end: int
+        upper bound of where to iterate through (maximum number of items the API supplies)
+    limit: int
+        limit of how many items can be returned
+    cur:
+        SQLite cursor
+    conn:
+        SQLite connection
+    
+    Returns:
+    --------------------
+    None
     """
     count = 0
     for i in range(start, end):
         print(f"starting on weapon {start+count}, which is {weapon_data[i]['name']}")
-        print(f"ending on {end}")
         cur.execute(
             """ 
             INSERT OR IGNORE INTO Weapons 
@@ -170,6 +208,17 @@ def insert_weapon_data(weapon_data, start, end, limit, cur, conn):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 ##########################--MAIN--#################################
 
 def main():
@@ -179,22 +228,16 @@ def main():
     # Set up table
     setup_weapons_tables(cur, conn)
 
-    # API base URLs
+    # Genshin.dev base URL
     weapon_url = "https://genshin.jmp.blue/"
     
 
 
 
     ##### Weapons #####
-    # weapon_data = get_weapon_data(weapon_url)
+    weapon_data = get_weapon_data(weapon_url)
 
-    weapon_data = []
-    with open('JSON-and-old-cache-method/weapon-data.json', 'r') as file:
-        data = json.load(file)
-        for item in data:
-            weapon_data.append(item)
-
-    # insert into 
+    # Insert into database
     cur.execute("SELECT max(id) FROM Weapons")
     row = cur.fetchone()
     if row is None or row[0] is None:
