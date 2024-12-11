@@ -30,6 +30,61 @@ def get_weapon_stats(cur):
 
 
 
+def get_char_stats(cur):
+    '''
+    ARGUMENTS
+        cur: The cursor object used to pull the weapon info from the database
+
+    RETURNS:
+        char_d: A nested dictionary containing weapon info in the following format:
+        {"Character Name"(str): {'Rarity': "Character Rarity"(int), 'Weapon': "Weapon Type"(str), 'Vision': "Character Vision"(str)}}
+    '''
+    # pull the characters and their corresponding stats from the database
+    cur.execute(
+        '''
+        SELECT Characters.name, Characters.rarity, CharacterVisions.vision, WeaponTypes.weapon_type
+        FROM Characters JOIN CharacterVisions JOIN WeaponTypes
+        ON Characters.weapon_id = WeaponTypes.id and Characters.vision_id = CharacterVisions.id
+        '''
+        )
+
+    # create a nested dictionary with character names as outer keys, 
+    # rarity, weapon, and vision as inner keys, and the corresponding information as inner values
+    rows = cur.fetchall()
+    chars_d = {}
+    for row in rows:
+        name = row[0]
+        rarity = row[1]
+        vision = row[2]
+        weapon = row[3]
+        nested_d = {}
+        nested_d['Rarity'] = rarity
+        nested_d['Weapon'] = weapon
+        nested_d['Vision'] = vision
+        if name not in chars_d:
+            chars_d[name] = nested_d
+            
+    return chars_d
+
+
+
+def get_artifact_stats(cur):
+    '''
+    ARGUMENTS
+        cur: The cursor object used to pull the weapon info from the database
+
+    RETURNS:
+        artifact_d: A  dictionary containing artifact info in the following format:
+        {'Artifact Name': "Name"(str), 'Max Set Quality': Quality from 1-5(int)}
+    '''
+    cur.execute('''SELECT name, maxSetQuality FROM Artifacts ''')
+
+    matches = cur.fetchall()
+    artifact_d = dict(matches)
+    return artifact_d
+
+
+
 def box_rarity_versus_dmg(weapons_d):
     '''
     ARGUMENTS
@@ -83,43 +138,6 @@ def box_rarity_versus_dmg(weapons_d):
     # display and save the visualizations as a png file
     plt.savefig('graphs/rarity_vs_dmg_and_frequency.png', dpi=300, bbox_inches='tight')
     plt.show()
-
-
-
-def get_char_stats(cur):
-    '''
-    ARGUMENTS
-        cur: The cursor object used to pull the weapon info from the database
-
-    RETURNS:
-        char_d: A nested dictionary containing weapon info in the following format:
-        {"Character Name"(str): {'Rarity': "Character Rarity"(int), 'Weapon': "Weapon Type"(str), 'Vision': "Character Vision"(str)}}
-    '''
-    # pull the characters and their corresponding stats from the database
-    cur.execute(
-        '''
-        SELECT Characters.name, Characters.rarity, CharacterVisions.vision, WeaponTypes.weapon_type
-        FROM Characters JOIN CharacterVisions JOIN WeaponTypes
-        ON Characters.weapon_id = WeaponTypes.id and Characters.vision_id = CharacterVisions.id
-        '''
-        )
-
-    # create a nested dictionary with character names as outer keys, 
-    # rarity, weapon, and vision as inner keys, and the corresponding information as inner values
-    rows = cur.fetchall()
-    chars_d = {}
-    for row in rows:
-        name = row[0]
-        rarity = row[1]
-        vision = row[2]
-        weapon = row[3]
-        nested_d = {}
-        nested_d['Rarity'] = rarity
-        nested_d['Weapon'] = weapon
-        nested_d['Vision'] = vision
-        if name not in chars_d:
-            chars_d[name] = nested_d
-    return chars_d
     
 
 
@@ -238,6 +256,31 @@ def chars_by_vision(chars_d):
 
 
 
+def artifact_qual_dist(artifact_d):
+    '''
+    ARGUMENTS
+        artifact_d: The dictionary with each artifact and its maximum set quality
+    
+    RETURNS:
+        None
+    '''
+    # create a dictionary with each quality(1-5 stars) as the key and their respective counts as values
+    rarity_counts = {}
+    for artifact in artifact_d.values():
+        rating = (str(artifact)+' Star')
+        rarity_counts[rating] = rarity_counts.get(rating, 0) + 1
+    
+    # Create and populate the graph: a pie chart
+    colors = ['#aca2e0','#f4e8c1','#a0c1b9','#70a0af']
+    plt.pie(rarity_counts.values(), labels=rarity_counts.keys(), autopct='%1.1f%%', colors=colors)
+    plt.title('Maximum Artifact Set Quality Distribution')
+
+    # display and save the visualizations as a png file
+    plt.savefig('graphs/artifacts_by_qual.png', dpi=300, bbox_inches='tight')
+    plt.show()
+
+
+
 def main():
     # create the connection and cursor
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -250,11 +293,13 @@ def main():
     # call the functions to gather the needed information from the database 
     weapons_info = get_weapon_stats(cur)
     character_info = get_char_stats(cur)
+    artifact_info = get_artifact_stats(cur)
 
     # call the functions to create the visualizations
     box_rarity_versus_dmg(weapons_info)
     char_vision_vs_weapon(character_info)
     chars_by_vision(character_info)
+    artifact_qual_dist(artifact_info)
 
 
 main()
