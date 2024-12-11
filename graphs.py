@@ -73,7 +73,7 @@ def box_rarity_versus_dmg(weapons_d):
     # format and populate the bar chart
     rarities = ['1 Star','2 Star','3 Star','4 Star','5 Star']
     counts  = [len(one_star), len(two_star), len(three_star), len(four_star), len(five_star)]
-    bars.barh(rarities, counts, color=colors)
+    bars.barh(rarities, counts, color='ac92eb')
     bars.set_title("Number of Weapons by Rarity")
     bars.ticklabel_format(axis='x', style='plain')
     bars.set_xticks([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
@@ -141,21 +141,21 @@ def char_vision_vs_weapon(chars_d):
     bar3 = fig1.add_subplot(133)
 
     # format and populate the bar charts
-    bar1.bar(d['Pyro'].keys(), d['Pyro'].values(), color='#FFD6A5')
+    bar1.bar(d['Pyro'].keys(), d['Pyro'].values(), color='#ed5564')
     bar1.set_title("Weapon Choice for Pyros")
     bar1.ticklabel_format(axis='y', style='plain')
     bar1.set_yticks([1, 2, 3, 4, 5])
     bar1.set_xlabel("Weapon")
     bar1.set_ylabel("Frequency") 
 
-    bar2.bar(d['Hydro'].keys(), d['Hydro'].values(), color='#aoc4ff')
+    bar2.bar(d['Hydro'].keys(), d['Hydro'].values(), color='#4f75e8')
     bar2.set_title("Weapon Choice for Hydros")
     bar2.ticklabel_format(axis='y', style='plain')
     bar2.set_yticks([1, 2, 3, 4, 5])
     bar2.set_xlabel("Weapon")
     bar2.set_ylabel("Frequency") 
 
-    bar3.bar(d['Electro'].keys(), d['Electro'].values(), color='#BD2bFF')
+    bar3.bar(d['Electro'].keys(), d['Electro'].values(), color='#ac92eb')
     bar3.set_title("Weapon Choice for Electros")
     bar3.ticklabel_format(axis='y', style='plain')
     bar3.set_yticks([1, 2, 3, 4, 5])
@@ -173,21 +173,21 @@ def char_vision_vs_weapon(chars_d):
     bar6 = fig2.add_subplot(133)
 
     # format and populate the bar charts
-    bar4.bar(d['Cryo'].keys(), d['Cryo'].values(), color='#9bf6ff')
+    bar4.bar(d['Cryo'].keys(), d['Cryo'].values(), color='#4fc1e8')
     bar4.set_title("Weapon Choice for Cryos")
     bar4.ticklabel_format(axis='y', style='plain')
     bar4.set_yticks([1, 2, 3, 4, 5])
     bar4.set_xlabel("Weapon")
     bar4.set_ylabel("Frequency") 
 
-    bar5.bar(d['Geo'].keys(), d['Geo'].values(), color='#ffADAD')
+    bar5.bar(d['Geo'].keys(), d['Geo'].values(), color='#ffce54')
     bar5.set_title("Weapon Choice for Geos")
     bar5.ticklabel_format(axis='y', style='plain')
     bar5.set_yticks([1, 2, 3, 4, 5])
     bar5.set_xlabel("Weapon")
     bar5.set_ylabel("Frequency") 
 
-    bar6.bar(d['Anemo'].keys(), d['Anemo'].values(), color='#caffbf')
+    bar6.bar(d['Anemo'].keys(), d['Anemo'].values(), color='#a0d568')
     bar6.set_title("Weapon Choice for Anemos")
     bar6.ticklabel_format(axis='y', style='plain')
     bar6.set_yticks([1, 2, 3, 4, 5])
@@ -215,7 +215,7 @@ def chars_by_vision(chars_d):
         counts_d[vision] = counts_d.get(vision, 0) + 1
 
      # Create and populate the graph: a pie chart
-    colors = ['#FFD6A5','#aoc4ff','#caffbf','#BD2bFF','#9bf6ff', '#ffADAD', '#caffbf']
+    colors = ['#ac92eb','#4fc1e8','#a0d568','#ffce54','#ed5564', '#41444B', '#F6F5F2']
     plt.pie(counts_d.values(), labels=counts_d.keys(), autopct='%1.1f%%', colors=colors)
     plt.title('Character Vision Distribution')
 

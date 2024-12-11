@@ -50,7 +50,7 @@ def get_character_data(character_url):
 
     Parameters:
     --------------------
-    banner_url: str
+    character_url: str
         The base URL for the GSHImpact API
 
     Returns:
@@ -133,7 +133,7 @@ def insert_character_vision_table(character_data, cur, conn):
     conn:
         SQLite connection
     
-    Returns:
+    Returns: none
     --------------------
     """
 
