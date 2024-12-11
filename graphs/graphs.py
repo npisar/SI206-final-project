@@ -128,7 +128,7 @@ def box_rarity_versus_dmg(weapons_d):
     # format and populate the bar chart
     rarities = [1, 2, 3, 4, 5]
     counts  = [len(one_star), len(two_star), len(three_star), len(four_star), len(five_star)]
-    bars.barh(rarities, counts, color="#ed5564")
+    bars.barh(rarities, counts, color=colors)
     bars.set_title("Number of Weapons by Rarity")
     bars.ticklabel_format(axis='x', style='plain')
     bars.set_xticks([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
@@ -174,7 +174,7 @@ def char_vision_vs_weapon(chars_d):
     bar1.set_ylabel("Frequency")
     bar1.tick_params(axis="x", labelrotation=35, labelsize=8)
 
-    bar2.bar(d['Hydro'].keys(), d['Hydro'].values(), color='##4f75e8')
+    bar2.bar(d['Hydro'].keys(), d['Hydro'].values(), color='#4f75e8')
     bar2.set_title("Weapon Choice for Hydros", fontsize=10)
     bar2.ticklabel_format(axis='y', style='plain')
     bar2.set_yticks([1, 2, 3, 4, 5])
