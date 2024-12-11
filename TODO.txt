@@ -1,15 +1,30 @@
-1. Need to get rid duplicate string data
-    a. Weapon names, version names should be integers instead of v1.0
-    b. Character names shouldn't be in there, it should be a character name instead
-        i. character table with IDs, etc. Same thing for all duplicate string data
-        ii. any time there is text repeated inside a table or across the database, duplicate string data
+DONE
+        1. Need to get rid duplicate string data
+            a. Weapon names, version names should be integers instead of v1.0
+            b. Character names shouldn't be in there, it should be a character name instead
+                i. character table with IDs, etc. Same thing for all duplicate string data
+                ii. any time there is text repeated inside a table or across the database, duplicate string data
+DONE
 
-2. Need to use join with banner table to bring database together
 
-4. Plots -- not clear what numbers are about -- make sure numbers have labels
+DONE
+        2. Need to use join with banner table to bring database together
+DONE
+
+
+DONE
+    4. Plots -- not clear what numbers are about -- make sure numbers have labels
+DONE
+
+
 
 5. Calculations need to be clear and have labels too. Calculations need to be from database, not JSON
 
+
+
 8. need instructions for running the code
 
-9. Gotta get voice data!! Need to hit 100 for GSHImpact.
+
+DONE - media
+    9. Gotta get voice data!! Need to hit 100 for GSHImpact.
+DONE
