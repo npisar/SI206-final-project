@@ -301,5 +301,8 @@ def main():
     chars_by_vision(character_info)
     artifact_qual_dist(artifact_info)
 
+    # close the connection
+    conn.close()
 
-main()
+if __name__ == "__main__":
+    main()
