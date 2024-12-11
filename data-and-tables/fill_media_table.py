@@ -103,7 +103,6 @@ def setup_media_table(cur, conn):
             videos INTEGER DEFAULT 0,
             cameos INTEGER DEFAULT 0,
             artwork INTEGER DEFAULT 0,
-            total_media INTEGER DEFAULT 0,
             FOREIGN KEY (character_id) REFERENCES Characters(id)
         )
         """
@@ -145,16 +144,14 @@ def insert_media_data(media_data, start, end, limit, cur, conn):
         videos_count = len(media_data[i].get("videos", []))
         cameos_count = len(media_data[i].get("cameos", []))
         artwork_count = len(media_data[i].get("artwork", []))
-        total_media_count = promotion_count+holiday_count+birthday_count+videos_count+cameos_count+artwork_count
 
         # Insert or update the data in the Media table
         cur.execute(
             """
             INSERT OR REPLACE INTO Media
-            (character_id, promotion, holiday, birthday, videos, cameos, artwork, total_media)
+            (character_id, promotion, holiday, birthday, videos, cameos, artwork)
             VALUES (
                 (SELECT id FROM Characters WHERE name = ?),
-                ?,
                 ?,
                 ?,
                 ?,
@@ -171,7 +168,6 @@ def insert_media_data(media_data, start, end, limit, cur, conn):
                 videos_count,
                 cameos_count,
                 artwork_count,
-                total_media_count
             )
         )
         conn.commit()
@@ -220,6 +216,7 @@ def main():
     ##### Media #####
     character_ids = get_character_ids(cur)
     media_data = get_media_data(character_ids, url)
+    print(f"All data scraped. Please wait...")
 
     # Insert into database
     cur.execute("SELECT max(character_id) FROM Media")
@@ -233,12 +230,12 @@ def main():
 
     insert_media_data(media_data=media_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     if start >= 25:
-        print(f"All data added to database!")
+        print(f"All media data added to database!\n\n\n")
         conn.close()
         quit()
     cur.execute("SELECT max(character_id) FROM Media")
     row = cur.fetchone()
-    print(f"{row[0]} / 30 total items added")
+    print(f"{row[0]} / 30 total media items added to the database. Run the file again!")
 
     # Close connection
     conn.close()

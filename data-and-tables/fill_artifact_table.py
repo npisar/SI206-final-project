@@ -105,7 +105,7 @@ def setup_artifacts_table(cur, conn):
         CREATE TABLE IF NOT EXISTS Artifacts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            maxSetQuality INTEGER NOT NULL
+            max_set_quality INTEGER NOT NULL
         )
         """
     )
@@ -138,7 +138,7 @@ def insert_artifact_data(artifact_data, start, end, limit, cur, conn):
     for i in range(start, end):
         cur.execute("""
             INSERT OR IGNORE INTO Artifacts 
-            (name, maxSetQuality)
+            (name, max_set_quality)
             VALUES (
                     ?,
                     ?
@@ -206,13 +206,13 @@ def main():
         end = 251
     if start >= 100:
         insert_artifact_data(artifact_data=artifact_data, start=start, end=end, limit=251, cur=cur, conn=conn)
-        print(f"All data added to database!")
+        print(f"All artifact data added to database!\n\n\n")
         quit()
 
     insert_artifact_data(artifact_data=artifact_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     cur.execute("SELECT max(id) FROM Artifacts")
     row = cur.fetchone()
-    print(f"{row[0]} / 251 total items added")
+    print(f"{row[0]} / 251 total artifact items added to the database. Run the file again!")
 
     # CLose connection
     conn.close()

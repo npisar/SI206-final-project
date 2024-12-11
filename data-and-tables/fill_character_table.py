@@ -253,11 +253,11 @@ def main():
 
     insert_character_data(character_data=character_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     if start >= 50:
-        print(f"All data added to database!")
+        print(f"All character data added to database!\n\n\n")
         quit()
     cur.execute("SELECT max(id) FROM Characters")
     row = cur.fetchone()
-    print(f"{row[0] + 7} / 58 total items added")
+    print(f"{row[0] + 7} / 58 total character items added to the database. Run the file again!")
 
     
     # Close connection

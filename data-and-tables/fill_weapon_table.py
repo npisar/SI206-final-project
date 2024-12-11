@@ -249,13 +249,13 @@ def main():
         end = 187
     if start >= 95:
         insert_weapon_data(weapon_data=weapon_data, start=start, end=end, limit=200, cur=cur, conn=conn)
-        print(f"All weapon data added to database!")
+        print(f"All weapon data added to database!\n\n\n")
         quit()
 
     insert_weapon_data(weapon_data=weapon_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     cur.execute("SELECT max(id) FROM Weapons")
     row = cur.fetchone()
-    print(f"{row[0] + 5} / 194 total items added")
+    print(f"{row[0] + 5} / 194 total weapon items added to the database. Run the file again!")
 
     # Close connection
     conn.close()

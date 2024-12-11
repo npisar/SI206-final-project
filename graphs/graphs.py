@@ -46,7 +46,7 @@ def get_char_stats(cur):
         FROM Characters JOIN CharacterVisions JOIN WeaponTypes
         ON Characters.weapon_id = WeaponTypes.id and Characters.vision_id = CharacterVisions.id
         '''
-        )
+    )
 
     # create a nested dictionary with character names as outer keys, 
     # rarity, weapon, and vision as inner keys, and the corresponding information as inner values

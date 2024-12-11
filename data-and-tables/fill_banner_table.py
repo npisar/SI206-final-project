@@ -211,12 +211,12 @@ def main():
 
     insert_banner_data(banner_data=banner_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     if start >= 25:
-        print(f"All data added to database!")
+        print(f"All banner data added to database!\n\n\n")
         conn.close()
         quit()
     cur.execute("SELECT max(id) FROM Banners")
     row = cur.fetchone()
-    print(f"{row[0]} / 39 total items added")
+    print(f"{row[0]} / 39 total banner items added to the database. Run the file again!")
 
     # Close connection
     conn.close()
