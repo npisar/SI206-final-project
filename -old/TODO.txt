@@ -17,13 +17,13 @@ DONE
 DONE
 
 
+DONE
+    5. Calculations need to be clear and have labels too. Calculations need to be from database, not JSON
+DONE
 
-5. Calculations need to be clear and have labels too. Calculations need to be from database, not JSON
-
-
-
-8. need instructions for running the code
-
+WIPWIPWIPWIPWIPWIP
+    8. need instructions for running the code
+WIPWIPWIPWIPWIPWIP
 
 DONE - media
     9. Gotta get voice data!! Need to hit 100 for GSHImpact.

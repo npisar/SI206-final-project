@@ -77,7 +77,7 @@ def get_artifact_stats(cur):
         artifact_d: A  dictionary containing artifact info in the following format:
         {'Artifact Name': "Name"(str), 'Max Set Quality': Quality from 1-5(int)}
     '''
-    cur.execute('''SELECT name, maxSetQuality FROM Artifacts ''')
+    cur.execute('''SELECT name, max_set_quality FROM Artifacts ''')
 
     matches = cur.fetchall()
     artifact_d = dict(matches)
