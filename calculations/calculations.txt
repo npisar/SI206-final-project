@@ -1,25 +1,163 @@
-calculate_average_weapon_damage_per_rarity
---------------------
-(JSON-and-old-cache-method/weapon-data.json) = {1: '23.00', 2: '33.00', 3: '39.15', 4: '42.41', 5: '45.91'}
+FUNCTION / CALCULATION 1:
+Average Weapon Damage Per Rarity:
+
+This section shows the average base attack for weapons of each rarity (1 to 5 stars).
+    Rarity 1: 23.00
+    Rarity 2: 33.00
+    Rarity 3: 39.15
+    Rarity 4: 42.41
+    Rarity 5: 45.91
+------------------------------
 
 
-calculate_difference_awdpr
---------------------
-({1: '23.00', 2: '33.00', 3: '39.15', 4: '42.41', 5: '45.91'}) = [{1: [{'5-1': '22.91'}, {'4-1': '19.41'}, {'3-1': '16.15'}, {'2-1': '10.00'}]}, {2: [{'5-2': '12.91'}, {'4-2': '9.41'}, {'3-2': '6.15'}, {'1-2': '-10.00'}]}, {3: [{'5-3': '6.76'}, {'4-3': '3.26'}, {'2-3': '-6.15'}, {'1-3': '-16.15'}]}, {4: [{'5-4': '3.50'}, {'3-4': '-3.26'}, {'2-4': '-9.41'}, {'1-4': '-19.41'}]}, {5: [{'4-5': '-3.50'}, {'3-5': '-6.76'}, {'2-5': '-12.91'}, {'1-5': '-22.91'}]}]
+------------------------------
+FUNCTION / CALCULATION 2:
+Difference in Average Weapon Damage Per Rarity:
+
+These calculations show the difference in average base attack between weapons of different rarities.
+    Rarity 1 differences:
+        5-1: 22.91
+        4-1: 19.41
+        3-1: 16.15
+        2-1: 10.00
+    Rarity 2 differences:
+        5-2: 12.91
+        4-2: 9.41
+        3-2: 6.15
+        1-2: -10.00
+    Rarity 3 differences:
+        5-3: 6.76
+        4-3: 3.26
+        2-3: -6.15
+        1-3: -16.15
+    Rarity 4 differences:
+        5-4: 3.50
+        3-4: -3.26
+        2-4: -9.41
+        1-4: -19.41
+    Rarity 5 differences:
+        4-5: -3.50
+        3-5: -6.76
+        2-5: -12.91
+        1-5: -22.91
+------------------------------
 
 
-calculate_average_weapon_damage_per_type
---------------------
-(JSON-and-old-cache-method/weapon-data.json) = {'Bow': '41.71', 'Catalyst': '42.20', 'Claymore': '41.86', 'Polearm': '42.61', 'Sword': '41.86'}
+------------------------------
+FUNCTION / CALCULATION 3:
+Average Weapon Damage Per Type:
+
+This section shows the average base attack for each weapon type.
+    Weapon Type Catalyst: 42.21
+    Weapon Type Claymore: 41.86
+    Weapon Type Bow: 41.71
+    Weapon Type Sword: 41.86
+    Weapon Type Polearm: 42.61
+------------------------------
 
 
-calculate_difference_awdpt
---------------------
-({'Bow': '41.71', 'Catalyst': '42.20', 'Claymore': '41.86', 'Polearm': '42.61', 'Sword': '41.86'}) = [{'Bow': [{'Catalyst-Bow': '0.49'}, {'Claymore-Bow': '0.15'}, {'Polearm-Bow': '0.90'}, {'Sword-Bow': '0.15'}]}, {'Catalyst': [{'Bow-Catalyst': '-0.49'}, {'Claymore-Catalyst': '-0.34'}, {'Polearm-Catalyst': '0.41'}, {'Sword-Catalyst': '-0.34'}]}, {'Claymore': [{'Bow-Claymore': '-0.15'}, {'Catalyst-Claymore': '0.34'}, {'Polearm-Claymore': '0.75'}, {'Sword-Claymore': '0.00'}]}, {'Polearm': [{'Bow-Polearm': '-0.90'}, {'Catalyst-Polearm': '-0.41'}, {'Claymore-Polearm': '-0.75'}, {'Sword-Polearm': '-0.75'}]}, {'Sword': [{'Bow-Sword': '-0.15'}, {'Catalyst-Sword': '0.34'}, {'Claymore-Sword': '0.00'}, {'Polearm-Sword': '0.75'}]}]
+------------------------------
+FUNCTION / CALCULATION 4:
+Difference in Average Weapon Damage Per Type:
+
+These calculations show the difference in average base attack between different weapon types.
+    Weapon Type Catalyst differences:
+        Claymore-Catalyst: -0.35
+        Bow-Catalyst: -0.50
+        Sword-Catalyst: -0.35
+        Polearm-Catalyst: 0.40
+    Weapon Type Claymore differences:
+        Catalyst-Claymore: 0.35
+        Bow-Claymore: -0.15
+        Sword-Claymore: 0.00
+        Polearm-Claymore: 0.75
+    Weapon Type Bow differences:
+        Catalyst-Bow: 0.50
+        Claymore-Bow: 0.15
+        Sword-Bow: 0.15
+        Polearm-Bow: 0.90
+    Weapon Type Sword differences:
+        Catalyst-Sword: 0.35
+        Claymore-Sword: 0.00
+        Bow-Sword: -0.15
+        Polearm-Sword: 0.75
+    Weapon Type Polearm differences:
+        Catalyst-Polearm: -0.40
+        Claymore-Polearm: -0.75
+        Bow-Polearm: -0.90
+        Sword-Polearm: -0.75
+------------------------------
 
 
-calculate_num_artifacts_per_quality
---------------------
-(JSON-and-old-cache-method/artifact-data.json) = {1: 2, 2: 0, 3: 15, 4: 54, 5: 180}
+------------------------------
+FUNCTION / CALCULATION 5:
+Number of Artifacts Per Quality:
+
+This section shows the count of artifacts for each max quality (1 to 5 stars).
+    Max Quality 1: 2
+    Max Quality 2: 0
+    Max Quality 3: 15
+    Max Quality 4: 54
+    Max Quality 5: 180
+------------------------------
+
+
+------------------------------
+FUNCTION / CALCULATION 6:
+Number of Media Appearances Per Character:
+
+This section shows the total media appearances (promotion, holiday, birthday, videos, cameos, artwork) for each character.
+    Character Albedo: 19
+    Character Aloy: 0
+    Character Amber: 18
+    Character Ayaka: 0
+    Character Ayato: 0
+    Character Barbara: 15
+    Character Beidou: 17
+    Character Bennett: 8
+    Character Chongyun: 16
+    Character Diluc: 15
+    Character Diona: 13
+    Character Eula: 0
+    Character Fischl: 10
+    Character Ganyu: 27
+    Character Gorou: 0
+    Character Hu Tao: 16
+    Character Itto: 0
+    Character Jean: 21
+    Character Kaeya: 14
+    Character Kazuha: 0
+    Character Keqing: 24
+    Character Klee: 24
+    Character Kokomi: 0
+    Character Kuki: 0
+    Character Lisa: 12
+    Character Mona: 9
+    Character Ningguang: 19
+    Character Noelle: 11
+    Character Qiqi: 17
+    Character Raiden Shogun: 0
+    Character Razor: 7
+    Character Rosaria: 0
+    Character Sara: 0
+    Character Sayu: 0
+    Character Shenhe: 0
+    Character Sucrose: 11
+    Character Tartaglia: 15
+    Character Thoma: 0
+    Character Traveller (female): 13
+    Character Traveller (male): 30
+    Character Venti: 22
+    Character Xiangling: 21
+    Character Xiao: 0
+    Character Xingqiu: 17
+    Character Xinyan: 15
+    Character Yae: 0
+    Character Yanfei: 0
+    Character Yelan: 0
+    Character Yoimiya: 0
+    Character Yun Jin: 0
+    Character Zhongli: 30
+------------------------------
 
 
