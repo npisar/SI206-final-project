@@ -4,5 +4,5 @@
 using the GSHIMPACT API, Genshin.dev, and data from the Genshin Impact Fandom Wiki
 yay :)
 
-Report link: 
+Report link: <br/>
 GitHub Repo link: https://github.com/npisar/SI206-final-project
