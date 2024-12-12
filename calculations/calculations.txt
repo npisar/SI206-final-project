@@ -2,11 +2,11 @@ FUNCTION / CALCULATION 1:
 Average Weapon Damage Per Rarity:
 
 This section shows the average base attack for weapons of each rarity (1 to 5 stars).
-    Rarity 1: 23.00
-    Rarity 2: 33.00
-    Rarity 3: 39.15
-    Rarity 4: 42.41
-    Rarity 5: 45.91
+    Rarity 1 Star: 23.00 Base Attack
+    Rarity 2 Star: 33.00 Base Attack
+    Rarity 3 Star: 39.15 Base Attack
+    Rarity 4 Star: 42.41 Base Attack
+    Rarity 5 Star: 45.91 Base Attack
 ------------------------------
 
 
@@ -15,31 +15,31 @@ FUNCTION / CALCULATION 2:
 Difference in Average Weapon Damage Per Rarity:
 
 These calculations show the difference in average base attack between weapons of different rarities.
-    Rarity 1 differences:
-        5-1: 22.91
-        4-1: 19.41
-        3-1: 16.15
-        2-1: 10.00
-    Rarity 2 differences:
-        5-2: 12.91
-        4-2: 9.41
-        3-2: 6.15
-        1-2: -10.00
-    Rarity 3 differences:
-        5-3: 6.76
-        4-3: 3.26
-        2-3: -6.15
-        1-3: -16.15
-    Rarity 4 differences:
-        5-4: 3.50
-        3-4: -3.26
-        2-4: -9.41
-        1-4: -19.41
-    Rarity 5 differences:
-        4-5: -3.50
-        3-5: -6.76
-        2-5: -12.91
-        1-5: -22.91
+    Rarity 1 Star Differences:
+        Rarity 5-1 Star Difference: 22.91 Base Attack
+        Rarity 4-1 Star Difference: 19.41 Base Attack
+        Rarity 3-1 Star Difference: 16.15 Base Attack
+        Rarity 2-1 Star Difference: 10.00 Base Attack
+    Rarity 2 Star Differences:
+        Rarity 5-2 Star Difference: 12.91 Base Attack
+        Rarity 4-2 Star Difference: 9.41 Base Attack
+        Rarity 3-2 Star Difference: 6.15 Base Attack
+        Rarity 1-2 Star Difference: -10.00 Base Attack
+    Rarity 3 Star Differences:
+        Rarity 5-3 Star Difference: 6.76 Base Attack
+        Rarity 4-3 Star Difference: 3.26 Base Attack
+        Rarity 2-3 Star Difference: -6.15 Base Attack
+        Rarity 1-3 Star Difference: -16.15 Base Attack
+    Rarity 4 Star Differences:
+        Rarity 5-4 Star Difference: 3.50 Base Attack
+        Rarity 3-4 Star Difference: -3.26 Base Attack
+        Rarity 2-4 Star Difference: -9.41 Base Attack
+        Rarity 1-4 Star Difference: -19.41 Base Attack
+    Rarity 5 Star Differences:
+        Rarity 4-5 Star Difference: -3.50 Base Attack
+        Rarity 3-5 Star Difference: -6.76 Base Attack
+        Rarity 2-5 Star Difference: -12.91 Base Attack
+        Rarity 1-5 Star Difference: -22.91 Base Attack
 ------------------------------
 
 
@@ -48,11 +48,11 @@ FUNCTION / CALCULATION 3:
 Average Weapon Damage Per Type:
 
 This section shows the average base attack for each weapon type.
-    Weapon Type Catalyst: 42.21
-    Weapon Type Claymore: 41.86
-    Weapon Type Bow: 41.71
-    Weapon Type Sword: 41.85
-    Weapon Type Polearm: 42.61
+    Weapon Type Catalyst: 42.21 Base Attack
+    Weapon Type Claymore: 41.86 Base Attack
+    Weapon Type Bow: 41.71 Base Attack
+    Weapon Type Sword: 41.85 Base Attack
+    Weapon Type Polearm: 42.61 Base Attack
 ------------------------------
 
 
@@ -61,44 +61,44 @@ FUNCTION / CALCULATION 4:
 Difference in Average Weapon Damage Per Type:
 
 These calculations show the difference in average base attack between different weapon types.
-    Weapon Type Catalyst differences:
-        Claymore-Catalyst: -0.35
-        Bow-Catalyst: -0.50
-        Sword-Catalyst: -0.36
-        Polearm-Catalyst: 0.40
-    Weapon Type Claymore differences:
-        Catalyst-Claymore: 0.35
-        Bow-Claymore: -0.15
-        Sword-Claymore: -0.01
-        Polearm-Claymore: 0.75
-    Weapon Type Bow differences:
-        Catalyst-Bow: 0.50
-        Claymore-Bow: 0.15
-        Sword-Bow: 0.14
-        Polearm-Bow: 0.90
-    Weapon Type Sword differences:
-        Catalyst-Sword: 0.36
-        Claymore-Sword: 0.01
-        Bow-Sword: -0.14
-        Polearm-Sword: 0.76
-    Weapon Type Polearm differences:
-        Catalyst-Polearm: -0.40
-        Claymore-Polearm: -0.75
-        Bow-Polearm: -0.90
-        Sword-Polearm: -0.76
+    Weapon Type Catalyst Differences:
+        Weapon Type Claymore-Catalyst: -0.35 Base Attack
+        Weapon Type Bow-Catalyst: -0.50 Base Attack
+        Weapon Type Sword-Catalyst: -0.36 Base Attack
+        Weapon Type Polearm-Catalyst: 0.40 Base Attack
+    Weapon Type Claymore Differences:
+        Weapon Type Catalyst-Claymore: 0.35 Base Attack
+        Weapon Type Bow-Claymore: -0.15 Base Attack
+        Weapon Type Sword-Claymore: -0.01 Base Attack
+        Weapon Type Polearm-Claymore: 0.75 Base Attack
+    Weapon Type Bow Differences:
+        Weapon Type Catalyst-Bow: 0.50 Base Attack
+        Weapon Type Claymore-Bow: 0.15 Base Attack
+        Weapon Type Sword-Bow: 0.14 Base Attack
+        Weapon Type Polearm-Bow: 0.90 Base Attack
+    Weapon Type Sword Differences:
+        Weapon Type Catalyst-Sword: 0.36 Base Attack
+        Weapon Type Claymore-Sword: 0.01 Base Attack
+        Weapon Type Bow-Sword: -0.14 Base Attack
+        Weapon Type Polearm-Sword: 0.76 Base Attack
+    Weapon Type Polearm Differences:
+        Weapon Type Catalyst-Polearm: -0.40 Base Attack
+        Weapon Type Claymore-Polearm: -0.75 Base Attack
+        Weapon Type Bow-Polearm: -0.90 Base Attack
+        Weapon Type Sword-Polearm: -0.76 Base Attack
 ------------------------------
 
 
 ------------------------------
 FUNCTION / CALCULATION 5:
-Number of Artifacts Per Quality:
+Number of Artifacts Per Max Set Quality:
 
-This section shows the count of artifacts for each max quality (1 to 5 stars).
-    Max Quality 1: 2
-    Max Quality 2: 0
-    Max Quality 3: 15
-    Max Quality 4: 54
-    Max Quality 5: 180
+This section shows the count of artifacts for each max set quality value (1 to 5 stars).
+    Max Set Quality 1 Star: 2 total artifacts
+    Max Set Quality 2 Star: 0 total artifacts
+    Max Set Quality 3 Star: 15 total artifacts
+    Max Set Quality 4 Star: 54 total artifacts
+    Max Set Quality 5 Star: 180 total artifacts
 ------------------------------
 
 
@@ -107,57 +107,57 @@ FUNCTION / CALCULATION 6:
 Number of Media Appearances Per Character:
 
 This section shows the total media appearances (promotion, holiday, birthday, videos, cameos, artwork) for each character.
-    Character Albedo: 19
-    Character Aloy: 0
-    Character Amber: 18
-    Character Ayaka: 0
-    Character Ayato: 0
-    Character Barbara: 15
-    Character Beidou: 17
-    Character Bennett: 8
-    Character Chongyun: 16
-    Character Diluc: 15
-    Character Diona: 13
-    Character Eula: 0
-    Character Fischl: 10
-    Character Ganyu: 27
-    Character Gorou: 0
-    Character Hu Tao: 16
-    Character Itto: 0
-    Character Jean: 21
-    Character Kaeya: 14
-    Character Kazuha: 0
-    Character Keqing: 24
-    Character Klee: 24
-    Character Kokomi: 0
-    Character Kuki: 0
-    Character Lisa: 12
-    Character Mona: 9
-    Character Ningguang: 19
-    Character Noelle: 11
-    Character Qiqi: 17
-    Character Raiden Shogun: 0
-    Character Razor: 7
-    Character Rosaria: 0
-    Character Sara: 0
-    Character Sayu: 0
-    Character Shenhe: 0
-    Character Sucrose: 11
-    Character Tartaglia: 15
-    Character Thoma: 0
-    Character Traveller (female): 13
-    Character Traveller (male): 30
-    Character Venti: 22
-    Character Xiangling: 21
-    Character Xiao: 0
-    Character Xingqiu: 17
-    Character Xinyan: 15
-    Character Yae: 0
-    Character Yanfei: 0
-    Character Yelan: 0
-    Character Yoimiya: 0
-    Character Yun Jin: 0
-    Character Zhongli: 30
+    Character Albedo: 19 total media appearances
+    Character Aloy: 0 total media appearances
+    Character Amber: 18 total media appearances
+    Character Ayaka: 0 total media appearances
+    Character Ayato: 0 total media appearances
+    Character Barbara: 15 total media appearances
+    Character Beidou: 17 total media appearances
+    Character Bennett: 8 total media appearances
+    Character Chongyun: 16 total media appearances
+    Character Diluc: 15 total media appearances
+    Character Diona: 13 total media appearances
+    Character Eula: 0 total media appearances
+    Character Fischl: 10 total media appearances
+    Character Ganyu: 27 total media appearances
+    Character Gorou: 0 total media appearances
+    Character Hu Tao: 16 total media appearances
+    Character Itto: 0 total media appearances
+    Character Jean: 21 total media appearances
+    Character Kaeya: 14 total media appearances
+    Character Kazuha: 0 total media appearances
+    Character Keqing: 24 total media appearances
+    Character Klee: 24 total media appearances
+    Character Kokomi: 0 total media appearances
+    Character Kuki: 0 total media appearances
+    Character Lisa: 12 total media appearances
+    Character Mona: 9 total media appearances
+    Character Ningguang: 19 total media appearances
+    Character Noelle: 11 total media appearances
+    Character Qiqi: 17 total media appearances
+    Character Raiden Shogun: 0 total media appearances
+    Character Razor: 7 total media appearances
+    Character Rosaria: 0 total media appearances
+    Character Sara: 0 total media appearances
+    Character Sayu: 0 total media appearances
+    Character Shenhe: 0 total media appearances
+    Character Sucrose: 11 total media appearances
+    Character Tartaglia: 15 total media appearances
+    Character Thoma: 0 total media appearances
+    Character Traveller (female): 13 total media appearances
+    Character Traveller (male): 30 total media appearances
+    Character Venti: 22 total media appearances
+    Character Xiangling: 21 total media appearances
+    Character Xiao: 0 total media appearances
+    Character Xingqiu: 17 total media appearances
+    Character Xinyan: 15 total media appearances
+    Character Yae: 0 total media appearances
+    Character Yanfei: 0 total media appearances
+    Character Yelan: 0 total media appearances
+    Character Yoimiya: 0 total media appearances
+    Character Yun Jin: 0 total media appearances
+    Character Zhongli: 30 total media appearances
 ------------------------------
 
 

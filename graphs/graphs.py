@@ -4,11 +4,14 @@ import os
 
 def get_weapon_stats(cur):
     '''
+    Gathers all of the weapon information from the database 
+
     ARGUMENTS
-        cur: The cursor object used to pull the weapon info from the database
+    cur:
+        SQLite cursor
 
     RETURNS:
-        weapons_d: A nested dictionary containing weapon info in the following format:
+        weapons_d: Nested dictionary containing weapon info in the following format:
         {"Weapon Name"(str): {'Type': "Weapon Type"(str), 'Rarity': "Weapon Rarity"(int), 'Damage': "Base Weapon Damage"(int)}}
     '''
     cur.execute('''SELECT id, weapon_type_id, rarity, base_attack FROM Weapons ''')
@@ -32,11 +35,14 @@ def get_weapon_stats(cur):
 
 def get_char_stats(cur):
     '''
+    Gathers all of the character information from the database 
+
     ARGUMENTS
-        cur: The cursor object used to pull the weapon info from the database
+    cur:
+        SQLite cursor
 
     RETURNS:
-        char_d: A nested dictionary containing weapon info in the following format:
+        char_d: Nested dictionary containing weapon info in the following format:
         {"Character Name"(str): {'Rarity': "Character Rarity"(int), 'Weapon': "Weapon Type"(str), 'Vision': "Character Vision"(str)}}
     '''
     # pull the characters and their corresponding stats from the database
@@ -70,11 +76,14 @@ def get_char_stats(cur):
 
 def get_artifact_stats(cur):
     '''
+    Gathers all of the artifact information from the database
+
     ARGUMENTS
-        cur: The cursor object used to pull the weapon info from the database
+    cur:
+        SQLite cursor
 
     RETURNS:
-        artifact_d: A  dictionary containing artifact info in the following format:
+        artifact_d: Dictionary containing artifact info in the following format:
         {'Artifact Name': "Name"(str), 'Max Set Quality': Quality from 1-5(int)}
     '''
     cur.execute('''SELECT name, max_set_quality FROM Artifacts ''')
@@ -87,8 +96,10 @@ def get_artifact_stats(cur):
 
 def box_rarity_versus_dmg(weapons_d):
     '''
+    Creates the box plot used to track rarity against damage and the horizontal bar graph of number of weapons by rarity
+
     ARGUMENTS
-        weapons_d: The dictionary with each weapon and its statistics
+        weapons_d: Dictionary with each weapon and its statistics
 
     RETURNS:
         None
@@ -143,8 +154,10 @@ def box_rarity_versus_dmg(weapons_d):
 
 def char_vision_vs_weapon(chars_d):
     '''
+    Creates the bar charts used to compare weapon frequency by character vision
+
     ARGUMENTS
-        weapons_d: The dictionary with each weapon and its statistics
+        chars_d: Dictionary with each character and their information
 
     RETURNS:
         None
@@ -233,8 +246,10 @@ def char_vision_vs_weapon(chars_d):
 
 def chars_by_vision(chars_d):
     '''
+    Plots the distribution of characters of each type of vision they have using a pie chart
+
     ARGUMENTS
-        weapons_d: The dictionary with each weapon and its statistics
+        chars_d: Dictionary with each character and their information
 
     RETURNS:
         None
@@ -258,8 +273,10 @@ def chars_by_vision(chars_d):
 
 def artifact_qual_dist(artifact_d):
     '''
+    Plots the distribution of artifacts' maximum set quality using a pie chart
+
     ARGUMENTS
-        artifact_d: The dictionary with each artifact and its maximum set quality
+        artifact_d: Dictionary with each artifact and its maximum set quality
     
     RETURNS:
         None

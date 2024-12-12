@@ -6,17 +6,15 @@ import re
 # Database Setup
 def set_up_database(db_name):
     """
-    Sets up a SQLite database connection and cursor.
+    Sets up a SQLite database connection and cursor
 
-    Parameters:
-    -----------------------
+    ARGUMENTS:
     db_name: str
-        The name of the SQLite database.
+        The name of the SQLite database
 
-    Returns:
-    -----------------------
+    RETURNS:
     Tuple (Cursor, Connection):
-        A tuple containing the database cursor and connection objects.
+        A tuple containing the database cursor and connection objects
     """
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
@@ -35,15 +33,13 @@ def set_up_database(db_name):
 #Scrape and insert the artifact data into the table
 def get_artifact_data(url):
     """
-    Scrapes artifact data from the Genshin Impact Wiki Artifacts/Sets page and inserts it into the Artifacts table.
+    Scrapes artifact data from the Genshin Impact Wiki Artifacts/Sets page and inserts it into the Artifacts table
     
-    Parameters:
-    --------------------
+    ARGUMENTS:
     url: str
         The URL of the Genshin Impact Wiki Artifacts/Sets page
 
-    Returns:
-    --------------------
+    RETURNS:
     all_media_data: list
         List of data for each artifact on the Genshin Impact Wiki Artifacts/Sets page
     """
@@ -90,16 +86,14 @@ def setup_artifacts_table(cur, conn):
     """
     Sets up the Artifacts table
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     cur:
         SQLite cursor object
     conn:
         SQLite connection object
 
-    Returns:
-    --------------------
-    None
+    RETURNS:
+        None
     """
     cur.execute(
         """
@@ -116,24 +110,22 @@ def insert_artifact_data(artifact_data, start, end, limit, cur, conn):
     """
     Inserts the media data for each character into the Media table.
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     artifact_data: list
         List of data for all artifacts, returned from get_artifact_data
     start: int
-        starting point which to iterate through (remembers where it left off)
+        Integer starting point which to iterate from (remembers where it left off)
     end: int
-        upper bound of where to iterate through (maximum number of items the API supplies)
+        Integer upper bound of where to iterate through (maximum number of items the API supplies)
     limit: int
-        limit of how many items can be returned
+        Integer limit of how many items can be returned
     cur:
-        SQLite cursor
+        SQLite cursor object
     conn:
-        SQLite connection
+        SQLite connection object
     
-    Returns:
-    --------------------
-    None
+    RETURNS:
+        None
     """
     count = 0
     for i in range(start, end):
@@ -165,22 +157,14 @@ def insert_artifact_data(artifact_data, start, end, limit, cur, conn):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ##########################--MAIN--#################################
 def main():
+    '''
+    Sets up database 
+    Sets up artifact table
+    Calls functions
+    Inserts information into database
+    '''
     # Database setup
     cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     

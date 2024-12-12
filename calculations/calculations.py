@@ -3,13 +3,15 @@ import os
 
 def calculate_average_weapon_damage_per_rarity(cur):
     '''
+    Calculates the average weapon damage per rarity (1 through 5 stars)
+
     ARGUMENTS:
     cur:
-        SQLite cursor
+        SQLite cursor object
     
     RETURNS:
         rarity_and_avg_attack: dict
-            The keys are integers representing weapon rarity, and the values are floats representing average damage for weapons of that rarity
+            Dictionary where the keys are integers representing weapon rarity, and the values are floats representing average damage for weapons of that rarity
     '''
     cur.execute(
         '''
@@ -52,13 +54,15 @@ def calculate_average_weapon_damage_per_rarity(cur):
 
 def calculate_difference_awdpr(awdpr):
     '''
+    Calculates the differences between each pair of rarities
+
     ARGUMENTS:
     awdpr: dict
         Dictionary of average weapon damage per rarity returned from calculate_average_weapon_damage_per_rarirty 
 
     RETURNS:
     difference_awdpr: list of dicts
-        List of dicts where the keys are each rarity, and the values are a list of calculations comparing the difference between the average damages for each rarity (ignoring the difference between a rarity and itself)
+        List of dictionaries where the keys are each rarity, and the values are a list of calculations comparing the difference between the average damages for each rarity
     '''
     difference_awdpr = []
     for p_i in range(1, 6):
@@ -94,13 +98,15 @@ def calculate_difference_awdpr(awdpr):
 
 def calculate_average_weapon_damage_per_type(cur):
     '''
+    Calculates the average weapon damage per weapon type (sword, bow, etc.)
+    
     ARGUMENTS:
     cur:
-        SQLite cursor
+        SQLite cursor object
     
     RETURNS:
     rarity_and_avg_attack: dict
-        Dict where the keys are integers representing weapon type, and the values are floats representing average damage for weapons of that type
+        Dictionary where the keys are integers representing weapon type, and the values are floats representing average damage for weapons of that type
     '''
     cur.execute(
         '''
@@ -156,15 +162,17 @@ def calculate_average_weapon_damage_per_type(cur):
 
 def calculate_difference_awdpt(awdpt, weapon_types):
     '''
+    Calculates the differences between each pair of weapon types
+
     ARGUMENTS:
     awdpt: dict
         Dictionary of average weapon damage per type returned from calculate_average_weapon_damage_per_type
     weapon_types: list
-        List of weapon types returned from calculate_average_weapon_damage_per_type
+        list of weapon types returned from calculate_average_weapon_damage_per_type
 
     RETURNS:
     difference awdpr: list of dicts
-        Keys are each weapon type, and the values are a list of calculations comparing the difference between the average damages for each type (ignoring the difference between a type and itself)
+        List of dictionaries where the keys are each weapon type, and the values are a list of calculations comparing the difference between the average damages for each type
     '''
     difference_awdpt = []
     for main_type in weapon_types:
@@ -207,13 +215,15 @@ def calculate_difference_awdpt(awdpt, weapon_types):
 
 def calculate_num_artifacts_per_quality(cur):
     '''
+    Calculates the number artifacts for each quality (1 through 5 stars)
+    
     ARGUMENTS:
     cur:
-        SQLite cursor
+        SQLite cursor object
     
     RETURNS:
-        num_artifacts_per_quality: dict
-        Dict where the  keys are integers representing artifact max quality, and the values are ints representing the count for artifacts of that max rarity
+    num_artifacts_per_quality: dict
+        Dictionary where the keys are integers representing artifact max quality, and the values are ints representing the count for artifacts of that max quality
     '''
     cur.execute(
         '''
@@ -249,6 +259,17 @@ def calculate_num_artifacts_per_quality(cur):
     return quality_and_count
 
 def calculate_num_media_per_character(cur):
+    '''
+    Calculates the total number of media appearances for each character
+    
+    ARGUMENTS:
+    cur:
+        SQLite cursor object
+    
+    RETURNS:
+    num_media_per_character: dict
+        Dictionary where the keys are strs representing character names, and the values are ints representing the count for that character's total number of media appearances
+    '''
     cur.execute(
     '''
     SELECT
@@ -259,8 +280,9 @@ def calculate_num_media_per_character(cur):
     '''
     )
     rows = cur.fetchall()
-    media_data = [{row[0]:row[1]} for row in rows]
+    num_media_per_character = [{row[0]:row[1]} for row in rows]
 
+    # get all character names, add those that aren't present in 
     cur.execute(
     '''
     SELECT name FROM Characters
@@ -269,18 +291,16 @@ def calculate_num_media_per_character(cur):
     all_characters = cur.fetchall()
     all_character_names = [row[0] for row in all_characters]
 
-    # Creating a set of character names that already exist in media_data
-    existing_characters = {list(char_dict.keys())[0] for char_dict in media_data}
+    existing_characters = {list(char_dict.keys())[0] for char_dict in num_media_per_character}
 
-    # Adding characters that are not present in media_data
     for name in all_character_names:
         if name not in existing_characters:
-            media_data.append({name: 0})
+            num_media_per_character.append({name: 0})
 
-    # Sort the media_data list by character names
-    media_data = sorted(media_data, key=lambda d: list(d.keys())[0])
+    # Sort the num_media_per_character list by character names
+    num_media_per_character = sorted(num_media_per_character, key=lambda d: list(d.keys())[0])
 
-    return media_data
+    return num_media_per_character
 
 
 
@@ -292,7 +312,7 @@ def calculate_num_media_per_character(cur):
 
 
 def main():
-    # create the connection and cursor
+    # create the connection and cursor objects
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.abspath(os.path.join(current_dir, "..")) 
     db_path = os.path.join(root_dir, 'data-and-tables/genshin_impact_data.db')
@@ -315,7 +335,7 @@ def main():
         file.write("FUNCTION / CALCULATION 1:\nAverage Weapon Damage Per Rarity:\n\n")
         file.write("This section shows the average base attack for weapons of each rarity (1 to 5 stars).\n")
         for rarity, avg_attack in awdpr.items():
-            file.write(f"    Rarity {rarity}: {avg_attack}\n")
+            file.write(f"    Rarity {rarity} Star: {avg_attack} Base Attack\n")
         file.write(f"{'-'*30}\n\n\n")
 
         # Difference in average weapon damage per rarity
@@ -324,10 +344,10 @@ def main():
         file.write("These calculations show the difference in average base attack between weapons of different rarities.\n")
         for difference in difference_awdpr:
             for rarity, calcs in difference.items():
-                file.write(f"    Rarity {rarity} differences:\n")
+                file.write(f"    Rarity {rarity} Star Differences:\n")
                 for calc in calcs:
                     for calc_name, value in calc.items():
-                        file.write(f"        {calc_name}: {value}\n")
+                        file.write(f"        Rarity {calc_name} Star Difference: {value} Base Attack\n")
         file.write(f"{'-'*30}\n\n\n")
 
         # Average weapon damage per type
@@ -335,7 +355,7 @@ def main():
         file.write("FUNCTION / CALCULATION 3:\nAverage Weapon Damage Per Type:\n\n")
         file.write("This section shows the average base attack for each weapon type.\n")
         for w_type, avg_attack in awdpt.items():
-            file.write(f"    Weapon Type {w_type}: {avg_attack}\n")
+            file.write(f"    Weapon Type {w_type}: {avg_attack} Base Attack\n")
         file.write(f"{'-'*30}\n\n\n")
 
         # Difference in average weapon damage per type
@@ -344,18 +364,18 @@ def main():
         file.write("These calculations show the difference in average base attack between different weapon types.\n")
         for difference in difference_awdpt:
             for weapon_type, calcs in difference.items():
-                file.write(f"    Weapon Type {weapon_type} differences:\n")
+                file.write(f"    Weapon Type {weapon_type} Differences:\n")
                 for calc in calcs:
                     for calc_name, value in calc.items():
-                        file.write(f"        {calc_name}: {value}\n")
+                        file.write(f"        Weapon Type {calc_name}: {value} Base Attack\n")
         file.write(f"{'-'*30}\n\n\n")
 
         # Number of artifacts per quality
         file.write(f"{'-'*30}\n")
-        file.write("FUNCTION / CALCULATION 5:\nNumber of Artifacts Per Quality:\n\n")
-        file.write("This section shows the count of artifacts for each max quality (1 to 5 stars).\n")
+        file.write("FUNCTION / CALCULATION 5:\nNumber of Artifacts Per Max Set Quality:\n\n")
+        file.write("This section shows the count of artifacts for each max set quality value (1 to 5 stars).\n")
         for quality, count in num_artifacts_per_quality.items():
-            file.write(f"    Max Quality {quality}: {count}\n")
+            file.write(f"    Max Set Quality {quality} Star: {count} total artifacts\n")
         file.write(f"{'-'*30}\n\n\n")
 
         # Number of media per character
@@ -364,7 +384,7 @@ def main():
         file.write("This section shows the total media appearances (promotion, holiday, birthday, videos, cameos, artwork) for each character.\n")
         for media in num_media_per_character:
             for character, count in media.items():
-                file.write(f"    Character {character}: {count}\n")
+                file.write(f"    Character {character}: {count} total media appearances\n")
         file.write(f"{'-'*30}\n\n\n")
     print(f"Calculations text file created. Please move onto graphs.py in the graphs folder!\n\n\n")
 

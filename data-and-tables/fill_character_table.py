@@ -4,35 +4,19 @@ import requests
 # Database Setup
 def set_up_database(db_name):
     """
-    Sets up a SQLite database connection and cursor.
+    Sets up a SQLite database connection and cursor
 
-    Parameters:
-    -----------------------
+    ARGUMENTS:
     db_name: str
-        The name of the SQLite database.
+        The name of the SQLite database
 
-    Returns:
-    -----------------------
+    RETURNS:
     Tuple (Cursor, Connection):
-        A tuple containing the database cursor and connection objects.
+        A tuple containing the database cursor and connection objects
     """
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
     return cur, conn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -48,13 +32,11 @@ def get_character_data(character_url):
     """
     Gets character data from the GSHIMPACT API.
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     character_url: str
         The base URL for the GSHImpact API
 
-    Returns:
-    --------------------
+    RETURNS:
     all_media_data: list
         List of GSHIMPACT json responses for each character ID
     """
@@ -86,16 +68,14 @@ def setup_character_tables(cur, conn):
     """
     Sets up the Characters and CharacterVisions table
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     cur:
         SQLite cursor object
     conn:
         SQLite connection object
 
-    Returns:
-    --------------------
-    None
+    RETURNS:
+        None
     """
     cur.execute(
         """
@@ -124,10 +104,9 @@ def setup_character_tables(cur, conn):
 # Insert the character visions data into the CharacterVisions table
 def insert_character_vision_table(character_data, cur, conn):
     """
-    Inserts the character visions data into the CharacterVisions table.
+    Inserts the character visions data into the CharacterVisions table
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     character_data: list
         List of data for all characters, returned from get_character_data
     cur:
@@ -135,8 +114,8 @@ def insert_character_vision_table(character_data, cur, conn):
     conn:
         SQLite connection
     
-    Returns: none
-    --------------------
+    RETURNS:
+        None
     """
 
     character_visions = []
@@ -165,24 +144,22 @@ def insert_character_data(character_data, start, end, limit, cur, conn):
     """
     Inserts the character data into the Characters table.
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     character_data: list
         List of data for all characters, returned from get_character_data
     start: int
-        starting point which to iterate through (remembers where it left off)
+        Integer starting point which to iterate from (remembers where it left off)
     end: int
-        upper bound of where to iterate through (maximum number of items the API supplies)
+        Integer upper bound of where to iterate through (maximum number of items the API supplies)
     limit: int
-        limit of how many items can be returned
+        Integer limit of how many items can be returned
     cur:
-        SQLite cursor
+        SQLite cursor object
     conn:
-        SQLite connection
+        SQLite connection object
     
-    Returns:
-    --------------------
-    None
+    RETURNS:
+        None
     """
     count = 0
     for i in range(start, end):
@@ -221,12 +198,14 @@ def insert_character_data(character_data, start, end, limit, cur, conn):
 
 
 
-
-
-
-
 ##########################--MAIN--#################################
 def main():
+    '''
+    Sets up database 
+    Sets up character tables
+    Calls functions
+    Inserts information into database
+    '''
     # Database setup
     cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     

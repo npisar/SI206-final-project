@@ -4,15 +4,13 @@ import requests
 # Database Setup
 def set_up_database(db_name):
     """
-    Sets up a SQLite database connection and cursor.
+    Sets up a SQLite database connection and cursor
 
-    Parameters:
-    -----------------------
+    ARGUMENTS:
     db_name: str
-        The name of the SQLite database.
+        The name of the SQLite database
 
-    Returns:
-    -----------------------
+    RETURNS:
     Tuple (Cursor, Connection):
         A tuple containing the database cursor and connection objects.
     """
@@ -35,13 +33,11 @@ def get_banner_data(banner_url):
     """
     Gets banner data from the GSHIMPACT API.
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     banner_url: str
         The base URL for the GSHImpact API
 
-    Returns:
-    --------------------
+    RETURNS:
     all_media_data: list
         List of GSHIMPACT json responses for each banner ID
     """
@@ -67,16 +63,14 @@ def setup_banners_table(cur, conn):
     """
     Sets up the banner table
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     cur:
         SQLite cursor object
     conn:
         SQLite connection object
 
-    Returns:
-    --------------------
-    None
+    RETURNS:
+        None
     """
     cur.execute(
         """
@@ -100,24 +94,22 @@ def insert_banner_data(banner_data, start, end, limit, cur, conn):
     """
     Inserts the media data for each character into the Media table.
 
-    Parameters:
-    --------------------
+    ARGUMENTS:
     banner_data: list
         List of data for all banners, returned from get_banner_data
     start: int
-        starting point which to iterate through (remembers where it left off)
+        Integer starting point which to iterate from (remembers where it left off)
     end: int
-        upper bound of where to iterate through (maximum number of items the API supplies)
+        Integer upper bound of where to iterate through (maximum number of items the API supplies)
     limit: int
-        limit of how many items can be returned
+        Integer limit of how many items can be returned
     cur:
-        SQLite cursor
+        SQLite cursor object
     conn:
-        SQLite connection
+        SQLite connection object
     
-    Returns:
-    --------------------
-    None
+    RETURNS:
+        None
     """
     # Default IDs to None (or NULL) for missing characters
     five_star_name = None
@@ -169,22 +161,14 @@ def insert_banner_data(banner_data, start, end, limit, cur, conn):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ##########################--MAIN--#################################
 def main():
+    '''
+    Sets up database 
+    Sets up banner table
+    Calls functions
+    Inserts information into database
+    '''
     # Database setup
     cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     
