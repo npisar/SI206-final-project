@@ -166,7 +166,7 @@ def char_vision_vs_weapon(chars_d):
     bar3 = fig1.add_subplot(133)
 
     # format and populate the bar charts
-    bar1.bar(d['Pyro'].keys(), d['Pyro'].values(), color='#FFD6A5')
+    bar1.bar(d['Pyro'].keys(), d['Pyro'].values(), color='#ed5564')
     bar1.set_title("Weapon Choice for Pyros", fontsize=10)
     bar1.ticklabel_format(axis='y', style='plain')
     bar1.set_yticks([1, 2, 3, 4, 5])
@@ -174,7 +174,7 @@ def char_vision_vs_weapon(chars_d):
     bar1.set_ylabel("Frequency")
     bar1.tick_params(axis="x", labelrotation=35, labelsize=8)
 
-    bar2.bar(d['Hydro'].keys(), d['Hydro'].values(), color='#A0C4FF')
+    bar2.bar(d['Hydro'].keys(), d['Hydro'].values(), color='#4f75e8')
     bar2.set_title("Weapon Choice for Hydros", fontsize=10)
     bar2.ticklabel_format(axis='y', style='plain')
     bar2.set_yticks([1, 2, 3, 4, 5])
@@ -182,7 +182,7 @@ def char_vision_vs_weapon(chars_d):
     bar2.set_ylabel("Frequency") 
     bar2.tick_params(axis="x", labelrotation=35, labelsize=8)
 
-    bar3.bar(d['Electro'].keys(), d['Electro'].values(), color='#BD2BFF')
+    bar3.bar(d['Electro'].keys(), d['Electro'].values(), color='#ac92eb')
     bar3.set_title("Weapon Choice for Electros", fontsize=10)
     bar3.ticklabel_format(axis='y', style='plain')
     bar3.set_yticks([1, 2, 3, 4, 5])
@@ -201,7 +201,7 @@ def char_vision_vs_weapon(chars_d):
     bar6 = fig2.add_subplot(133)
 
     # format and populate the bar charts
-    bar4.bar(d['Cryo'].keys(), d['Cryo'].values(), color='#9BF6FF')
+    bar4.bar(d['Cryo'].keys(), d['Cryo'].values(), color='#4fc1e8')
     bar4.set_title("Weapon Choice for Cryos", fontsize=10)
     bar4.ticklabel_format(axis='y', style='plain')
     bar4.set_yticks([1, 2, 3, 4, 5])
@@ -209,7 +209,7 @@ def char_vision_vs_weapon(chars_d):
     bar4.set_ylabel("Frequency") 
     bar4.tick_params(axis="x", labelrotation=35, labelsize=8)
 
-    bar5.bar(d['Geo'].keys(), d['Geo'].values(), color='#FFADAD')
+    bar5.bar(d['Geo'].keys(), d['Geo'].values(), color='#ffce54')
     bar5.set_title("Weapon Choice for Geos", fontsize=10)
     bar5.ticklabel_format(axis='y', style='plain')
     bar5.set_yticks([1, 2, 3, 4, 5])
@@ -217,7 +217,7 @@ def char_vision_vs_weapon(chars_d):
     bar5.set_ylabel("Frequency")
     bar5.tick_params(axis="x", labelrotation=35, labelsize=8)
 
-    bar6.bar(d['Anemo'].keys(), d['Anemo'].values(), color='#CAFFBF')
+    bar6.bar(d['Anemo'].keys(), d['Anemo'].values(), color='#a0d568')
     bar6.set_title("Weapon Choice for Anemos", fontsize=10)
     bar6.ticklabel_format(axis='y', style='plain')
     bar6.set_yticks([1, 2, 3, 4, 5])
@@ -246,7 +246,7 @@ def chars_by_vision(chars_d):
         counts_d[vision] = counts_d.get(vision, 0) + 1
 
      # Create and populate the graph: a pie chart
-    colors = ['#FFD6A5','#A0C4FF','#CAFFBF','#BD2BFF','#9BF6FF', '#FFADAD', '#CAFFBF']
+    colors = ['#ac92eb','#4fc1e8','#a0d568','#ffce54','#ed5564', '#F6F5F2', '#41444B']
     plt.pie(counts_d.values(), labels=counts_d.keys(), autopct='%1.1f%%', colors=colors)
     plt.title('Character Vision Distribution')
 
@@ -271,7 +271,7 @@ def artifact_qual_dist(artifact_d):
         rarity_counts[rating] = rarity_counts.get(rating, 0) + 1
     
     # Create and populate the graph: a pie chart
-    colors = ['#aca2e0','#f4e8c1','#a0c1b9','#70a0af']
+    colors = ['#ed5564','#ffce54','#a0d568','#4fc1e8']
     plt.pie(rarity_counts.values(), labels=rarity_counts.keys(), autopct='%1.1f%%', colors=colors)
     plt.title('Maximum Artifact Set Quality Distribution')
 
