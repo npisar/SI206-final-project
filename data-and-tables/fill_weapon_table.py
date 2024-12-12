@@ -46,16 +46,16 @@ def get_weapon_data(weapon_url):
     all_media_data: list
         List of Genshin.dev json responses for each weapon
     """
+    print(f"Weapon data being gathered from the Genshin.dev API! Please wait...")
     response = requests.get(f"{weapon_url}weapons/")
     if response.status_code != 200:
         print(f"Error fetching weapon names: {response.status_code}")
         return []
     weapon_names = response.json()
     weapon_names.remove('blackcliff-agate') # remove dupe - API limitation
-    print(f"Weapon names scraped! Please wait...")
 
     all_weapon_data = []
-    ct = 1
+    # ct = 1    # used for development
     for weapon_name in weapon_names:
         response = requests.get(f"{weapon_url}weapons/{weapon_name}/")
         if response.status_code != 200:
@@ -63,9 +63,9 @@ def get_weapon_data(weapon_url):
             continue
         weapon_data = response.json()
         all_weapon_data.append(weapon_data)
-        print(f"weapon {ct}/{len(weapon_names)} added")
-        ct+=1
-    print(f"scraping for weapons done!")
+        # print(f"Data for {ct}/{len(weapon_names)} weapons gathered")    # used for development
+        # ct+=1    # used for development
+    print(f"Weapon API call done! Adding rows to the database...")
     return all_weapon_data
 
 # Create the Weapons table
@@ -171,7 +171,7 @@ def insert_weapon_data(weapon_data, start, end, limit, cur, conn):
     """
     count = 0
     for i in range(start, end):
-        print(f"starting on weapon {start+count}, which is {weapon_data[i]['name']}")
+        # print(f"starting on weapon {start+count}, which is {weapon_data[i]['name']}")
         cur.execute(
             """ 
             INSERT OR IGNORE INTO Weapons 
@@ -223,7 +223,7 @@ def insert_weapon_data(weapon_data, start, end, limit, cur, conn):
 
 def main():
     # Database setup
-    cur, conn = set_up_database("genshin_impact_data.db")
+    cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     
     # Set up table
     setup_weapons_tables(cur, conn)
@@ -249,13 +249,13 @@ def main():
         end = 187
     if start >= 95:
         insert_weapon_data(weapon_data=weapon_data, start=start, end=end, limit=200, cur=cur, conn=conn)
-        print(f"All weapon data added to database!\n\n\n")
+        print(f"All weapon data added to the database. Please move on to fill_character_table.py!\n\n\n")
         quit()
 
     insert_weapon_data(weapon_data=weapon_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     cur.execute("SELECT max(id) FROM Weapons")
     row = cur.fetchone()
-    print(f"{row[0] + 5} / 194 total weapon items added to the database. Run the file again!")
+    print(f"{row[0] + 5} / 194 total rows of weapon data added to the database. Run the file again!\n")
 
     # Close connection
     conn.close()

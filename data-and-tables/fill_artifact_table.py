@@ -47,6 +47,7 @@ def get_artifact_data(url):
     all_media_data: list
         List of data for each artifact on the Genshin Impact Wiki Artifacts/Sets page
     """
+    print(f"Artifact data being gathered from https://genshin-impact.fandom.com/wiki/Artifact/Sets! Please wait...")
     # Scrape the site
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -81,7 +82,7 @@ def get_artifact_data(url):
             artifact_name = link.get("title")
 
             all_artifact_data.append({'name':artifact_name, 'max_set_quality':max_set_quality})
-    
+    print(f"Artifact web scraping done! Adding items to the database...")
     return all_artifact_data
 
 # Setup the Artifacts table
@@ -181,7 +182,7 @@ def insert_artifact_data(artifact_data, start, end, limit, cur, conn):
 ##########################--MAIN--#################################
 def main():
     # Database setup
-    cur, conn = set_up_database("genshin_impact_data.db")
+    cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     
     # Set up tables
     setup_artifacts_table(cur, conn)
@@ -206,13 +207,13 @@ def main():
         end = 251
     if start >= 100:
         insert_artifact_data(artifact_data=artifact_data, start=start, end=end, limit=251, cur=cur, conn=conn)
-        print(f"All artifact data added to database!\n\n\n")
+        print(f"All artifact data added to database. Please move on to fill_media_table.py!\n\n\n")
         quit()
 
     insert_artifact_data(artifact_data=artifact_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     cur.execute("SELECT max(id) FROM Artifacts")
     row = cur.fetchone()
-    print(f"{row[0]} / 251 total artifact items added to the database. Run the file again!")
+    print(f"{row[0]} / 251 total rows of artifact data added to the database. Run the file again!\n")
 
     # CLose connection
     conn.close()

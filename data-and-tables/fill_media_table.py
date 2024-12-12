@@ -65,6 +65,7 @@ def get_media_data(character_ids, url):
     all_media_data: list
         List of GSHIMPACT json responses for each character ID
     """
+    print(f"Media data being gathered from the GSHImpact API! Please wait...")
     all_media_data = []
     for id in character_ids:
         media_url = f"{url}characters/{id}/media"
@@ -74,7 +75,7 @@ def get_media_data(character_ids, url):
             media_data = response.json().get("result", {})
         
         all_media_data.append(media_data)
-    
+    print(f"Media API call done! Adding rows to the database...")
     return all_media_data
 
 # Setup Media table
@@ -202,7 +203,7 @@ def insert_media_data(media_data, start, end, limit, cur, conn):
 ##########################--MAIN--#################################
 def main():
     # Set up database
-    cur, conn = set_up_database("genshin_impact_data.db")
+    cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     
     # Set up table
     setup_media_table(cur, conn)
@@ -216,7 +217,6 @@ def main():
     ##### Media #####
     character_ids = get_character_ids(cur)
     media_data = get_media_data(character_ids, url)
-    print(f"All data scraped. Please wait...")
 
     # Insert into database
     cur.execute("SELECT max(character_id) FROM Media")
@@ -230,7 +230,7 @@ def main():
 
     insert_media_data(media_data=media_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     if start >= 25:
-        print(f"All media data added to database!\n\n\n")
+        print(f"All media data added to database. Please move on to calculations.py in the calculations folder!\n\n\n")
         conn.close()
         quit()
     cur.execute("SELECT max(character_id) FROM Media")

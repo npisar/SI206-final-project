@@ -285,7 +285,7 @@ def main():
     # create the connection and cursor
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.abspath(os.path.join(current_dir, "..")) 
-    db_path = os.path.join(root_dir, 'genshin_impact_data.db')
+    db_path = os.path.join(root_dir, 'data-and-tables/genshin_impact_data.db')
     
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
@@ -300,6 +300,8 @@ def main():
     char_vision_vs_weapon(character_info)
     chars_by_vision(character_info)
     artifact_qual_dist(artifact_info)
+
+    print(f"Visualization files created. You're all done running scripts!\n\n\n")
 
     # close the connection
     conn.close()

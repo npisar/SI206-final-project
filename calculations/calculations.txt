@@ -51,7 +51,7 @@ This section shows the average base attack for each weapon type.
     Weapon Type Catalyst: 42.21
     Weapon Type Claymore: 41.86
     Weapon Type Bow: 41.71
-    Weapon Type Sword: 41.86
+    Weapon Type Sword: 41.85
     Weapon Type Polearm: 42.61
 ------------------------------
 
@@ -64,28 +64,28 @@ These calculations show the difference in average base attack between different 
     Weapon Type Catalyst differences:
         Claymore-Catalyst: -0.35
         Bow-Catalyst: -0.50
-        Sword-Catalyst: -0.35
+        Sword-Catalyst: -0.36
         Polearm-Catalyst: 0.40
     Weapon Type Claymore differences:
         Catalyst-Claymore: 0.35
         Bow-Claymore: -0.15
-        Sword-Claymore: 0.00
+        Sword-Claymore: -0.01
         Polearm-Claymore: 0.75
     Weapon Type Bow differences:
         Catalyst-Bow: 0.50
         Claymore-Bow: 0.15
-        Sword-Bow: 0.15
+        Sword-Bow: 0.14
         Polearm-Bow: 0.90
     Weapon Type Sword differences:
-        Catalyst-Sword: 0.35
-        Claymore-Sword: 0.00
-        Bow-Sword: -0.15
-        Polearm-Sword: 0.75
+        Catalyst-Sword: 0.36
+        Claymore-Sword: 0.01
+        Bow-Sword: -0.14
+        Polearm-Sword: 0.76
     Weapon Type Polearm differences:
         Catalyst-Polearm: -0.40
         Claymore-Polearm: -0.75
         Bow-Polearm: -0.90
-        Sword-Polearm: -0.75
+        Sword-Polearm: -0.76
 ------------------------------
 
 

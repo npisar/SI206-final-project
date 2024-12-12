@@ -295,7 +295,7 @@ def main():
     # create the connection and cursor
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.abspath(os.path.join(current_dir, "..")) 
-    db_path = os.path.join(root_dir, 'genshin_impact_data.db')
+    db_path = os.path.join(root_dir, 'data-and-tables/genshin_impact_data.db')
     
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
@@ -366,6 +366,7 @@ def main():
             for character, count in media.items():
                 file.write(f"    Character {character}: {count}\n")
         file.write(f"{'-'*30}\n\n\n")
+    print(f"Calculations text file created. Please move onto graphs.py in the graphs folder!\n\n\n")
 
     # Close the connection
     conn.close()

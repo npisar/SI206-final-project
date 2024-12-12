@@ -58,6 +58,7 @@ def get_character_data(character_url):
     all_media_data: list
         List of GSHIMPACT json responses for each character ID
     """
+    print(f"Character data being gathered from the GSHImpact API! Please wait...")
     all_character_data = []
     for char_id in range(1, 52):  # Loop through character IDs 1 to 51
         response = requests.get(f"{character_url}characters/{char_id}/")
@@ -77,6 +78,7 @@ def get_character_data(character_url):
         weapon = character_data.get('weapon')
 
         all_character_data.append({'name':name, 'rarity':rarity, 'vision':vision, 'weapon':weapon})
+    print(f"Character API call done! Adding items to the database...")
     return all_character_data
 
 # Setup Character tables
@@ -139,7 +141,7 @@ def insert_character_vision_table(character_data, cur, conn):
 
     character_visions = []
     for character in character_data:
-        print(f"char vision is {character['vision']}")
+        # print(f"char vision is {character['vision']}")
         if character['vision'] not in character_visions:
             character_visions.append(character['vision'])
         if len(character_visions) == 7:
@@ -184,7 +186,7 @@ def insert_character_data(character_data, start, end, limit, cur, conn):
     """
     count = 0
     for i in range(start, end):
-        print(f"Adding character {start+count}, which is {character_data[i]['name']}")
+        # print(f"Adding character {start+count}, which is {character_data[i]['name']}")
         # print(f"ending on {end}")
         cur.execute(
             """ 
@@ -226,7 +228,7 @@ def insert_character_data(character_data, start, end, limit, cur, conn):
 ##########################--MAIN--#################################
 def main():
     # Database setup
-    cur, conn = set_up_database("genshin_impact_data.db")
+    cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     
     # Set up tables
     setup_character_tables(cur, conn)
@@ -252,12 +254,12 @@ def main():
         end = 51
 
     insert_character_data(character_data=character_data, start=start, end=end, limit=25, cur=cur, conn=conn)
-    if start >= 50:
-        print(f"All character data added to database!\n\n\n")
+    if start >= 43:
+        print(f"All character data added to the database. Please move on to fill_banner_table.py!\n\n\n")
         quit()
     cur.execute("SELECT max(id) FROM Characters")
     row = cur.fetchone()
-    print(f"{row[0] + 7} / 58 total character items added to the database. Run the file again!")
+    print(f"{row[0] + 7} / 58 total rows of character data added to the database. Run the file again!\n")
 
     
     # Close connection

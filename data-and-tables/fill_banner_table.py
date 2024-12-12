@@ -45,6 +45,7 @@ def get_banner_data(banner_url):
     all_media_data: list
         List of GSHIMPACT json responses for each banner ID
     """
+    print(f"Banner data being gathered from the GSHImpact API! Please wait...")
     all_banner_data = []
     for banner_id in range(1, 40):  # Loop through banner IDs
         response = requests.get(f"{banner_url}banners/{banner_id}/")
@@ -58,7 +59,7 @@ def get_banner_data(banner_url):
             continue
         
         all_banner_data.append(banner_data)
-
+    print(f"Banner API call done! Adding rows to the database...")
     return all_banner_data
 
 # Setup Banner table
@@ -185,7 +186,7 @@ def insert_banner_data(banner_data, start, end, limit, cur, conn):
 ##########################--MAIN--#################################
 def main():
     # Database setup
-    cur, conn = set_up_database("genshin_impact_data.db")
+    cur, conn = set_up_database("data-and-tables/genshin_impact_data.db")
     
     # Set up tables
     setup_banners_table(cur, conn)
@@ -211,12 +212,12 @@ def main():
 
     insert_banner_data(banner_data=banner_data, start=start, end=end, limit=25, cur=cur, conn=conn)
     if start >= 25:
-        print(f"All banner data added to database!\n\n\n")
+        print(f"All banner data added to database. Please move on to fill_artifact_table.py!\n\n\n")
         conn.close()
         quit()
     cur.execute("SELECT max(id) FROM Banners")
     row = cur.fetchone()
-    print(f"{row[0]} / 39 total banner items added to the database. Run the file again!")
+    print(f"{row[0]} / 39 total rows of banner data added to the database. Run the file again!\n")
 
     # Close connection
     conn.close()
